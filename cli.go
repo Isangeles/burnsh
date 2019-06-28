@@ -44,12 +44,14 @@ import (
 	"github.com/isangeles/burn"
 	"github.com/isangeles/burn/ash"
 	"github.com/isangeles/burn/syntax"
-	
+
 	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
 const (
+	NAME             = "Burn Shell"
+	VERSION          = "0.0.0"
 	COMMAND_PREFIX   = "$"
 	SCRIPT_PREFIX    = "%"
 	RUN_BG_SUFFIX    = "&"
@@ -65,6 +67,7 @@ const (
 	TARGET_INFO_CMD  = "tarinfo"
 	QUESTS_CMD       = "quests"
 	USE_SKILL_CMD    = "useskill"
+	CRAFTING_CMD     = "crafting"
 	REPEAT_INPUT_CMD = "!"
 	INPUT_INDICATOR  = ">"
 )
@@ -96,7 +99,8 @@ func init() {
 }
 
 func main() {
-	fmt.Printf("*%s\t%s*\n", flame.NAME, flame.VERSION)
+	fmt.Printf("*%s(%s)@%s(%s)*\n", NAME, VERSION,
+		flame.NAME, flame.VERSION)
 	fmt.Print(INPUT_INDICATOR)
 	scan := bufio.NewScanner(os.Stdin)
 	for scan.Scan() {
@@ -219,6 +223,11 @@ func execute(input string) {
 		err := useSkillDialog()
 		if err != nil {
 			log.Err.Printf("%s:%v", USE_SKILL_CMD, err)
+		}
+	case CRAFTING_CMD:
+		err := craftingDialog()
+		if err != nil {
+			log.Err.Printf("%s:%v", CRAFTING_CMD, err)
 		}
 	case REPEAT_INPUT_CMD:
 		execute(lastCommand)

@@ -2,7 +2,7 @@
   Burn Shell is command line interface for [Flame engine](https://github.com/isangeles/flame).
 
   CLI uses [Burn](https://github.com/Isangeles/burn) to handle user input and communicate with engine.
-  
+
   All commands must be prefixed with '$' character.
 
 ## Build & Run
@@ -18,9 +18,9 @@ Run shell:
 ```
   ./burnsh
 ```
-  
+
 ## Commands
-To run Burn or bsh command use '$' character as prefix.
+To run Burn or Burn Shell command use '$' character as prefix.
 Without prefix, command will be treated as text and printed to out or sent to active player
 chat channel if game was started.
 
@@ -93,6 +93,12 @@ Use character skill:
 ```
 Description: starts dialog to use one of active PC skills.
 
+Crafting dialog:
+```
+  $crafting
+```
+Description: starts items crafting dialog.
+
 Exit program:
 ```
   $close
@@ -102,3 +108,24 @@ Description: terminates program.
 ## Scripts
 To run Ash script use '%' prefix, scripts are executed from 'data/scripts' directory.
 Use '&' suffix to run script in background.
+
+## Contact
+* Isangeles <<dev@isangeles.pl>>
+
+## License
+Copyright 2018-2019 Dariusz Sikora <<dev@isangeles.pl>>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301, USA.

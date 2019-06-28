@@ -36,18 +36,22 @@ import (
 	flameconf "github.com/isangeles/flame/config"
 )
 
-// talkDialog starts talk CLI dialog with specified
-// game dialog.
+// talkDialog starts CLI dialog for dialog with
+// current target of active PC.
 func talkDialog() error {
+	langPath := flameconf.LangPath()
 	if game == nil {
-		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "no_game_err"))
+		msg := lang.TextDir(langPath, "no_game_err")
+		return fmt.Errorf(msg)
 	}
 	if activePC == nil {
-		return fmt.Errorf("no_active_pc")
+		msg := lang.TextDir(langPath, "no_pc_err")
+		return fmt.Errorf(msg)
 	}
 	tar := activePC.Targets()[0]
 	if tar == nil {
-		return fmt.Errorf("no_target")
+		msg := lang.TextDir(langPath, "no_tar_err")
+		return fmt.Errorf(msg)
 	}
 	tarChar, ok := tar.(*character.Character)
 	if !ok {
@@ -55,7 +59,7 @@ func talkDialog() error {
 	}
 	if len(tarChar.Dialogs()) < 1 {
 		return fmt.Errorf("no_target_dialogs")
-	}	
+	}
 	d := tarChar.Dialogs()[0]
 	mod := game.Module()
 	dialogsLangPath := mod.Chapter().Conf().DialogsLangPath()
@@ -63,11 +67,11 @@ func talkDialog() error {
 	d.Restart()
 	// Dialog.
 	for !d.Finished() {
-		fmt.Printf("%s:\n", lang.TextDir(flameconf.LangPath(), "talk_dialog"))
+		fmt.Printf("%s:\n", lang.TextDir(langPath, "talk_dialog"))
 		// Dialog phase.
 		phase := dialogPhase(d.Phases(), activePC)
 		if phase == nil {
-			return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "talk_no_phase_err"))
+			return fmt.Errorf(lang.TextDir(langPath, "talk_no_phase_err"))
 		}
 		// Dialog phase text.
 		dlgText := lang.AllText(dialogsLangPath, phase.ID())[0]
@@ -97,24 +101,22 @@ func talkDialog() error {
 				answers = append(answers, a)
 			}
 			// Print answers.
-			fmt.Printf("%s:\n", lang.TextDir(flameconf.LangPath(), "talk_answers"))
+			fmt.Printf("%s:\n", lang.TextDir(langPath, "talk_answers"))
 			for i, a := range answers {
 				ansText = lang.AllText(dialogsLangPath, a.ID())[0]
 				fmt.Printf("[%d]%s\n", i, ansText)
 			}
 			// Select answer.
-			fmt.Printf("%s:", lang.TextDir(flameconf.LangPath(), "talk_answers_select"))
+			fmt.Printf("%s:", lang.TextDir(langPath, "talk_answers_select"))
 			scan.Scan()
 			input := scan.Text()
 			id, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n", lang.TextDir(flameconf.LangPath(),
-					"cli_nan_error"), input)
+				fmt.Printf("%s:%s\n", lang.TextDir(langPath, "nan_err"), input)
 				continue
 			}
 			if id < 0 || id > len(phase.Answers())-1 {
-				fmt.Printf("%s\n", lang.TextDir(flameconf.LangPath(),
-					"talk_no_answer_id_err"))
+				fmt.Printf("%s\n", lang.TextDir(langPath, "talk_no_answer_id_err"))
 				continue
 			}
 			ans = answers[id]

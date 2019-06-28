@@ -37,11 +37,13 @@ import (
 // useSkillDialog starts CLI dialog for
 // using skills.
 func useSkillDialog() error {
+	langPath := flameconf.LangPath()
 	if activePC == nil {
-		return fmt.Errorf("no active PC")
+		msg := lang.TextDir(langPath, "no_pc_err")
+		return fmt.Errorf(msg)
 	}
 	// List skills.
-	fmt.Printf("%s:\n", lang.TextDir(flameconf.LangPath(), "use_skill_skills"))
+	fmt.Printf("%s:\n", lang.TextDir(langPath, "useskill_skills"))
 	skills := activePC.Skills()
 	for i, s := range skills {
 		fmt.Printf("[%d]%s\n", i, s.Name())
@@ -50,18 +52,16 @@ func useSkillDialog() error {
 	scan := bufio.NewScanner(os.Stdin)
 	var skill *skill.Skill
 	for skill == nil {
-		fmt.Printf("%s:", lang.TextDir(flameconf.LangPath(), "use_skill_select"))
+		fmt.Printf("%s:", lang.TextDir(langPath, "useskill_select"))
 		scan.Scan()
 		input := scan.Text()
 		id, err := strconv.Atoi(input)
 		if err != nil {
-			fmt.Printf("%s:%s\n", lang.TextDir(flameconf.LangPath(),
-				"cli_nan_error"), input)
+			fmt.Printf("%s:%s\n", lang.TextDir(langPath, "nan_err"), input)
 			continue
 		}
 		if id < 0 || id > len(skills)-1 {
-			fmt.Printf("%s\n", lang.TextDir(flameconf.LangPath(),
-				"use_skill_no_skill_id_err"))
+			fmt.Printf("%s:%s\n", lang.TextDir(langPath, "invalid_input_err"), input)
 			continue
 		}
 		skill = skills[id]

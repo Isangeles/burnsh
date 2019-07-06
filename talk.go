@@ -66,7 +66,7 @@ func talkDialog() error {
 	scan := bufio.NewScanner(os.Stdin)
 	d.Restart()
 	// Dialog.
-	for !d.Finished() {
+	for {
 		fmt.Printf("%s:\n", lang.TextDir(langPath, "talk_dialog"))
 		// Dialog phase.
 		phase := dialogPhase(d.Phases(), activePC)
@@ -136,6 +136,15 @@ func talkDialog() error {
 		fmt.Printf("[%s]:%s\n", activePC.Name(), ansText)
 		// Dialog progress.
 		d.Next(ans)
+		if d.Trading() {
+			err := tradeDialog()
+			if err != nil {
+				fmt.Printf("%v\n", err)
+			}
+		}
+		if d.Finished() {
+			break
+		}
 	}
 	return nil
 }

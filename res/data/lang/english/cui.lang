@@ -17,6 +17,13 @@ crafting_result:Result
 crafting_amount:Amount
 crafting_reqs:Requirements
 crafting_make:Make
+trade_buy_items:Items to buy
+trade_sell_items:Items to sell
+trade_select_items:Select items
+trade_no_items:No items in inventory
+trade_accept:Accept?
+trade_item_value:Value
+trade_sell_value_small:Sell value too small
 reqs_not_meet:Requirements not meet
 talk_no_answer_id_err:Enter valid answer ID
 dialog_back:Back

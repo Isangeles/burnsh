@@ -68,6 +68,7 @@ const (
 	QUESTS_CMD       = "quests"
 	USE_SKILL_CMD    = "useskill"
 	CRAFTING_CMD     = "crafting"
+	TRADE_TARGET_CMD = "trade"
 	REPEAT_INPUT_CMD = "!"
 	INPUT_INDICATOR  = ">"
 )
@@ -228,6 +229,11 @@ func execute(input string) {
 		err := craftingDialog()
 		if err != nil {
 			log.Err.Printf("%s:%v", CRAFTING_CMD, err)
+		}
+	case TRADE_TARGET_CMD:
+		err := tradeDialog()
+		if err != nil {
+			log.Err.Printf("%s:%v", TRADE_TARGET_CMD, err)
 		}
 	case REPEAT_INPUT_CMD:
 		execute(lastCommand)

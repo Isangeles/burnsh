@@ -99,6 +99,12 @@ Crafting dialog:
 ```
 Description: starts items crafting dialog.
 
+Trade with target:
+```
+  $trade
+```
+Description: starts trade dialog with current PC target.
+
 Exit program:
 ```
   $close

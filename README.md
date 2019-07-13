@@ -115,6 +115,13 @@ Description: terminates program.
 To run Ash script use '%' prefix, scripts are executed from 'data/scripts' directory.
 Use '&' suffix to run script in background.
 
+## Contributing
+You are welcome to contribute to project development.
+
+If you looking for things to do, then check TODO file.
+
+When you finish, open pull request to merge your changes with main branch.
+
 ## Contact
 * Isangeles <<dev@isangeles.pl>>
 

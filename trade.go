@@ -58,13 +58,13 @@ func tradeDialog() error {
 		return fmt.Errorf("invalid_target")
 	}
 	fmt.Printf("%s:\n", lang.TextDir(langPath, "trade_buy_items"))
-	buyItems := selectItems(tarChar.Inventory())
+	buyItems := selectBuyItems(tarChar.Inventory().TradeItems())
 	fmt.Printf("%s:\n", lang.TextDir(langPath, "trade_sell_items"))
-	sellItems := selectItems(activePC.Inventory())
+	sellItems := selectSellItems(activePC.Inventory().Items())
 	// Check trade value.
 	buyValue := 0
 	for _, it := range buyItems {
-		buyValue += it.Value()
+		buyValue += it.Price
 	}
 	sellValue := 0
 	for _, it := range sellItems {
@@ -103,18 +103,18 @@ func tradeDialog() error {
 	return nil
 }
 
-// selectItems starts dialog for selecting
-// items from specified inventory.
-func selectItems(inv *item.Inventory) (items []item.Item) {
+// selectSellItems starts dialog for selecting items to
+// sell from specified items.
+func selectSellItems(items []item.Item) (selection []item.Item) {
 	langPath := flameconf.LangPath()
 	selectItems := make(map[string]item.Item)
-	if len(inv.Items()) < 1 {
+	if len(items) < 1 {
 		fmt.Printf("%s\n", lang.TextDir(langPath, "trade_no_items"))
 		return
 	}
 	for {
 		invItems := make([]item.Item, 0)
-		for _, it := range inv.Items() {
+		for _, it := range items {
 			if selectItems[it.ID()+it.Serial()] != nil {
 				continue
 			}
@@ -146,7 +146,57 @@ func selectItems(inv *item.Inventory) (items []item.Item) {
 		selectItems[it.ID()+it.Serial()] = it
 	}
 	for _, it := range selectItems {
-		items = append(items, it)
+		selection = append(selection, it)
+	}
+	return
+}
+
+// selectBuyItems starts dialog for selecting items to buy from
+// specified trade items list.
+func selectBuyItems(items []*item.TradeItem) (selection []*item.TradeItem) {
+	langPath := flameconf.LangPath()
+	selectItems := make(map[string]*item.TradeItem)
+	if len(items) < 1 {
+		fmt.Printf("%s\n", lang.TextDir(langPath, "trade_no_items"))
+		return
+	}
+	for {
+		invItems := make([]*item.TradeItem, 0)
+		for _, it := range items {
+			if selectItems[it.ID()+it.Serial()] != nil {
+				continue
+			}
+			invItems = append(invItems, it)
+		}
+		// List items to select.
+		fmt.Printf("%s:\n", lang.TextDir(langPath, "trade_select_items"))
+		valueLabel := lang.TextDir(langPath, "trade_item_value")
+		priceLabel := lang.TextDir(langPath, "trade_item_price")
+		for i, it := range invItems {
+			fmt.Printf("\t[%d]%s\t%s: %d, %s: %d\n", i, it.ID(),
+				valueLabel, it.Value(), priceLabel, it.Price) 
+		}
+		// Scan input.
+		scan := bufio.NewScanner(os.Stdin)
+		scan.Scan()
+		input := scan.Text()
+		if input == "" {
+			break
+		}
+		id, err := strconv.Atoi(input)
+		if err != nil {
+			fmt.Printf("%s:%v\n", lang.TextDir(langPath, "nan_err"), input)
+			continue
+		}
+		if id < 0 || id > len(invItems)-1 {
+			fmt.Printf("%s:%s\n", lang.TextDir(langPath, "invalid_input_err"), input)
+			continue
+		}
+		it := invItems[id]
+		selectItems[it.ID()+it.Serial()] = it
+	}
+	for _, it := range selectItems {
+		selection = append(selection, it)
 	}
 	return
 }

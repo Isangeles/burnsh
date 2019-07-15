@@ -35,7 +35,7 @@ import (
 )
 
 const (
-	CONFIG_FILE_NAME = ".flame-cli"
+	ConfigFileName = ".burnsh"
 )
 
 var (
@@ -49,7 +49,7 @@ var (
 // LoadConfig Loads CLI config file.
 func LoadConfig() error {
 	// Read config file.
-	values, err := text.ReadValue(CONFIG_FILE_NAME, "restrict-mode",
+	values, err := text.ReadValue(ConfigFileName, "restrict-mode",
 		"new-char-attrs", "new-char-skills", "new-char-items")
 	if err != nil {
 		return fmt.Errorf("fail_to_read_values:%v", err)
@@ -69,7 +69,7 @@ func LoadConfig() error {
 // SaveConfig Saves current config values in config file.
 func SaveConfig() error {
 	// Create file.
-	f, err := os.Create(CONFIG_FILE_NAME)
+	f, err := os.Create(ConfigFileName)
 	if err != nil {
 		return err
 	}

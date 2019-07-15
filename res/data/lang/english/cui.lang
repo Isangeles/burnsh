@@ -25,6 +25,11 @@ trade_accept:Accept?
 trade_item_value:Value
 trade_item_price:Price
 trade_sell_value_small:Sell value too small
+train_trainings:Trainings
+train_training:Training
+train_select_training:Select training
+train_no_trainings:No trainings
+train_no_train_sel:No training selected
 reqs_not_meet:Requirements not meet
 talk_no_answer_id_err:Enter valid answer ID
 dialog_back:Back

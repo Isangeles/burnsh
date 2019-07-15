@@ -29,11 +29,11 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	
-	"github.com/isangeles/flame/core/data/text/lang"
-	"github.com/isangeles/flame/core/module/object/character"
-	"github.com/isangeles/flame/core/module/object/item"
+
 	flameconf "github.com/isangeles/flame/config"
+	"github.com/isangeles/flame/core/data/text/lang"
+	char "github.com/isangeles/flame/core/module/object/character"
+	"github.com/isangeles/flame/core/module/object/item"
 )
 
 // tradeDialog starts CLI dialog for trade with
@@ -53,9 +53,10 @@ func tradeDialog() error {
 		msg := lang.TextDir(langPath, "no_tar_err")
 		return fmt.Errorf(msg)
 	}
-	tarChar, ok := tar.(*character.Character)
+	tarChar, ok := tar.(*char.Character)
 	if !ok {
-		return fmt.Errorf("invalid_target")
+		msg := lang.TextDir(langPath, "tar_invalid")
+		return fmt.Errorf(msg)
 	}
 	fmt.Printf("%s:\n", lang.TextDir(langPath, "trade_buy_items"))
 	buyItems := selectBuyItems(tarChar.Inventory().TradeItems())
@@ -99,19 +100,19 @@ func tradeDialog() error {
 	for _, it := range sellItems {
 		tarChar.Inventory().AddItem(it)
 		activePC.Inventory().RemoveItem(it)
-	}	
+	}
 	return nil
 }
 
 // selectSellItems starts dialog for selecting items to
 // sell from specified items.
-func selectSellItems(items []item.Item) (selection []item.Item) {
+func selectSellItems(items []item.Item) []item.Item {
 	langPath := flameconf.LangPath()
-	selectItems := make(map[string]item.Item)
 	if len(items) < 1 {
 		fmt.Printf("%s\n", lang.TextDir(langPath, "trade_no_items"))
-		return
+		return nil
 	}
+	selectItems := make(map[string]item.Item)
 	for {
 		invItems := make([]item.Item, 0)
 		for _, it := range items {
@@ -124,7 +125,7 @@ func selectSellItems(items []item.Item) (selection []item.Item) {
 		fmt.Printf("%s:\n", lang.TextDir(langPath, "trade_select_items"))
 		valueLabel := lang.TextDir(langPath, "trade_item_value")
 		for i, it := range invItems {
-			fmt.Printf("\t[%d]%s\t%s:%d\n", i, it.ID(), valueLabel, it.Value()) 
+			fmt.Printf("\t[%d]%s\t%s:%d\n", i, it.ID(), valueLabel, it.Value())
 		}
 		// Scan input.
 		scan := bufio.NewScanner(os.Stdin)
@@ -145,20 +146,21 @@ func selectSellItems(items []item.Item) (selection []item.Item) {
 		it := invItems[id]
 		selectItems[it.ID()+it.Serial()] = it
 	}
+	selection := make([]item.Item, 0)
 	for _, it := range selectItems {
 		selection = append(selection, it)
 	}
-	return
+	return selection
 }
 
 // selectBuyItems starts dialog for selecting items to buy from
 // specified trade items list.
-func selectBuyItems(items []*item.TradeItem) (selection []*item.TradeItem) {
+func selectBuyItems(items []*item.TradeItem) []*item.TradeItem {
 	langPath := flameconf.LangPath()
 	selectItems := make(map[string]*item.TradeItem)
 	if len(items) < 1 {
 		fmt.Printf("%s\n", lang.TextDir(langPath, "trade_no_items"))
-		return
+		return nil
 	}
 	for {
 		invItems := make([]*item.TradeItem, 0)
@@ -174,7 +176,7 @@ func selectBuyItems(items []*item.TradeItem) (selection []*item.TradeItem) {
 		priceLabel := lang.TextDir(langPath, "trade_item_price")
 		for i, it := range invItems {
 			fmt.Printf("\t[%d]%s\t%s: %d, %s: %d\n", i, it.ID(),
-				valueLabel, it.Value(), priceLabel, it.Price) 
+				valueLabel, it.Value(), priceLabel, it.Price)
 		}
 		// Scan input.
 		scan := bufio.NewScanner(os.Stdin)
@@ -195,8 +197,9 @@ func selectBuyItems(items []*item.TradeItem) (selection []*item.TradeItem) {
 		it := invItems[id]
 		selectItems[it.ID()+it.Serial()] = it
 	}
+	selection := make([]*item.TradeItem, 0)
 	for _, it := range selectItems {
 		selection = append(selection, it)
 	}
-	return
+	return selection
 }

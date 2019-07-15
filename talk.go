@@ -29,11 +29,11 @@ import (
 	"os"
 	"strconv"
 
+	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core/data/text/lang"
 	"github.com/isangeles/flame/core/module/object/character"
 	"github.com/isangeles/flame/core/module/object/dialog"
 	"github.com/isangeles/flame/core/module/object/effect"
-	flameconf "github.com/isangeles/flame/config"
 )
 
 // talkDialog starts CLI dialog for dialog with

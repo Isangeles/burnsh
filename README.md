@@ -105,6 +105,12 @@ Trade with target:
 ```
 Description: starts trade dialog with current PC target.
 
+Train with target:
+```
+  $train
+```
+Description: starts training dialog with current PC target.
+
 Exit program:
 ```
   $close
@@ -112,6 +118,8 @@ Exit program:
 Description: terminates program.
 
 ## Scripts
+Burn Shell supports [Ash](https://github.com/Isangeles/burn/tree/master/ash) scripting language.
+
 To run Ash script use '%' prefix, scripts are executed from 'data/scripts' directory.
 Use '&' suffix to run script in background.
 

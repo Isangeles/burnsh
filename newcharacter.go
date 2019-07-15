@@ -35,7 +35,7 @@ import (
 	"github.com/isangeles/flame/core/data/text/lang"
 	"github.com/isangeles/flame/core/module"
 	"github.com/isangeles/flame/core/module/object/character"
-	
+
 	flameconf "github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )

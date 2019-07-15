@@ -27,7 +27,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"	
+	"strconv"
 
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/config"

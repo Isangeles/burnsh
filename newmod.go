@@ -27,7 +27,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	
+
 	"github.com/isangeles/flame/core/data/text/lang"
 )
 
@@ -49,7 +49,7 @@ func newModDialog() error {
 			}
 			break
 		}
- 		err := NewModule(id)
+		err := NewModule(id)
 		if err != nil {
 			return fmt.Errorf("fail_to_create_module_dir:%v", err)
 		}

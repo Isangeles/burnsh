@@ -26,8 +26,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/isangeles/flame/core/data/text/lang"
 	flameconf "github.com/isangeles/flame/config"
+	"github.com/isangeles/flame/core/data/text/lang"
 )
 
 // questsDialog starts quests journal CLI dialog.

@@ -5,8 +5,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * the Free Software Foundation; either Version 2 of the License, or
+ * (at your option) any later Version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -50,27 +50,28 @@ import (
 )
 
 const (
-	NAME             = "Burn Shell"
-	VERSION          = "0.0.0"
-	COMMAND_PREFIX   = "$"
-	SCRIPT_PREFIX    = "%"
-	RUN_BG_SUFFIX    = "&"
-	CLOSE_CMD        = "close"
-	NEW_CHAR_CMD     = "newchar"
-	NEW_GAME_CMD     = "newgame"
-	NEW_MOD_CMD      = "newmod"
-	LOAD_GAME_CMD    = "loadgame"
-	IMPORT_CHARS_CMD = "importchars"
-	LOOT_TARGET_CMD  = "loot"
-	TALK_TARGET_CMD  = "talk"
-	FIND_TARGET_CMD  = "target"
-	TARGET_INFO_CMD  = "tarinfo"
-	QUESTS_CMD       = "quests"
-	USE_SKILL_CMD    = "useskill"
-	CRAFTING_CMD     = "crafting"
-	TRADE_TARGET_CMD = "trade"
-	REPEAT_INPUT_CMD = "!"
-	INPUT_INDICATOR  = ">"
+	Name           = "Burn Shell"
+	Version        = "0.0.0"
+	CommandPrefix  = "$"
+	ScriptPrefix   = "%"
+	RunBGSuffix    = "&"
+	CloseCmd       = "close"
+	NewCharCmd     = "newchar"
+	NewGameCmd     = "newgame"
+	NewModCmd      = "newmod"
+	LoadGameCmd    = "loadgame"
+	ImportCharsCmd = "importchars"
+	LootTargetCmd  = "loot"
+	TalkTargetCmd  = "talk"
+	FindTargetCmd  = "target"
+	TargetInfoCmd  = "tarinfo"
+	QuestsCmd      = "quests"
+	UseSkillCmd    = "useskill"
+	CraftingCmd    = "crafting"
+	TradeTargetCmd = "trade"
+	TrainTargetCmd = "train"
+	RepeatInputCmd = "!"
+	InputIndicator = ">"
 )
 
 var (
@@ -100,23 +101,23 @@ func init() {
 }
 
 func main() {
-	fmt.Printf("*%s(%s)@%s(%s)*\n", NAME, VERSION,
+	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
 		flame.NAME, flame.VERSION)
-	fmt.Print(INPUT_INDICATOR)
+	fmt.Print(InputIndicator)
 	scan := bufio.NewScanner(os.Stdin)
 	for scan.Scan() {
 		input := scan.Text()
-		if strings.HasPrefix(input, COMMAND_PREFIX) {
-			cmd := strings.TrimPrefix(input, COMMAND_PREFIX)
+		if strings.HasPrefix(input, CommandPrefix) {
+			cmd := strings.TrimPrefix(input, CommandPrefix)
 			execute(cmd)
 			lastCommand = cmd
-		} else if strings.HasPrefix(input, SCRIPT_PREFIX) {
-			input := strings.TrimPrefix(input, SCRIPT_PREFIX)
+		} else if strings.HasPrefix(input, ScriptPrefix) {
+			input := strings.TrimPrefix(input, ScriptPrefix)
 			scrArgs := strings.Split(input, " ")
 			bgrun := false
-			if strings.HasSuffix(scrArgs[0], RUN_BG_SUFFIX) {
+			if strings.HasSuffix(scrArgs[0], RunBGSuffix) {
 				bgrun = true
-				scrArgs[0] = strings.TrimSuffix(scrArgs[0], RUN_BG_SUFFIX)
+				scrArgs[0] = strings.TrimSuffix(scrArgs[0], RunBGSuffix)
 			}
 			executeFile(bgrun, scrArgs[0], scrArgs...)
 		} else if activePC != nil {
@@ -124,7 +125,7 @@ func main() {
 		} else {
 			log.Inf.Println(input)
 		}
-		fmt.Print(INPUT_INDICATOR)
+		fmt.Print(InputIndicator)
 		// Game update on input.
 		if game != nil {
 			go gameLoop(game)
@@ -138,7 +139,7 @@ func main() {
 // execute passes specified command to CI.
 func execute(input string) {
 	switch input {
-	case CLOSE_CMD:
+	case CloseCmd:
 		err := flameconf.SaveConfig()
 		if err != nil {
 			log.Err.Printf("engine_config_save_fail:%v",
@@ -149,93 +150,98 @@ func execute(input string) {
 			log.Err.Printf("config_save_fail:%v", err)
 		}
 		os.Exit(0)
-	case NEW_CHAR_CMD:
+	case NewCharCmd:
 		createdChar, err := newCharacterDialog(flame.Mod())
 		if err != nil {
 			log.Err.Printf("%s\n", err)
 			break
 		}
 		playableChars = append(playableChars, createdChar)
-	case NEW_GAME_CMD:
+	case NewGameCmd:
 		g, err := newGameDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", NEW_GAME_CMD, err)
+			log.Err.Printf("%s:%v", NewGameCmd, err)
 			break
 		}
 		game = g
 		activePC = game.Players()[0]
 		lastUpdate = time.Now()
-	case NEW_MOD_CMD:
+	case NewModCmd:
 		err := newModDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", NEW_MOD_CMD, err)
+			log.Err.Printf("%s:%v", NewModCmd, err)
 			break
 		}
-	case LOAD_GAME_CMD:
+	case LoadGameCmd:
 		g, err := loadGameDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", LOAD_GAME_CMD, err)
+			log.Err.Printf("%s:%v", LoadGameCmd, err)
 			break
 		}
 		game = g
 		activePC = game.Players()[0]
 		lastUpdate = time.Now()
-	case IMPORT_CHARS_CMD:
+	case ImportCharsCmd:
 		chars, err := data.ImportCharactersDir(flame.Mod(),
 			flame.Mod().Conf().CharactersPath())
 		if err != nil {
-			log.Err.Printf("%s:%v", IMPORT_CHARS_CMD, err)
+			log.Err.Printf("%s:%v", ImportCharsCmd, err)
 			break
 		}
 		log.Inf.Printf("imported_chars:%d\n", len(chars))
 		for _, c := range chars {
 			playableChars = append(playableChars, c)
 		}
-	case LOOT_TARGET_CMD:
+	case LootTargetCmd:
 		err := lootDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", LOOT_TARGET_CMD, err)
+			log.Err.Printf("%s:%v", LootTargetCmd, err)
 			break
 		}
-	case TALK_TARGET_CMD:
+	case TalkTargetCmd:
 		err := talkDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", TALK_TARGET_CMD, err)
+			log.Err.Printf("%s:%v", TalkTargetCmd, err)
 			break
 		}
-	case FIND_TARGET_CMD:
+	case FindTargetCmd:
 		err := targetDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", FIND_TARGET_CMD, err)
+			log.Err.Printf("%s:%v", FindTargetCmd, err)
 			break
 		}
-	case TARGET_INFO_CMD:
+	case TargetInfoCmd:
 		err := targetInfoDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", TARGET_INFO_CMD, err)
+			log.Err.Printf("%s:%v", TargetInfoCmd, err)
 			break
 		}
-	case QUESTS_CMD:
+	case QuestsCmd:
 		err := questsDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", QUESTS_CMD, err)
+			log.Err.Printf("%s:%v", QuestsCmd, err)
 		}
-	case USE_SKILL_CMD:
+	case UseSkillCmd:
 		err := useSkillDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", USE_SKILL_CMD, err)
+			log.Err.Printf("%s:%v", UseSkillCmd, err)
 		}
-	case CRAFTING_CMD:
+	case CraftingCmd:
 		err := craftingDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", CRAFTING_CMD, err)
+			log.Err.Printf("%s:%v", CraftingCmd, err)
 		}
-	case TRADE_TARGET_CMD:
+	case TradeTargetCmd:
 		err := tradeDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", TRADE_TARGET_CMD, err)
+			log.Err.Printf("%s:%v", TradeTargetCmd, err)
 		}
-	case REPEAT_INPUT_CMD:
+	case TrainTargetCmd:
+		err := trainDialog()
+		if err != nil {
+			log.Err.Printf("%s:%v", TrainTargetCmd, err)
+		}
+	case RepeatInputCmd:
 		execute(lastCommand)
 		return
 	default: // pass command to CI
@@ -249,9 +255,9 @@ func execute(input string) {
 }
 
 // executeFile executes script from data/scripts dir.
-func executeFile(bgrun bool, filename string, args ...string) {
+func executeFile(bgrun bool, fileName string, args ...string) {
 	path := fmt.Sprintf("%s/%s%s", config.ScriptsPath(),
-		filename, ash.SCRIPT_FILE_EXT)
+		fileName, ash.SCRIPT_FILE_EXT)
 	file, err := os.Open(path)
 	if err != nil {
 		log.Err.Printf("fail_to_open_file:%v", err)

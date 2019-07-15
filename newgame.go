@@ -83,5 +83,5 @@ func newGameDialog() (*core.Game, error) {
 	if err != nil {
 		return nil, fmt.Errorf("%s:%v", lang.Text("ui", "cli_newgame_start_err"), err)
 	}
-	return g, nil 
+	return g, nil
 }

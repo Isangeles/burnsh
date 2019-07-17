@@ -30,6 +30,8 @@ train_training:Training
 train_select_training:Select training
 train_no_trainings:No trainings
 train_no_train_sel:No training selected
+train_reqs:Train requirements
+train_attrs_training:Attributes
 reqs_not_meet:Requirements not meet
 talk_no_answer_id_err:Enter valid answer ID
 dialog_back:Back

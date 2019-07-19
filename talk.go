@@ -142,6 +142,12 @@ func talkDialog() error {
 				fmt.Printf("%v\n", err)
 			}
 		}
+		if d.Training() {
+			err := trainDialog()
+			if err != nil {
+				fmt.Printf("%v\n", err)
+			}
+		}
 		if d.Finished() {
 			break
 		}

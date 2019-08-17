@@ -303,23 +303,6 @@ func charNameValid(name string) bool {
 // buildCharacter creates new character from specified data.
 func buildCharacter(mod *module.Module, charData *res.CharacterBasicData) *character.Character {
 	char := character.New(*charData)
-	// Add character skills & items from mod config.
-	for _, sid := range mod.Conf().CharSkills {
-		s, err := data.Skill(sid)
-		if err != nil {
-			log.Err.Printf("fail_to_retireve_conf_char_skill:%v", err)
-			continue
-		}
-		char.AddSkill(s)
-	}
-	for _, iid := range mod.Conf().CharItems {
-		i, err := data.Item(iid)
-		if err != nil {
-			log.Err.Printf("fail_to_retireve_conf_char_item:%v", err)
-			continue
-		}
-		char.Inventory().AddItem(i)
-	}
 	// Add player skills & items from interface config.
 	for _, sid := range flameconf.NewCharSkills() {
 		s, err := data.Skill(sid)

@@ -102,7 +102,7 @@ func init() {
 
 func main() {
 	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
-		flame.NAME, flame.VERSION)
+		flame.Name, flame.Version)
 	fmt.Print(InputIndicator)
 	scan := bufio.NewScanner(os.Stdin)
 	for scan.Scan() {

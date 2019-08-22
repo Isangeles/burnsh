@@ -36,6 +36,9 @@ reqs_not_meet:Requirements not meet
 talk_no_answer_id_err:Enter valid answer ID
 dialog_back:Back
 dialog_cancel:Cancel
+req_unknown:Unknown
+req_level:Level
+req_item:Item
 talk_no_phase_err:No suitable dialog phase found
 crafting_no_recipes_err:No recipes known
 crafting_no_recipe_select_err:No recipe selected

@@ -26,7 +26,11 @@ package main
 import (
 	"fmt"
 
+	flameconf "github.com/isangeles/flame/config"
+
+	"github.com/isangeles/flame/core/data/text/lang"
 	"github.com/isangeles/flame/core/module/object/character"
+	"github.com/isangeles/flame/core/module/req"
 )
 
 // charDisplayString returns string with character
@@ -37,4 +41,24 @@ func charDisplayString(char *character.Character) string {
 		"Stats", char.Attributes().Str, char.Attributes().Con,
 		char.Attributes().Dex, char.Attributes().Wis,
 		char.Attributes().Int)
+}
+
+// reqsInfo returns text with info to display
+// about specified requirements.
+func reqsInfo(reqs ...req.Requirement) string {
+	langPath := flameconf.LangPath()
+	out := ""
+	for _, r := range reqs {
+		switch r := r.(type) {
+		case *req.LevelReq:
+			out = fmt.Sprintf("%s\n%s\t%d", out, lang.TextDir(langPath, "req_level"),
+				r.MinLevel())
+		case *req.ItemReq:
+			out = fmt.Sprintf("%s\n%s:%s\tx%d", out, lang.TextDir(langPath, "req_item"),
+				r.ItemID(), r.ItemAmount())
+		default:
+			out = fmt.Sprintf("%s\n%s", out, lang.TextDir(langPath, "req_unknown"))
+		}
+	}
+	return out
 }

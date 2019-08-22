@@ -59,6 +59,8 @@ func craftingDialog() error {
 			recipe.ID())
 		fmt.Printf("%s:\t%s\n", lang.TextDir(langPath, "crafting_category"),
 			recipe.CategoryID())
+		fmt.Printf("%s:\t%s\n", lang.TextDir(langPath, "crafting_reqs"),
+			reqsInfo(recipe.Reqs()...))
 		fmt.Printf("%s:\n", lang.TextDir(langPath, "crafting_result"))
 		for _, r := range recipe.Result() {
 			fmt.Printf("\t%s\tx%d\n", r.ID, r.Amount)
@@ -94,11 +96,7 @@ func craftingDialog() error {
 			break
 		}
 		if ans == 1 {
-			err := pcMakeRecipe(recipe)
-			if err != nil {
-				fmt.Printf("%v\n", err)
-				continue
-			}
+			activePC.Craft(recipe)
 			break
 		}
 	}
@@ -139,24 +137,4 @@ func recipeDialog(c *character.Character) (*craft.Recipe, error) {
 		recipe = recipes[id]
 	}
 	return recipe, nil
-}
-
-// pcMakeRecipe checks requirements and makes
-// items from specified recipe for active PC.
-func pcMakeRecipe(r *craft.Recipe) error {
-	langPath := flameconf.LangPath()
-	if activePC == nil {
-		msg := lang.TextDir(langPath, "no_pc_err")
-		return fmt.Errorf(msg)
-	}
-	if !activePC.MeetReqs(r.Reqs()...) {
-		msg := lang.TextDir(langPath, "reqs_not_meet")
-		return fmt.Errorf(msg)
-	}
-	activePC.ChargeReqs(r.Reqs()...)
-	res := r.Make()
-	for _, i := range res {
-		activePC.Inventory().AddItem(i)
-	}
-	return nil
 }

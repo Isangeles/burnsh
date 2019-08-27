@@ -40,12 +40,12 @@ import (
 // saved game.
 func loadGameDialog() (*core.Game, error) {
 	if flame.Mod() == nil {
-		return nil, fmt.Errorf("no_module_loaded")
+		return nil, fmt.Errorf("no module loaded")
 	}
-	savePattern := fmt.Sprintf(".*%s", data.SAVEGAME_FILE_EXT)
+	savePattern := fmt.Sprintf(".*%s", data.SavegameFileExt)
 	saves, err := data.DirFilesNames(config.ModuleSavegamesPath(), savePattern)
 	if err != nil {
-		return nil, fmt.Errorf("fail_to_retrieve_save_files:%v")
+		return nil, fmt.Errorf("fail to retrieve save files: %v")
 	}
 	savename := ""
 	scan := bufio.NewScanner(os.Stdin)
@@ -70,7 +70,7 @@ func loadGameDialog() (*core.Game, error) {
 	}
 	game, err := flame.LoadGame(savename)
 	if err != nil {
-		return nil, fmt.Errorf("fail_to_load_saved_game:%v", err)
+		return nil, fmt.Errorf("fail to load saved game: %v", err)
 	}
 	return game, nil
 }

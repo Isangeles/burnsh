@@ -25,31 +25,37 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/isangeles/flame/core/module/object/item"
 )
 
 // lootDialog start CLI dialog current
 // PC target loot.
 func lootDialog() error {
 	if game == nil {
-		return fmt.Errorf("no_game_started")
+		return fmt.Errorf("no game started")
 	}
 	if len(game.Players()) < 1 {
-		return fmt.Errorf("no_players")
+		return fmt.Errorf("no players")
 	}
 	pc := game.Players()[0]
 	tar := pc.Targets()[0]
 	if tar == nil {
-		return fmt.Errorf("no_target")
+		return fmt.Errorf("no target")
 	}
 	if !tar.Live() {
-		return fmt.Errorf("tar_not_lootable")
+		return fmt.Errorf("tar not lootable")
 	}
-	for _, it := range tar.Inventory().Items() {
+	con, ok := tar.(item.Container)
+	if !ok {
+		return fmt.Errorf("target have no inventory")
+	}
+	for _, it := range con.Inventory().Items() {
 		if !it.Loot() {
 			continue
 		}
 		pc.Inventory().AddItem(it)
-		tar.Inventory().RemoveItem(it)
+		con.Inventory().RemoveItem(it)
 	}
 	return nil
 }

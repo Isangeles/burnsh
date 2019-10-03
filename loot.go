@@ -26,6 +26,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/isangeles/flame/core/module/object"
 	"github.com/isangeles/flame/core/module/object/item"
 )
 
@@ -43,7 +44,7 @@ func lootDialog() error {
 	if tar == nil {
 		return fmt.Errorf("no target")
 	}
-	if !tar.Live() {
+	if tar, ok := tar.(object.Killable); ok && !tar.Live() {
 		return fmt.Errorf("tar not lootable")
 	}
 	con, ok := tar.(item.Container)

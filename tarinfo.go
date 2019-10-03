@@ -30,15 +30,27 @@ import (
 	"github.com/isangeles/flame/core/data/text/lang"
 )
 
+// Interface for objects with info for
+// targetinfo command.
+type InfoTarget interface {
+	Name() string
+	Health() int
+	Mana() int
+}
+
 // targetInfoDialog starts CLI dialog that prints informations
 // about current PC target.
 func targetInfoDialog() error {
 	if activePC == nil {
 		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "no_pc_err"))
 	}
-	tar := activePC.Targets()[0]
-	if tar == nil {
+	pcTar := activePC.Targets()[0]
+	if pcTar == nil {
 		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "no_tar_err"))
+	}
+	tar, ok := pcTar.(InfoTarget)
+	if !ok {
+		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "invalid_tar"))
 	}
 	// Name.
 	info := fmt.Sprintf("%s:%s", lang.TextDir(flameconf.LangPath(), "ob_name"),

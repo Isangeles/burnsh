@@ -31,6 +31,7 @@ import (
 
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/module/object/character"
 	"github.com/isangeles/flame/core/module/object/effect"
 )
 
@@ -51,7 +52,12 @@ func targetDialog() error {
 			return nil
 		}
 		for i, t := range targets {
-			fmt.Printf("[%d]%s\n", i, t.Name())
+			langPath := game.Module().Chapter().Conf().LangPath()
+			name := lang.TextDir(langPath, t.ID())
+			if t, ok := t.(*character.Character); ok {
+				name = t.Name()
+			}
+			fmt.Printf("[%d]%s\n", i, name)
 		}
 		fmt.Printf("%s:", lang.TextDir(flameconf.LangPath(), "target_select_target"))
 		scan.Scan()

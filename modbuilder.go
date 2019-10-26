@@ -119,26 +119,24 @@ func createChapter(path, id string) error {
 	w.WriteString(conf)
 	w.Flush()
 	// Start area.
-	scensPath := filepath.FromSlash(path + "/area/scenarios")
-	err = os.MkdirAll(scensPath, 0755)
+	areasPath := filepath.FromSlash(path + "/areas")
+	err = os.MkdirAll(areasPath, 0755)
 	if err != nil {
-		return fmt.Errorf("fail to create scenarios dir: %v", err)
+		return fmt.Errorf("fail to create areas dir: %v", err)
 	}
-	sd := res.ModuleScenarioData{ID: "area1"}
-	adMain := res.ModuleAreaData{ID: "area1_main", Main: true}
-	sd.Areas = append(sd.Areas, adMain)
-	xmlScen, err := parsexml.MarshalScenario(&sd)
+	ad := res.ModuleAreaData{ID: "area1_main"}
+	xmlArea, err := parsexml.MarshalArea(&ad)
 	if err != nil {
-		return fmt.Errorf("fail to marshal start scenario: %v", err)
+		return fmt.Errorf("fail to marshal start area: %v", err)
 	}
-	scenPath := filepath.FromSlash(scensPath + "/area1" + data.ScenarioFileExt)
-	scenFile, err := os.Create(scenPath)
+	areaPath := filepath.FromSlash(areasPath + "/area1_main/main" + data.AreaFileExt)
+	areaFile, err := os.Create(areaPath)
 	if err != nil {
-		return fmt.Errorf("fail to create start scenario file: %v", err)
+		return fmt.Errorf("fail to create start area file: %v", err)
 	}
-	defer scenFile.Close()
-	w = bufio.NewWriter(scenFile)
-	w.WriteString(xmlScen)
+	defer areaFile.Close()
+	w = bufio.NewWriter(areaFile)
+	w.WriteString(xmlArea)
 	w.Flush()
 	return nil
 }

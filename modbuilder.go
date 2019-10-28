@@ -65,6 +65,10 @@ func NewModule(name string) error {
 	if err != nil {
 		return fmt.Errorf("fail to create objects dir: %v", err)
 	}
+	err = os.MkdirAll(filepath.FromSlash(path+"/recipes"), 0755)
+	if err != nil {
+		return fmt.Errorf("fail to create recipes dir: %v", err)
+	}
 	err = os.MkdirAll(filepath.FromSlash(path+"/lang"), 0755)
 	if err != nil {
 		return fmt.Errorf("fail to create lang dir: %v", err)
@@ -102,6 +106,14 @@ func createChapter(path, id string) error {
 	if err != nil {
 		return fmt.Errorf("fail to create npc dir: %v", err)
 	}
+	err = os.MkdirAll(filepath.FromSlash(path+"/dialogs"), 0755)
+	if err != nil {
+		return fmt.Errorf("fail to create dialogs dir: %v", err)
+	}
+	err = os.MkdirAll(filepath.FromSlash(path+"/quests"), 0755)
+	if err != nil {
+		return fmt.Errorf("fail to create quests dir: %v", err)
+	}
 	err = os.MkdirAll(filepath.FromSlash(path+"/lang"), 0755)
 	if err != nil {
 		return fmt.Errorf("fail to create lang dir: %v", err)
@@ -113,14 +125,13 @@ func createChapter(path, id string) error {
 		return fmt.Errorf("fail to create conf file: %v", err)
 	}
 	defer confFile.Close()
-	conf := fmt.Sprintf("start-scenario:%s;\nscenarios:%s;\n",
-		"area1.scenario", "")
+	conf := fmt.Sprintf("start-area:%s;\n", "area1_main")
 	w := bufio.NewWriter(confFile)
 	w.WriteString(conf)
 	w.Flush()
 	// Start area.
-	areasPath := filepath.FromSlash(path + "/areas")
-	err = os.MkdirAll(areasPath, 0755)
+	areaDirPath := filepath.FromSlash(path + "/areas/area1_main")
+	err = os.MkdirAll(areaDirPath, 0755)
 	if err != nil {
 		return fmt.Errorf("fail to create areas dir: %v", err)
 	}
@@ -129,7 +140,8 @@ func createChapter(path, id string) error {
 	if err != nil {
 		return fmt.Errorf("fail to marshal start area: %v", err)
 	}
-	areaPath := filepath.FromSlash(areasPath + "/area1_main/main" + data.AreaFileExt)
+	
+	areaPath := filepath.FromSlash(areaDirPath + "/main" + data.AreaFileExt)
 	areaFile, err := os.Create(areaPath)
 	if err != nil {
 		return fmt.Errorf("fail to create start area file: %v", err)

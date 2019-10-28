@@ -1,5 +1,5 @@
 /*
- * newcharacter.go
+ * newmod.go
  *
  * Copyright 2018-2019 Dariusz Sikora <dev@isangeles.pl>
  *
@@ -51,7 +51,7 @@ func newModDialog() error {
 		}
 		err := NewModule(id)
 		if err != nil {
-			return fmt.Errorf("fail_to_create_module_dir:%v", err)
+			return fmt.Errorf("fail to create module: %v", err)
 		}
 		mainAccept = true
 	}

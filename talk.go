@@ -77,14 +77,11 @@ func talkDialog() error {
 		dlgText := lang.AllText(dialogsLangPath, phase.ID())[0]
 		fmt.Printf("[%s]:%s\n", d.Owner().Name(), dlgText)
 		// Phase modifiers.
-		for _, mod := range phase.OwnerModifiers() {
-			if owner, ok := d.Owner().(effect.Target); ok {
-				mod.Affect(owner, owner)
-			}
+		if owner, ok := d.Owner().(effect.Target); ok {
+			owner.TakeModifiers(activePC, phase.OwnerModifiers()...)
 		}
-		for _, mod := range phase.TalkerModifiers() {
-			owner, _ := d.Owner().(effect.Target)
-			mod.Affect(owner, activePC)
+		if owner, ok := d.Owner().(effect.Target); ok {
+			activePC.TakeModifiers(owner, phase.TalkerModifiers()...)
 		}
 		// Answer.
 		var (
@@ -122,15 +119,11 @@ func talkDialog() error {
 			ans = answers[id]
 			ansText = lang.AllText(dialogsLangPath, ans.ID())[0]
 			// Answer modifiers.
-			for _, mod := range phase.OwnerModifiers() {
-				if owner, ok := d.Owner().(effect.Target); ok {
-					mod.Affect(activePC, owner)
-				}
+			if owner, ok := d.Owner().(effect.Target); ok {
+				owner.TakeModifiers(activePC, ans.OwnerModifiers()...)
 			}
-			for _, mod := range ans.TalkerModifiers() {
-				if owner, ok := d.Owner().(effect.Target); ok {
-					mod.Affect(activePC, owner)
-				}
+			if owner, ok := d.Owner().(effect.Target); ok {
+				activePC.TakeModifiers(owner, ans.TalkerModifiers()...)
 			}
 		}
 		fmt.Printf("[%s]:%s\n", activePC.Name(), ansText)

@@ -39,7 +39,7 @@ import (
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data"
-	"github.com/isangeles/flame/core/module/object/character"
+	"github.com/isangeles/flame/core/module/character"
 
 	"github.com/isangeles/burn"
 	"github.com/isangeles/burn/ash"

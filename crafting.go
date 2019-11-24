@@ -31,8 +31,8 @@ import (
 
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/craft"
-	"github.com/isangeles/flame/core/module/object/character"
 )
 
 // craftingDialog starts CLI dialog for

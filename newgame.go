@@ -32,7 +32,7 @@ import (
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data/text/lang"
-	"github.com/isangeles/flame/core/module/object/character"
+	"github.com/isangeles/flame/core/module/character"
 )
 
 var (

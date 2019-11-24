@@ -32,8 +32,8 @@ import (
 
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core/data/text/lang"
+	char "github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/item"
-	char "github.com/isangeles/flame/core/module/object/character"
 )
 
 // tradeDialog starts CLI dialog for trade with

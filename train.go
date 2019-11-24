@@ -31,9 +31,9 @@ import (
 
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core/data/text/lang"
-	char "github.com/isangeles/flame/core/module/object/character"
-	"github.com/isangeles/flame/core/module/train"
+	char "github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/req"
+	"github.com/isangeles/flame/core/module/train"
 )
 
 // tradeDialog starts CLI dialog for train

@@ -35,12 +35,13 @@ import (
 	"github.com/isangeles/flame/core/data/text/lang"
 	"github.com/isangeles/flame/core/module"
 	"github.com/isangeles/flame/core/module/character"
+	"github.com/isangeles/flame/core/module/skill"
 
 	flameconf "github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
-// startNewCharacterDialog starts CLI dialog to create new playable
+// newCharacterDialog starts CLI dialog to create new playable
 // game character.
 func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 	if flame.Mod() == nil {
@@ -86,7 +87,8 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		}
 		// Summary.
 		charID := fmt.Sprintf("player_%s", name)
-		charData := res.CharacterBasicData{
+		charData := res.CharacterData{}
+		charData.BasicData = res.CharacterBasicData{
 			ID:        charID,
 			Name:      name,
 			Level:     1,
@@ -301,16 +303,17 @@ func charNameValid(name string) bool {
 }
 
 // buildCharacter creates new character from specified data.
-func buildCharacter(mod *module.Module, charData *res.CharacterBasicData) *character.Character {
+func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.Character {
 	char := character.New(*charData)
 	// Add player skills & items from interface config.
 	for _, sid := range flameconf.NewCharSkills() {
-		s, err := data.Skill(sid)
-		if err != nil {
-			log.Err.Printf("new_char_dialog:fail_to_retrieve_new_player_skill:%v",
-				err)
+		sd := res.Skill(sid)
+		if sd == nil {
+			log.Err.Printf("new char dialog: fail to retrieve new player skill data: %s",
+				sid)
 			break
 		}
+		s := skill.New(*sd)
 		char.AddSkill(s)
 	}
 	for _, iid := range flameconf.NewCharItems() {

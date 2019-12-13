@@ -30,11 +30,11 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame"
-	"github.com/isangeles/flame/core/data"
 	"github.com/isangeles/flame/core/data/res"
 	"github.com/isangeles/flame/core/data/text/lang"
 	"github.com/isangeles/flame/core/module"
 	"github.com/isangeles/flame/core/module/character"
+	"github.com/isangeles/flame/core/module/item"
 	"github.com/isangeles/flame/core/module/skill"
 
 	flameconf "github.com/isangeles/burnsh/config"
@@ -317,12 +317,13 @@ func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.
 		char.AddSkill(s)
 	}
 	for _, iid := range flameconf.NewCharItems() {
-		i, err := data.Item(iid)
-		if err != nil {
-			log.Err.Printf("new_char_dialog:fail_to_retireve_new_player_items:%v",
-				err)
+		id := res.Item(iid)
+		if id == nil {
+			log.Err.Printf("new char dialog: fail to retireve new player item data: %s",
+				iid)
 			continue
 		}
+		i := item.New(id)
 		char.Inventory().AddItem(i)
 	}
 	return char

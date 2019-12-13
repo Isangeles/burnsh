@@ -182,8 +182,7 @@ func execute(input string) {
 		activePC = game.Players()[0]
 		lastUpdate = time.Now()
 	case ImportCharsCmd:
-		chars, err := data.ImportCharactersDir(flame.Mod(),
-			flame.Mod().Conf().CharactersPath())
+		chars, err := data.ImportCharactersDir(flame.Mod().Conf().CharactersPath())
 		if err != nil {
 			log.Err.Printf("%s:%v", ImportCharsCmd, err)
 			break

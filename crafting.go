@@ -107,7 +107,7 @@ func craftingDialog() error {
 // game character.
 func recipeDialog(c *character.Character) (*craft.Recipe, error) {
 	langPath := flameconf.LangPath()
-	recipes := c.Recipes()
+	recipes := c.Crafting().Recipes()
 	if len(recipes) < 1 {
 		msg := lang.TextDir(langPath, "crafting_no_recipes_err")
 		return nil, fmt.Errorf(msg)

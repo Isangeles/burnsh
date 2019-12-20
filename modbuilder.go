@@ -135,7 +135,7 @@ func createChapter(path, id string) error {
 	if err != nil {
 		return fmt.Errorf("fail to create areas dir: %v", err)
 	}
-	ad := res.ModuleAreaData{ID: "area1_main"}
+	ad := res.AreaData{ID: "area1_main"}
 	xmlArea, err := parsexml.MarshalArea(&ad)
 	if err != nil {
 		return fmt.Errorf("fail to marshal start area: %v", err)

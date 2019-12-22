@@ -30,7 +30,7 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame"
-	flameconfig "github.com/isangeles/flame/config"
+	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data"
 	"github.com/isangeles/flame/core/data/text/lang"
@@ -43,7 +43,7 @@ func loadGameDialog() (*core.Game, error) {
 		return nil, fmt.Errorf("no module loaded")
 	}
 	savePattern := fmt.Sprintf(".*%s", data.SavegameFileExt)
-	saves, err := data.DirFilesNames(config.ModuleSavegamesPath(), savePattern)
+	saves, err := data.DirFilesNames(flameconf.ModuleSavegamesPath(), savePattern)
 	if err != nil {
 		return nil, fmt.Errorf("fail to retrieve save files: %v")
 	}
@@ -68,7 +68,7 @@ func loadGameDialog() (*core.Game, error) {
 		}
 		accept = true
 	}
-	game, err := data.ImportGame(flame.Mod(), config.ModuleSavegamesPath(), savename)
+	game, err := data.ImportGame(flame.Mod(), flameconf.ModuleSavegamesPath(), savename)
 	if err != nil {
 		return nil, fmt.Errorf("fail to load saved game: %v", err)
 	}

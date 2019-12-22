@@ -30,7 +30,7 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame"
-	"github.com/isangeles/flame/config"
+	flameconfig "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data"
 	"github.com/isangeles/flame/core/data/text/lang"
@@ -68,9 +68,10 @@ func loadGameDialog() (*core.Game, error) {
 		}
 		accept = true
 	}
-	game, err := flame.LoadGame(savename)
+	game, err := data.ImportGame(flame.Mod(), config.ModuleSavegamesPath(), savename)
 	if err != nil {
 		return nil, fmt.Errorf("fail to load saved game: %v", err)
 	}
+	flame.SetGame(game)
 	return game, nil
 }

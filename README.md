@@ -14,6 +14,10 @@ Build shell:
 ```
   go build github.com/isangeles/burnsh
 ```
+Copy `data` directrory from `res` to directory with `burnsh` executable(it contains default translation files for UI):
+```
+  cp -r ~/go/src/github.com/isangeles/burnsh/res/data .
+```
 Run shell:
 ```
   ./burnsh
@@ -126,9 +130,10 @@ Use '&' suffix to run script in background.
 ## Contributing
 You are welcome to contribute to project development.
 
-If you looking for things to do, then check TODO file.
+If you looking for things to do, then check TODO file or contact me(dev@isangeles.pl).
 
-When you finish, open pull request to merge your changes with main branch.
+When you find something to do, create new branch for your feature.
+After you finish, open pull request to merge your changes with master branch.
 
 ## Contact
 * Isangeles <<dev@isangeles.pl>>

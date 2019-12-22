@@ -14,7 +14,7 @@ Build shell:
 ```
   go build github.com/isangeles/burnsh
 ```
-Copy `data` directrory from `res` to directory with `burnsh` executable(it contains default translation files for UI):
+Copy `data` directory from `res` to directory with `burnsh` executable(it contains default translation files for UI):
 ```
   cp -r ~/go/src/github.com/isangeles/burnsh/res/data .
 ```

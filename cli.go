@@ -32,6 +32,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -255,8 +256,8 @@ func execute(input string) {
 
 // executeFile executes script from data/scripts dir.
 func executeFile(bgrun bool, fileName string, args ...string) {
-	path := fmt.Sprintf("%s/%s%s", config.ScriptsPath(),
-		fileName, ash.SCRIPT_FILE_EXT)
+	path := fmt.Sprintf("%s/%s.ash", config.ScriptsPath(),
+		fileName)
 	file, err := os.Open(path)
 	if err != nil {
 		log.Err.Printf("fail_to_open_file:%v", err)
@@ -267,7 +268,8 @@ func executeFile(bgrun bool, fileName string, args ...string) {
 		log.Err.Printf("fail_to_read_file:%v", err)
 		return
 	}
-	scr, err := ash.NewScript(fmt.Sprintf("%s", text), args...)
+	scriptName := filepath.Base(path)
+	scr, err := ash.NewScript(scriptName, fmt.Sprintf("%s", text), args...)
 	if err != nil {
 		log.Err.Printf("fail_to_parse_script:%v", err)
 		return

@@ -1,7 +1,7 @@
 /*
  * cli.go
  *
- * Copyright 2018-2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,17 +87,22 @@ func init() {
 	// Load flame config.
 	err := flameconf.LoadConfig()
 	if err != nil {
-		log.Err.Printf("fail_to_load_flame_config:%v", err)
+		log.Err.Printf("fail to load flame config: %v", err)
 	}
+	// Load UI translation.
+	err = data.LoadTranslationData(flameconf.LangPath())
 	// Load module.
 	err = loadModule(flameconf.ModulePath(), flameconf.LangID())
 	if err != nil {
-		log.Err.Printf("fail_to_load_module:%v", err)
+		log.Err.Printf("fail to load ui translation data: %v", err)
+	}
+	if err != nil {
+		log.Err.Printf("fail to load module: %v", err)
 	}
 	// Load CLI config.
 	err = config.LoadConfig()
 	if err != nil {
-		log.Err.Printf("fail_to_load_config:%v", err)
+		log.Err.Printf("fail to load config: %v", err)
 	}
 }
 
@@ -133,7 +138,7 @@ func main() {
 		}
 	}
 	if err := scan.Err(); err != nil {
-		log.Err.Printf("input_scanner_init_fail_msg:%v\n", err)
+		log.Err.Printf("input scanner init fail : %v\n", err)
 	}
 }
 
@@ -143,12 +148,12 @@ func execute(input string) {
 	case CloseCmd:
 		err := flameconf.SaveConfig()
 		if err != nil {
-			log.Err.Printf("engine_config_save_fail:%v",
+			log.Err.Printf("engine config save fail: %v",
 				err)
 		}
 		err = config.SaveConfig()
 		if err != nil {
-			log.Err.Printf("config_save_fail:%v", err)
+			log.Err.Printf("config save fail: %v", err)
 		}
 		os.Exit(0)
 	case NewCharCmd:
@@ -188,7 +193,7 @@ func execute(input string) {
 			log.Err.Printf("%s:%v", ImportCharsCmd, err)
 			break
 		}
-		log.Inf.Printf("imported_chars:%d\n", len(chars))
+		log.Inf.Printf("imported chars: %d\n", len(chars))
 		for _, c := range chars {
 			playableChars = append(playableChars, c)
 		}
@@ -247,10 +252,10 @@ func execute(input string) {
 	default: // pass command to CI
 		exp, err := syntax.NewSTDExpression(input)
 		if err != nil {
-			log.Err.Printf("command_build_error:%v", err)
+			log.Err.Printf("command build error: %v", err)
 		}
 		res, out := burn.HandleExpression(exp)
-		log.Inf.Printf("burn[%d]:%s\n", res, out)
+		log.Inf.Printf("burn[%d]: %s\n", res, out)
 	}
 }
 
@@ -260,18 +265,18 @@ func executeFile(bgrun bool, fileName string, args ...string) {
 		fileName)
 	file, err := os.Open(path)
 	if err != nil {
-		log.Err.Printf("fail_to_open_file:%v", err)
+		log.Err.Printf("fail to open file: %v", err)
 		return
 	}
 	text, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Err.Printf("fail_to_read_file:%v", err)
+		log.Err.Printf("fail to read file: %v", err)
 		return
 	}
 	scriptName := filepath.Base(path)
 	scr, err := ash.NewScript(scriptName, fmt.Sprintf("%s", text), args...)
 	if err != nil {
-		log.Err.Printf("fail_to_parse_script:%v", err)
+		log.Err.Printf("fail to parse script: %v", err)
 		return
 	}
 	if bgrun {
@@ -285,7 +290,7 @@ func executeFile(bgrun bool, fileName string, args ...string) {
 func runScript(s *ash.Script) {
 	err := ash.Run(s)
 	if err != nil {
-		log.Err.Printf("script_run_fail:%v", err)
+		log.Err.Printf("script run fail: %v", err)
 		return
 	}
 }
@@ -306,12 +311,12 @@ func gameLoop(g *core.Game) {
 func loadModule(path, langID string) error {
 	m, err := data.Module(flameconf.ModulePath(), flameconf.LangID())
 	if err != nil {
-		return fmt.Errorf("fail_to_dir:%v", err)
+		return fmt.Errorf("fail to dir: %v", err)
 	}
 	// Load module data.
 	err = data.LoadModuleData(m)
 	if err != nil {
-		return fmt.Errorf("fail_to_load_data:%v", err)
+		return fmt.Errorf("fail to load data: %v", err)
 	}
 	flame.SetModule(m)
 	return nil

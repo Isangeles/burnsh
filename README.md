@@ -14,7 +14,7 @@ Build shell:
 ```
   go build github.com/isangeles/burnsh
 ```
-Copy `data` directory from `res` to directory with `burnsh` executable(it contains default translation files for UI):
+Copy `data` directory from `res` to directory with `burnsh` executable(it contains default translation files for UI), for example:
 ```
   cp -r ~/go/src/github.com/isangeles/burnsh/res/data .
 ```
@@ -139,7 +139,7 @@ After you finish, open pull request to merge your changes with master branch.
 * Isangeles <<dev@isangeles.pl>>
 
 ## License
-Copyright 2018-2019 Dariusz Sikora <<dev@isangeles.pl>>
+Copyright 2018-2020 Dariusz Sikora <<dev@isangeles.pl>>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -1,7 +1,7 @@
 /*
  * useskill.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,21 +29,19 @@ import (
 	"os"
 	"strconv"
 
-	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/skill"
 )
 
 // useSkillDialog starts CLI dialog for
 // using skills.
 func useSkillDialog() error {
-	langPath := flameconf.LangPath()
 	if activePC == nil {
-		msg := lang.TextDir(langPath, "no_pc_err")
+		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
 	// List skills.
-	fmt.Printf("%s:\n", lang.TextDir(langPath, "useskill_skills"))
+	fmt.Printf("%s:\n", lang.Text("useskill_skills"))
 	skills := activePC.Skills()
 	for i, s := range skills {
 		fmt.Printf("[%d]%s\n", i, s.Name())
@@ -52,16 +50,16 @@ func useSkillDialog() error {
 	scan := bufio.NewScanner(os.Stdin)
 	var skill *skill.Skill
 	for skill == nil {
-		fmt.Printf("%s:", lang.TextDir(langPath, "useskill_select"))
+		fmt.Printf("%s:", lang.Text("useskill_select"))
 		scan.Scan()
 		input := scan.Text()
 		id, err := strconv.Atoi(input)
 		if err != nil {
-			fmt.Printf("%s:%s\n", lang.TextDir(langPath, "nan_err"), input)
+			fmt.Printf("%s:%s\n", lang.Text("nan_err"), input)
 			continue
 		}
 		if id < 0 || id > len(skills)-1 {
-			fmt.Printf("%s:%s\n", lang.TextDir(langPath, "invalid_input_err"), input)
+			fmt.Printf("%s:%s\n", lang.Text("invalid_input_err"), input)
 			continue
 		}
 		skill = skills[id]

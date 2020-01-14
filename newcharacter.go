@@ -1,7 +1,7 @@
 /*
  * newcharacter.go
  *
- * Copyright 2018-2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,13 +31,13 @@ import (
 
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/core/data/res"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module"
 	"github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/item"
 	"github.com/isangeles/flame/core/module/skill"
 
-	flameconf "github.com/isangeles/burnsh/config"
+	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -52,19 +52,19 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		race     character.Race
 		sex      character.Gender
 		attrs    character.Attributes
-		attrsPts = flameconf.NewCharAttrs()
+		attrsPts = config.NewCharAttrs()
 		c        *character.Character
 	)
 	// Character creation dialog
 	scan := bufio.NewScanner(os.Stdin)
 	for mainAccept := false; !mainAccept; {
 		// Name
-		fmt.Printf("%s:", lang.Text("ui", "cli_newchar_name"))
+		fmt.Printf("%s:", lang.Text("cli_newchar_name"))
 		for scan.Scan() {
 			name = scan.Text()
 			if !charNameValid(name) {
-				fmt.Printf("%s\n", lang.Text("ui", "cli_newchar_invalid_name_err"))
-				fmt.Printf("%s:", lang.Text("ui", "cli_newchar_name"))
+				fmt.Printf("%s\n", lang.Text("cli_newchar_invalid_name_err"))
+				fmt.Printf("%s:", lang.Text("cli_newchar_name"))
 				continue
 			}
 			break
@@ -76,9 +76,8 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		// Attributes.
 		for accept := false; !accept; {
 			attrs = newAttributesDialog(attrsPts)
-			fmt.Printf("%s: %s\n",
-				lang.Text("ui", "cli_newchar_attrs_summary"), attrs)
-			fmt.Printf("%s:", lang.Text("ui", "cli_accept_dialog"))
+			fmt.Printf("%s: %s\n", lang.Text("cli_newchar_attrs_summary"), attrs)
+			fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 			scan.Scan()
 			input := scan.Text()
 			if input != "r" {
@@ -103,9 +102,9 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			Wis:       attrs.Wis,
 		}
 		c = buildCharacter(mod, &charData)
-		fmt.Printf("%s: %s\n", lang.Text("ui", "cli_newchar_summary"),
+		fmt.Printf("%s: %s\n", lang.Text("cli_newchar_summary"),
 			charDisplayString(c))
-		fmt.Printf("%s:", lang.Text("ui", "cli_accept_dialog"))
+		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 		scan.Scan()
 		input := scan.Text()
 		if input != "r" {
@@ -119,9 +118,12 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 // Returns character race.
 func raceDialog() character.Race {
 	scan := bufio.NewScanner(os.Stdin)
-	fmt.Printf("%s:", lang.Text("ui", "cli_newchar_race"))
-	racesNames := lang.Texts("ui", "race_human", "race_elf", "race_dwarf",
-		"race_gnome")
+	fmt.Printf("%s:", lang.Text("cli_newchar_race"))
+	racesNames := make([]string, 4)
+	racesNames[0] = lang.Text("race_human")
+	racesNames[1] = lang.Text("race_elf")
+	racesNames[2] = lang.Text("race_dwarf")
+	racesNames[3] = lang.Text("race_gnome")
 	s := make([]interface{}, 0)
 	for _, v := range racesNames {
 		s = append(s, v)
@@ -140,7 +142,7 @@ func raceDialog() character.Race {
 		case "4":
 			return character.Gnome
 		default:
-			fmt.Printf("%s:%s\n", lang.Text("ui", "cli_newchar_invalid_value_err"),
+			fmt.Printf("%s:%s\n", lang.Text("cli_newchar_invalid_value_err"),
 				input)
 		}
 	}
@@ -151,8 +153,10 @@ func raceDialog() character.Race {
 // Returns character gender.
 func genderDialog() character.Gender {
 	scan := bufio.NewScanner(os.Stdin)
-	fmt.Printf("%s:", lang.Text("ui", "cli_newchar_gender"))
-	genderNames := lang.Texts("ui", "gender_male", "gender_female")
+	fmt.Printf("%s:", lang.Text("cli_newchar_gender"))
+	genderNames := make([]string, 2)
+	genderNames[0] = lang.Text("gender_male")
+	genderNames[1] = lang.Text("gender_female")
 	s := make([]interface{}, 0)
 	for _, v := range genderNames {
 		s = append(s, v)
@@ -167,7 +171,7 @@ func genderDialog() character.Gender {
 		case "2":
 			return character.Female
 		default:
-			fmt.Printf("%s:%s\n", lang.Text("ui", "cli_newchar_invalid_value_err"),
+			fmt.Printf("%s:%s\n", lang.Text("cli_newchar_invalid_value_err"),
 				input)
 		}
 	}
@@ -178,107 +182,100 @@ func genderDialog() character.Gender {
 // Returns character attributes.
 func newAttributesDialog(attrsPoints int) (attrs character.Attributes) {
 	scan := bufio.NewScanner(os.Stdin)
-	fmt.Printf("%s:\n", lang.Text("ui", "cli_newchar_attrs"))
+	fmt.Printf("%s:\n", lang.Text("cli_newchar_attrs"))
 	for attrsPoints > 0 {
 		// Strenght.
 		for true {
-			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("ui", "attr_str"),
-				lang.Text("ui", "cli_newchar_value"), attrs.Str,
-				lang.Text("ui", "cli_newchar_points"), attrsPoints)
+			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("attr_str"),
+				lang.Text("cli_newchar_value"), attrs.Str,
+				lang.Text("cli_newchar_points"), attrsPoints)
 			scan.Scan()
 			input := scan.Text()
 			attr, err := strconv.Atoi(input)
 			if err != nil {
 				fmt.Printf("%s:%s\n",
-					lang.Text("ui", "cli_newchar_nan_error"), input)
+					lang.Text("cli_newchar_nan_error"), input)
 			} else {
 				if attrsPoints-attr >= 0 {
 					attrs.Str += attr
 					attrsPoints -= attr
 					break
 				} else {
-					fmt.Printf("%s\n",
-						lang.Text("ui", "cli_newchar_no_pts_error"))
+					fmt.Printf("%s\n", lang.Text("cli_newchar_no_pts_error"))
 				}
 			}
 		}
 		// Constitution.
 		for true {
-			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("ui", "attr_con"),
-				lang.Text("ui", "cli_newchar_value"), attrs.Con,
-				lang.Text("ui", "cli_newchar_points"), attrsPoints)
+			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("attr_con"),
+				lang.Text("cli_newchar_value"), attrs.Con,
+				lang.Text("cli_newchar_points"), attrsPoints)
 			scan.Scan()
 			input := scan.Text()
 			attr, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n",
-					lang.Text("ui", "cli_newchar_nan_error"), input)
+				fmt.Printf("%s:%s\n", lang.Text("cli_newchar_nan_error"), input)
 			} else {
 				if attrsPoints-attr >= 0 {
 					attrs.Con += attr
 					attrsPoints -= attr
 					break
 				} else {
-					fmt.Printf("%s\n",
-						lang.Text("ui", "cli_newchar_no_pts_error"))
+					fmt.Printf("%s\n", lang.Text("cli_newchar_no_pts_error"))
 				}
 			}
 
 		}
 		// Dexterity.
 		for true {
-			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("ui", "attr_dex"),
-				lang.Text("ui", "cli_newchar_value"), attrs.Dex,
-				lang.Text("ui", "cli_newchar_points"), attrsPoints)
+			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("attr_dex"),
+				lang.Text("cli_newchar_value"), attrs.Dex,
+				lang.Text("cli_newchar_points"), attrsPoints)
 			scan.Scan()
 			input := scan.Text()
 			attr, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n",
-					lang.Text("ui", "cli_newchar_nan_error"), input)
+				fmt.Printf("%s:%s\n", lang.Text("cli_newchar_nan_error"), input)
 			} else {
 				if attrsPoints-attr >= 0 {
 					attrs.Dex += attr
 					attrsPoints -= attr
 					break
 				} else {
-					fmt.Printf("%s\n",
-						lang.Text("ui", "cli_newchar_no_pts_error"))
+					fmt.Printf("%s\n", lang.Text("cli_newchar_no_pts_error"))
 				}
 			}
 		}
 		// Wisdom.
 		for true {
-			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("ui", "attr_wis"),
-				lang.Text("ui", "cli_newchar_value"), attrs.Wis,
-				lang.Text("ui", "cli_newchar_points"), attrsPoints)
+			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("attr_wis"),
+				lang.Text("cli_newchar_value"), attrs.Wis,
+				lang.Text("cli_newchar_points"), attrsPoints)
 			scan.Scan()
 			input := scan.Text()
 			attr, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n",
-					lang.Text("ui", "cli_newchar_nan_error"), input)
+				fmt.Printf("%s:%s\n", lang.Text("cli_newchar_nan_error"), input)
 			} else {
 				if attrsPoints-attr >= 0 {
 					attrs.Wis += attr
 					attrsPoints -= attr
 					break
 				} else {
-					fmt.Printf("%s\n",
-						lang.Text("ui", "cli_newchar_no_pts_error"))
+					fmt.Printf("%s\n", lang.Text("cli_newchar_no_pts_error"))
 				}
 			}
 		}
 		// Inteligence.
 		for true {
-			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("ui", "attr_int"),
-				lang.Text("ui", "cli_newchar_value"), attrs.Int,
-				lang.Text("ui", "cli_newchar_points"), attrsPoints)
+			fmt.Printf("%s[%s = %d, %s = %d]+", lang.Text("attr_int"),
+				lang.Text("cli_newchar_value"), attrs.Int,
+				lang.Text("cli_newchar_points"), attrsPoints)
 			scan.Scan()
 			input := scan.Text()
 			attr, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n", lang.Text("ui", "cli_newchar_nan_error"),
+				fmt.Printf("%s:%s\n", lang.Text("cli_newchar_nan_error"),
 					input)
 			} else {
 				if attrsPoints-attr >= 0 {
@@ -287,7 +284,7 @@ func newAttributesDialog(attrsPoints int) (attrs character.Attributes) {
 					break
 				} else {
 					fmt.Printf("%s\n",
-						lang.Text("ui", "cli_newchar_no_pts_error"))
+						lang.Text("cli_newchar_no_pts_error"))
 				}
 			}
 		}
@@ -306,7 +303,7 @@ func charNameValid(name string) bool {
 func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.Character {
 	char := character.New(*charData)
 	// Add player skills & items from interface config.
-	for _, sid := range flameconf.NewCharSkills() {
+	for _, sid := range config.NewCharSkills() {
 		sd := res.Skill(sid)
 		if sd == nil {
 			log.Err.Printf("new char dialog: fail to retrieve new player skill data: %s",
@@ -316,7 +313,7 @@ func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.
 		s := skill.New(*sd)
 		char.AddSkill(s)
 	}
-	for _, iid := range flameconf.NewCharItems() {
+	for _, iid := range config.NewCharItems() {
 		id := res.Item(iid)
 		if id == nil {
 			log.Err.Printf("new char dialog: fail to retireve new player item data: %s",

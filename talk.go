@@ -1,7 +1,7 @@
 /*
  * talk.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@ import (
 	"os"
 	"strconv"
 
-	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/dialog"
 	"github.com/isangeles/flame/core/module/effect"
@@ -39,18 +38,17 @@ import (
 // talkDialog starts CLI dialog for dialog with
 // current target of active PC.
 func talkDialog() error {
-	langPath := flameconf.LangPath()
 	if game == nil {
-		msg := lang.TextDir(langPath, "no_game_err")
+		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}
 	if activePC == nil {
-		msg := lang.TextDir(langPath, "no_pc_err")
+		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
 	tar := activePC.Targets()[0]
 	if tar == nil {
-		msg := lang.TextDir(langPath, "no_tar_err")
+		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
 	}
 	tarChar, ok := tar.(*character.Character)
@@ -61,20 +59,18 @@ func talkDialog() error {
 		return fmt.Errorf("no_target_dialogs")
 	}
 	d := tarChar.Dialogs()[0]
-	mod := game.Module()
-	dialogsLangPath := mod.Chapter().Conf().DialogsLangPath()
 	scan := bufio.NewScanner(os.Stdin)
 	d.Restart()
 	// Dialog.
 	for {
-		fmt.Printf("%s:\n", lang.TextDir(langPath, "talk_dialog"))
+		fmt.Printf("%s:\n", lang.Text("talk_dialog"))
 		// Dialog phase.
 		phase := dialogPhase(d.Phases(), activePC)
 		if phase == nil {
-			return fmt.Errorf(lang.TextDir(langPath, "talk_no_phase_err"))
+			return fmt.Errorf(lang.Text("talk_no_phase_err"))
 		}
 		// Dialog phase text.
-		dlgText := lang.AllText(dialogsLangPath, phase.ID())[0]
+		dlgText := lang.Text(phase.ID())
 		fmt.Printf("[%s]:%s\n", d.Owner().Name(), dlgText)
 		// Phase modifiers.
 		if owner, ok := d.Owner().(effect.Target); ok {
@@ -98,26 +94,26 @@ func talkDialog() error {
 				answers = append(answers, a)
 			}
 			// Print answers.
-			fmt.Printf("%s:\n", lang.TextDir(langPath, "talk_answers"))
+			fmt.Printf("%s:\n", lang.Text("talk_answers"))
 			for i, a := range answers {
-				ansText = lang.AllText(dialogsLangPath, a.ID())[0]
+				ansText = lang.Text(a.ID())
 				fmt.Printf("[%d]%s\n", i, ansText)
 			}
 			// Select answer.
-			fmt.Printf("%s:", lang.TextDir(langPath, "talk_answers_select"))
+			fmt.Printf("%s:", lang.Text("talk_answers_select"))
 			scan.Scan()
 			input := scan.Text()
 			id, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n", lang.TextDir(langPath, "nan_err"), input)
+				fmt.Printf("%s:%s\n", lang.Text("nan_err"), input)
 				continue
 			}
 			if id < 0 || id > len(phase.Answers())-1 {
-				fmt.Printf("%s\n", lang.TextDir(langPath, "talk_no_answer_id_err"))
+				fmt.Printf("%s\n", lang.Text("talk_no_answer_id_err"))
 				continue
 			}
 			ans = answers[id]
-			ansText = lang.AllText(dialogsLangPath, ans.ID())[0]
+			ansText = lang.Text(ans.ID())
 			// Answer modifiers.
 			if owner, ok := d.Owner().(effect.Target); ok {
 				owner.TakeModifiers(activePC, ans.OwnerModifiers()...)

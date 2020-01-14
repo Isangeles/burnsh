@@ -1,7 +1,7 @@
 /*
  * target.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@ import (
 	"os"
 	"strconv"
 
-	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/effect"
 )
@@ -39,37 +38,36 @@ import (
 // active player.
 func targetDialog() error {
 	if game == nil {
-		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "no_game_err"))
+		return fmt.Errorf("%s\n", lang.Text("no_game_err"))
 	}
 	mod := game.Module()
 	area := mod.Chapter().CharacterArea(activePC)
 	scan := bufio.NewScanner(os.Stdin)
 	var tar effect.Target
 	for tar == nil {
-		fmt.Printf("%s:\n", lang.TextDir(flameconf.LangPath(), "target_near_targets"))
+		fmt.Printf("%s:\n", lang.Text("target_near_targets"))
 		targets := area.NearTargets(activePC, activePC.SightRange())
 		if len(targets) < 1 {
 			return nil
 		}
 		for i, t := range targets {
-			langPath := game.Module().Chapter().Conf().LangPath()
-			name := lang.TextDir(langPath, t.ID())
+			name := lang.Text(t.ID())
 			if t, ok := t.(*character.Character); ok {
 				name = t.Name()
 			}
 			fmt.Printf("[%d]%s\n", i, name)
 		}
-		fmt.Printf("%s:", lang.TextDir(flameconf.LangPath(), "target_select_target"))
+		fmt.Printf("%s:", lang.Text("target_select_target"))
 		scan.Scan()
 		input := scan.Text()
 		id, err := strconv.Atoi(input)
 		if err != nil {
-			fmt.Printf("%s:%s\n", lang.TextDir(flameconf.LangPath(), "cli_nan_error"),
+			fmt.Printf("%s:%s\n", lang.Text("cli_nan_error"),
 				input)
 			continue
 		}
 		if id < 0 || id > len(targets)-1 {
-			fmt.Printf("%s\n", lang.TextDir(flameconf.LangPath(), "invalid_input_err"))
+			fmt.Printf("%s\n", lang.Text("invalid_input_err"))
 			continue
 		}
 		tar = targets[id]

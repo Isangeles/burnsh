@@ -1,7 +1,7 @@
 /*
  * newmod.go
  *
- * Copyright 2018-2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 )
 
 // newModDialog starts new CLI dialog to
@@ -39,12 +39,12 @@ func newModDialog() error {
 	for !mainAccept {
 		// ID.
 		id := ""
-		fmt.Printf("%s:", lang.Text("cui", "newmod_name"))
+		fmt.Printf("%s:", lang.Text("newmod_name"))
 		for scan.Scan() {
 			id = scan.Text()
 			if !modIDValid(id) {
-				fmt.Printf("%s\n", lang.Text("cui", "newmod_invalid_id_err"))
-				fmt.Printf("%s:", lang.Text("cui", "newmod_name"))
+				fmt.Printf("%s\n", lang.Text("newmod_invalid_id_err"))
+				fmt.Printf("%s:", lang.Text("newmod_name"))
 				continue
 			}
 			break

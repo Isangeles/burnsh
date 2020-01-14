@@ -1,7 +1,7 @@
 /*
  * tarinfo.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,7 @@ package main
 import (
 	"fmt"
 
-	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 )
 
 // Interface for objects with info for
@@ -42,24 +41,24 @@ type InfoTarget interface {
 // about current PC target.
 func targetInfoDialog() error {
 	if activePC == nil {
-		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "no_pc_err"))
+		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
 	}
 	pcTar := activePC.Targets()[0]
 	if pcTar == nil {
-		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "no_tar_err"))
+		return fmt.Errorf("%s\n", lang.Text("no_tar_err"))
 	}
 	tar, ok := pcTar.(InfoTarget)
 	if !ok {
-		return fmt.Errorf("%s\n", lang.TextDir(flameconf.LangPath(), "invalid_tar"))
+		return fmt.Errorf("%s\n", lang.Text("invalid_tar"))
 	}
 	// Name.
-	info := fmt.Sprintf("%s:%s", lang.TextDir(flameconf.LangPath(), "ob_name"),
+	info := fmt.Sprintf("%s:%s", lang.Text("ob_name"),
 		tar.Name())
 	// Health.
-	info += fmt.Sprintf("\n%s:%d", lang.TextDir(flameconf.LangPath(), "ob_health"),
+	info += fmt.Sprintf("\n%s:%d", lang.Text("ob_health"),
 		tar.Health())
 	// Mana.
-	info += fmt.Sprintf("\n%s:%d", lang.TextDir(flameconf.LangPath(), "ob_mana"),
+	info += fmt.Sprintf("\n%s:%d", lang.Text("ob_mana"),
 		tar.Mana())
 	// Print.
 	fmt.Printf("%s\n", info)

@@ -1,7 +1,7 @@
 /*
  * loadgame.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ import (
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 )
 
 // loadGameDialog starts CLI dialog for loading
@@ -50,16 +50,16 @@ func loadGameDialog() (*core.Game, error) {
 	savename := ""
 	scan := bufio.NewScanner(os.Stdin)
 	for accept := false; !accept; {
-		fmt.Printf("%s:\n", lang.Text("ui", "cli_loadgame_saves"))
+		fmt.Printf("%s:\n", lang.Text("cli_loadgame_saves"))
 		for i, s := range saves {
 			fmt.Printf("[%d]%v\n", i, s)
 		}
-		fmt.Printf("%s:", lang.Text("ui", "cli_loadgame_select_save"))
+		fmt.Printf("%s:", lang.Text("cli_loadgame_select_save"))
 		for scan.Scan() {
 			input := scan.Text()
 			id, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n", lang.Text("ui", "cli_nan_error"), input)
+				fmt.Printf("%s:%s\n", lang.Text("cli_nan_error"), input)
 			}
 			if id >= 0 && id < len(saves) {
 				savename = saves[id]

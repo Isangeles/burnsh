@@ -1,7 +1,7 @@
 /*
  * train.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@ import (
 	"os"
 	"strconv"
 
-	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 	char "github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/req"
 	"github.com/isangeles/flame/core/module/train"
@@ -39,28 +38,27 @@ import (
 // tradeDialog starts CLI dialog for train
 // with current PC target.
 func trainDialog() error {
-	langPath := flameconf.LangPath()
 	if game == nil {
-		msg := lang.TextDir(langPath, "no_game_err")
+		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}
 	if activePC == nil {
-		msg := lang.TextDir(langPath, "no_pc_err")
+		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
 	tar := activePC.Targets()[0]
 	if tar == nil {
-		msg := lang.TextDir(langPath, "no_tar_err")
+		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
 	}
 	tarChar, ok := tar.(*char.Character)
 	if !ok {
-		msg := lang.TextDir(langPath, "tar_invalid")
+		msg := lang.Text("tar_invalid")
 		return fmt.Errorf(msg)
 	}
 	t := selectTraining(tarChar.Trainings())
 	if t == nil {
-		msg := lang.TextDir(langPath, "train_no_train_sel")
+		msg := lang.Text("train_no_train_sel")
 		fmt.Printf("%s\n", msg)
 		return nil
 	}
@@ -74,25 +72,24 @@ func trainDialog() error {
 // selectTrainings starts dialog for selecting training from
 // specified trainings.
 func selectTraining(trainings []train.Training) train.Training {
-	langPath := flameconf.LangPath()
 	if len(trainings) < 1 {
-		msg := lang.TextDir(langPath, "train_no_trainings")
+		msg := lang.Text("train_no_trainings")
 		fmt.Printf("%s\n", msg)
 		return nil
 	}
 	var training train.Training
 	for training == nil {
 		// List available trainings.
-		fmt.Printf("%s:\n", lang.TextDir(langPath, "train_trainings"))
+		fmt.Printf("%s:\n", lang.Text("train_trainings"))
 		for i, t := range trainings {
 			fmt.Printf("\t[%d]%s\n", i, trainingInfo(t))
 			// List training reqs.
-			fmt.Printf("\t%s:\n", lang.TextDir(langPath, "train_reqs"))
+			fmt.Printf("\t%s:\n", lang.Text("train_reqs"))
 			for _, r := range t.Reqs() {
 				fmt.Printf("\t%s\n", reqInfo(r))
 			}
 		}
-		fmt.Printf("%s:", lang.TextDir(langPath, "train_select_training"))
+		fmt.Printf("%s:", lang.Text("train_select_training"))
 		// Scan input.
 		scan := bufio.NewScanner(os.Stdin)
 		scan.Scan()
@@ -102,12 +99,11 @@ func selectTraining(trainings []train.Training) train.Training {
 		}
 		id, err := strconv.Atoi(input)
 		if err != nil {
-			fmt.Printf("%s:%v\n", lang.TextDir(langPath, "nan_err"), err)
+			fmt.Printf("%s:%v\n", lang.Text("nan_err"), err)
 			continue
 		}
 		if id < 0 || id > len(trainings)-1 {
-			fmt.Printf("%s:%s\n", lang.TextDir(langPath,
-				"invalid_input_err"), input)
+			fmt.Printf("%s:%s\n", lang.Text("invalid_input_err"), input)
 			continue
 		}
 		training = trainings[id]
@@ -118,31 +114,29 @@ func selectTraining(trainings []train.Training) train.Training {
 // trainingInfo returns information about
 // training do display.
 func trainingInfo(t train.Training) string {
-	langPath := flameconf.LangPath()
 	// Train info.
 	info := ""
 	switch t := t.(type) {
 	case *train.AttrsTraining:
-		info = fmt.Sprintf("%s", lang.TextDir(langPath,
-			"train_attrs_training"))
+		info = fmt.Sprintf("%s", lang.Text("train_attrs_training"))
 		if t.Strenght() > 0 {
-			strLabel := lang.TextDir(langPath, "attr_str")
+			strLabel := lang.Text("attr_str")
 			info = fmt.Sprintf("%s: %s(%d)", info, strLabel, t.Strenght())
 		}
 		if t.Constitution() > 0 {
-			conLabel := lang.TextDir(langPath, "attr_con")
+			conLabel := lang.Text("attr_con")
 			info = fmt.Sprintf("%s: %s(%d)", info, conLabel, t.Constitution())
 		}
 		if t.Dexterity() > 0 {
-			dexLabel := lang.TextDir(langPath, "attr_dex")
+			dexLabel := lang.Text("attr_dex")
 			info = fmt.Sprintf("%s: %s(%d)", info, dexLabel, t.Dexterity())
 		}
 		if t.Wisdom() > 0 {
-			wisLabel := lang.TextDir(langPath, "attr_wis")
+			wisLabel := lang.Text("attr_wis")
 			info = fmt.Sprintf("%s: %s(%d)", info, wisLabel, t.Wisdom())
 		}
 		if t.Intelligence() > 0 {
-			intLabel := lang.TextDir(langPath, "attr_int")
+			intLabel := lang.Text("attr_int")
 			info = fmt.Sprintf("%s: %s(%d)", info, intLabel, t.Intelligence())
 		}
 	default:
@@ -154,15 +148,14 @@ func trainingInfo(t train.Training) string {
 // reqInfo returns information about specified
 // requirement.
 func reqInfo(r req.Requirement) string {
-	langPath := flameconf.LangPath()
 	info := ""
 	switch r := r.(type) {
 	case *req.ItemReq:
-		reqLabel := lang.TextDir(langPath, "req_item")
+		reqLabel := lang.Text("req_item")
 		info = fmt.Sprintf("%s: %s x%d", reqLabel, r.ItemID(),
 			r.ItemAmount())
 	case *req.CurrencyReq:
-		reqLabel := lang.TextDir(langPath, "req_currency")
+		reqLabel := lang.Text("req_currency")
 		info = fmt.Sprintf("%s: %d", reqLabel, r.Amount())
 	default:
 		return "unknown"

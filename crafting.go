@@ -1,7 +1,7 @@
 /*
  * creafting.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@ import (
 	"os"
 	"strconv"
 
-	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/craft"
 )
@@ -38,13 +37,12 @@ import (
 // craftingDialog starts CLI dialog for
 // active PC crafting.
 func craftingDialog() error {
-	langPath := flameconf.LangPath()
 	if game == nil {
-		msg := lang.TextDir(langPath, "no_game_err")
+		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}
 	if activePC == nil {
-		msg := lang.TextDir(langPath, "no_pc_err")
+		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
 	for {
@@ -55,13 +53,13 @@ func craftingDialog() error {
 			break
 		}
 		// Print recipe details.
-		fmt.Printf("%s:\t%s\n", lang.TextDir(langPath, "crafting_recipe"),
+		fmt.Printf("%s:\t%s\n", lang.Text("crafting_recipe"),
 			recipe.ID())
-		fmt.Printf("%s:\t%s\n", lang.TextDir(langPath, "crafting_category"),
+		fmt.Printf("%s:\t%s\n", lang.Text("crafting_category"),
 			recipe.CategoryID())
-		fmt.Printf("%s:\t%s\n", lang.TextDir(langPath, "crafting_reqs"),
+		fmt.Printf("%s:\t%s\n", lang.Text("crafting_reqs"),
 			reqsInfo(recipe.Reqs()...))
-		fmt.Printf("%s:\n", lang.TextDir(langPath, "crafting_result"))
+		fmt.Printf("%s:\n", lang.Text("crafting_result"))
 		for _, r := range recipe.Result() {
 			fmt.Printf("\t%s\tx%d\n", r.ID, r.Amount)
 		}
@@ -69,21 +67,21 @@ func craftingDialog() error {
 		ans := 0
 		for ans == 0 {
 			// Print options.
-			fmt.Printf("[%d]%s\n", 1, lang.TextDir(langPath, "crafting_make"))
-			fmt.Printf("[%d]%s\n", 2, lang.TextDir(langPath, "dialog_back"))
-			fmt.Printf("[%d]%s\n", 3, lang.TextDir(langPath, "dialog_cancel"))
+			fmt.Printf("[%d]%s\n", 1, lang.Text("crafting_make"))
+			fmt.Printf("[%d]%s\n", 2, lang.Text("dialog_back"))
+			fmt.Printf("[%d]%s\n", 3, lang.Text("dialog_cancel"))
 			// Scan input.
 			scan := bufio.NewScanner(os.Stdin)
 			scan.Scan()
 			input := scan.Text()
 			n, err := strconv.Atoi(input)
 			if err != nil {
-				msg := lang.TextDir(langPath, "nan_err")
+				msg := lang.Text("nan_err")
 				fmt.Printf("%s:%v\n", msg, err)
 				continue
 			}
 			if n < 1 || n > 3 {
-				msg := lang.TextDir(langPath, "invalid_input_err")
+				msg := lang.Text("invalid_input_err")
 				fmt.Printf("%s:%s\n", msg, input)
 				continue
 			}
@@ -106,32 +104,31 @@ func craftingDialog() error {
 // recipeDialog starts recipe dialog for specified
 // game character.
 func recipeDialog(c *character.Character) (*craft.Recipe, error) {
-	langPath := flameconf.LangPath()
 	recipes := c.Crafting().Recipes()
 	if len(recipes) < 1 {
-		msg := lang.TextDir(langPath, "crafting_no_recipes_err")
+		msg := lang.Text("crafting_no_recipes_err")
 		return nil, fmt.Errorf(msg)
 	}
 	var recipe *craft.Recipe
 	for recipe == nil {
 		// List recipes.
-		fmt.Printf("%s:\n", lang.TextDir(langPath, "crafting_recipes"))
+		fmt.Printf("%s:\n", lang.Text("crafting_recipes"))
 		for i, r := range recipes {
 			fmt.Printf("[%d]%s\t%s\n", i, r.ID(), r.CategoryID())
 		}
 		// Select ID.
-		fmt.Printf("%s:", lang.TextDir(langPath, "crafting_select_recipe"))
+		fmt.Printf("%s:", lang.Text("crafting_select_recipe"))
 		// Scan input.
 		scan := bufio.NewScanner(os.Stdin)
 		scan.Scan()
 		input := scan.Text()
 		id, err := strconv.Atoi(input)
 		if err != nil {
-			fmt.Printf("%s:%v\n", lang.TextDir(langPath, "nan_err"), input)
+			fmt.Printf("%s:%v\n", lang.Text("nan_err"), input)
 			continue
 		}
 		if id < 0 || id > len(recipes)-1 {
-			fmt.Printf("%s:%s\n", lang.TextDir(langPath, "invalid_input_err"), input)
+			fmt.Printf("%s:%s\n", lang.Text("invalid_input_err"), input)
 			continue
 		}
 		recipe = recipes[id]

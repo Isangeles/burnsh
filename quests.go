@@ -1,7 +1,7 @@
 /*
  * quests.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,7 @@ package main
 import (
 	"fmt"
 
-	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 )
 
 // questsDialog starts quests journal CLI dialog.
@@ -35,24 +34,22 @@ func questsDialog() error {
 	if activePC == nil {
 		return fmt.Errorf("no active PC")
 	}
-	fmt.Printf("%s:\n", lang.TextDir(flameconf.LangPath(), "quests_list"))
-	mod := game.Module()
-	questsLangPath := mod.Chapter().Conf().QuestsLangPath()
+	fmt.Printf("%s:\n", lang.Text("quests_list"))
 	for i, q := range activePC.Journal().Quests() {
-		questInfo := lang.AllText(questsLangPath, q.ID())
+		questInfo := lang.Texts(q.ID())
 		fmt.Printf("[%d]%s\n", i, questInfo[0])
 		if len(questInfo) > 1 {
 			fmt.Printf("\t%s\n", questInfo[1])
 		}
 		if q.Completed() {
-			completeInfo := lang.TextDir(flameconf.LangPath(), "quests_q_completed")
+			completeInfo := lang.Text("quests_q_completed")
 			fmt.Printf("\t%s\n", completeInfo)
 			continue
 		}
 		if q.ActiveStage() == nil {
 			continue
 		}
-		stageInfo := lang.AllText(questsLangPath, q.ActiveStage().ID())
+		stageInfo := lang.Texts(q.ActiveStage().ID())
 		fmt.Printf("\t%s\n", stageInfo[0])
 	}
 	return nil

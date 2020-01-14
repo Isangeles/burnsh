@@ -1,7 +1,7 @@
 /*
  * uiutils.go
  *
- * Copyright 2018 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,7 @@ package main
 import (
 	"fmt"
 
-	flameconf "github.com/isangeles/flame/config"
-
-	"github.com/isangeles/flame/core/data/text/lang"
+	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/req"
 )
@@ -46,18 +44,17 @@ func charDisplayString(char *character.Character) string {
 // reqsInfo returns text with info to display
 // about specified requirements.
 func reqsInfo(reqs ...req.Requirement) string {
-	langPath := flameconf.LangPath()
 	out := ""
 	for _, r := range reqs {
 		switch r := r.(type) {
 		case *req.LevelReq:
-			out = fmt.Sprintf("%s\n%s\t%d", out, lang.TextDir(langPath, "req_level"),
+			out = fmt.Sprintf("%s\n%s\t%d", out, lang.Text("req_level"),
 				r.MinLevel())
 		case *req.ItemReq:
-			out = fmt.Sprintf("%s\n%s:%s\tx%d", out, lang.TextDir(langPath, "req_item"),
+			out = fmt.Sprintf("%s\n%s:%s\tx%d", out, lang.Text("req_item"),
 				r.ItemID(), r.ItemAmount())
 		default:
-			out = fmt.Sprintf("%s\n%s", out, lang.TextDir(langPath, "req_unknown"))
+			out = fmt.Sprintf("%s\n%s", out, lang.Text("req_unknown"))
 		}
 	}
 	return out

@@ -64,20 +64,20 @@ func talkDialog() error {
 	// Dialog.
 	for {
 		fmt.Printf("%s:\n", lang.Text("talk_dialog"))
-		// Dialog phase.
-		phase := dialogPhase(d.Phases(), activePC)
-		if phase == nil {
-			return fmt.Errorf(lang.Text("talk_no_phase_err"))
+		// Dialog stage.
+		stage := dialogStage(d.Stages(), activePC)
+		if stage == nil {
+			return fmt.Errorf(lang.Text("talk_no_stage_err"))
 		}
-		// Dialog phase text.
-		dlgText := lang.Text(phase.ID())
+		// Dialog stage text.
+		dlgText := lang.Text(stage.ID())
 		fmt.Printf("[%s]:%s\n", d.Owner().Name(), dlgText)
 		// Phase modifiers.
 		if owner, ok := d.Owner().(effect.Target); ok {
-			owner.TakeModifiers(activePC, phase.OwnerModifiers()...)
+			owner.TakeModifiers(activePC, stage.OwnerModifiers()...)
 		}
 		if owner, ok := d.Owner().(effect.Target); ok {
-			activePC.TakeModifiers(owner, phase.TalkerModifiers()...)
+			activePC.TakeModifiers(owner, stage.TalkerModifiers()...)
 		}
 		// Answer.
 		var (
@@ -87,7 +87,7 @@ func talkDialog() error {
 		for ans == nil {
 			// Select answers.
 			answers := make([]*dialog.Answer, 0)
-			for _, a := range phase.Answers() {
+			for _, a := range stage.Answers() {
 				if !activePC.MeetReqs(a.Requirements()...) {
 					continue
 				}
@@ -108,7 +108,7 @@ func talkDialog() error {
 				fmt.Printf("%s:%s\n", lang.Text("nan_err"), input)
 				continue
 			}
-			if id < 0 || id > len(phase.Answers())-1 {
+			if id < 0 || id > len(stage.Answers())-1 {
 				fmt.Printf("%s\n", lang.Text("talk_no_answer_id_err"))
 				continue
 			}
@@ -144,12 +144,12 @@ func talkDialog() error {
 	return nil
 }
 
-// dialogPhase selects dialog phase with requirements
+// dialogStage selects dialog stage with requirements
 // met by specified character.
-func dialogPhase(phases []*dialog.Phase, char *character.Character) *dialog.Phase {
-	for _, p := range phases {
-		if char.MeetReqs(p.Requirements()...) {
-			return p
+func dialogStage(stages []*dialog.Stage, char *character.Character) *dialog.Stage {
+	for _, s := range stages {
+		if char.MeetReqs(s.Requirements()...) {
+			return s
 		}
 	}
 	return nil

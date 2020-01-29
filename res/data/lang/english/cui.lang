@@ -39,7 +39,7 @@ dialog_cancel:Cancel
 req_unknown:Unknown
 req_level:Level
 req_item:Item
-talk_no_phase_err:No suitable dialog phase found
+talk_no_stage_err:No suitable dialog stage found
 crafting_no_recipes_err:No recipes known
 crafting_no_recipe_select_err:No recipe selected
 target_no_targets_err:No targets nearby

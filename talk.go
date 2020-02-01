@@ -32,7 +32,6 @@ import (
 	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
 	"github.com/isangeles/flame/core/module/dialog"
-	"github.com/isangeles/flame/core/module/effect"
 )
 
 // talkDialog starts CLI dialog for dialog with
@@ -61,33 +60,22 @@ func talkDialog() error {
 	d := tarChar.Dialogs()[0]
 	scan := bufio.NewScanner(os.Stdin)
 	d.Restart()
+	d.SetTarget(activePC)
 	// Dialog.
 	for {
 		fmt.Printf("%s:\n", lang.Text("talk_dialog"))
 		// Dialog stage.
-		stage := dialogStage(d.Stages(), activePC)
-		if stage == nil {
+		if d.Stage() == nil {
 			return fmt.Errorf(lang.Text("talk_no_stage_err"))
 		}
 		// Dialog stage text.
-		dlgText := lang.Text(stage.ID())
-		fmt.Printf("[%s]:%s\n", d.Owner().Name(), dlgText)
-		// Phase modifiers.
-		if owner, ok := d.Owner().(effect.Target); ok {
-			owner.TakeModifiers(activePC, stage.OwnerModifiers()...)
-		}
-		if owner, ok := d.Owner().(effect.Target); ok {
-			activePC.TakeModifiers(owner, stage.TalkerModifiers()...)
-		}
+		fmt.Printf("[%s]: %s\n", d.Owner().Name(), d.Stage())
 		// Answer.
-		var (
-			ans     *dialog.Answer
-			ansText string
-		)
-		for ans == nil {
+		var answer *dialog.Answer
+		for answer == nil {
 			// Select answers.
 			answers := make([]*dialog.Answer, 0)
-			for _, a := range stage.Answers() {
+			for _, a := range d.Stage().Answers() {
 				if !activePC.MeetReqs(a.Requirements()...) {
 					continue
 				}
@@ -96,8 +84,7 @@ func talkDialog() error {
 			// Print answers.
 			fmt.Printf("%s:\n", lang.Text("talk_answers"))
 			for i, a := range answers {
-				ansText = lang.Text(a.ID())
-				fmt.Printf("[%d]%s\n", i, ansText)
+				fmt.Printf("[%d]%s\n", i, a)
 			}
 			// Select answer.
 			fmt.Printf("%s:", lang.Text("talk_answers_select"))
@@ -105,26 +92,18 @@ func talkDialog() error {
 			input := scan.Text()
 			id, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n", lang.Text("nan_err"), input)
+				fmt.Printf("%s: %s\n", lang.Text("nan_err"), input)
 				continue
 			}
-			if id < 0 || id > len(stage.Answers())-1 {
+			if id < 0 || id > len(d.Stage().Answers())-1 {
 				fmt.Printf("%s\n", lang.Text("talk_no_answer_id_err"))
 				continue
 			}
-			ans = answers[id]
-			ansText = lang.Text(ans.ID())
-			// Answer modifiers.
-			if owner, ok := d.Owner().(effect.Target); ok {
-				owner.TakeModifiers(activePC, ans.OwnerModifiers()...)
-			}
-			if owner, ok := d.Owner().(effect.Target); ok {
-				activePC.TakeModifiers(owner, ans.TalkerModifiers()...)
-			}
+			answer = answers[id]
 		}
-		fmt.Printf("[%s]:%s\n", activePC.Name(), ansText)
+		fmt.Printf("[%s]: %s\n", activePC.Name(), answer)
 		// Dialog progress.
-		d.Next(ans)
+		d.Next(answer)
 		if d.Trading() {
 			err := tradeDialog()
 			if err != nil {
@@ -139,17 +118,6 @@ func talkDialog() error {
 		}
 		if d.Finished() {
 			break
-		}
-	}
-	return nil
-}
-
-// dialogStage selects dialog stage with requirements
-// met by specified character.
-func dialogStage(stages []*dialog.Stage, char *character.Character) *dialog.Stage {
-	for _, s := range stages {
-		if char.MeetReqs(s.Requirements()...) {
-			return s
 		}
 	}
 	return nil

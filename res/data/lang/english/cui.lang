@@ -48,3 +48,25 @@ nan_err:NaN
 no_game_err:No game loaded
 no_pc_err:No active player
 no_tar_err:No target
+loadgame_saves:Saves
+loadgame_select_save:Select save
+savegame_save_name:Enter save name
+cli_newchar_name:Character name
+cli_newchar_race:Character race
+cli_newchar_gender:Character gender
+cli_newchar_attrs:Character attributes
+cli_newchar_attrs_summary:Attributes(strenght, constitution, dexterity, wisdom, intelligence)
+cli_newchar_points:points
+cli_newchar_value:value
+cli_newchar_summary:Character
+cli_newgame_chars:Playable characters
+cli_newgame_select_char:Select character
+cli_newgame_summary:Selected character
+cli_accept_dialog:Accept or reset[A/r]
+cli_newchar_invalid_name_err:Invalid character name
+cli_newchar_invalid_value_err:Invalid value
+cli_newchar_no_pts_error:Not enought attributes points
+cli_newgame_no_chars_err:No playable characters
+cli_newgame_start_err:Fail to start new game
+cli_nan_error:NaN
+cli_no_mod_err:No module loaded

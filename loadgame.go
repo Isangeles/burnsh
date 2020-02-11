@@ -50,16 +50,16 @@ func loadGameDialog() (*core.Game, error) {
 	savename := ""
 	scan := bufio.NewScanner(os.Stdin)
 	for accept := false; !accept; {
-		fmt.Printf("%s:\n", lang.Text("cli_loadgame_saves"))
+		fmt.Printf("%s:\n", lang.Text("loadgame_saves"))
 		for i, s := range saves {
 			fmt.Printf("[%d]%v\n", i, s)
 		}
-		fmt.Printf("%s:", lang.Text("cli_loadgame_select_save"))
+		fmt.Printf("%s:", lang.Text("loadgame_select_save"))
 		for scan.Scan() {
 			input := scan.Text()
 			id, err := strconv.Atoi(input)
 			if err != nil {
-				fmt.Printf("%s:%s\n", lang.Text("cli_nan_error"), input)
+				fmt.Printf("%s:%s\n", lang.Text("nan_err"), input)
 			}
 			if id >= 0 && id < len(saves) {
 				savename = saves[id]

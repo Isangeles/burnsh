@@ -60,6 +60,7 @@ const (
 	NewCharCmd     = "newchar"
 	NewGameCmd     = "newgame"
 	NewModCmd      = "newmod"
+	SaveGameCmd    = "savegame"
 	LoadGameCmd    = "loadgame"
 	ImportCharsCmd = "importchars"
 	LootTargetCmd  = "loot"
@@ -77,6 +78,7 @@ const (
 
 var (
 	game        *core.Game
+	players     []*character.Character
 	activePC    *character.Character
 	lastCommand string
 	lastUpdate  time.Time
@@ -177,6 +179,11 @@ func execute(input string) {
 		if err != nil {
 			log.Err.Printf("%s:%v", NewModCmd, err)
 			break
+		}
+	case SaveGameCmd:
+		err := saveGameDialog()
+		if err != nil {
+			log.Err.Printf("%s: %v", SaveGameCmd, err)
 		}
 	case LoadGameCmd:
 		g, err := loadGameDialog()

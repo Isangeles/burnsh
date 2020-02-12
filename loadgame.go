@@ -25,15 +25,20 @@ package main
 
 import (
 	"bufio"
+	"encoding/xml"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/isangeles/flame"
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core"
-	"github.com/isangeles/flame/core/data"
+	flamedata "github.com/isangeles/flame/core/data"
 	"github.com/isangeles/flame/core/data/res/lang"
+
+	"github.com/isangeles/burnsh/log"
 )
 
 // loadGameDialog starts CLI dialog for loading
@@ -42,10 +47,10 @@ func loadGameDialog() (*core.Game, error) {
 	if flame.Mod() == nil {
 		return nil, fmt.Errorf("no module loaded")
 	}
-	savePattern := fmt.Sprintf(".*%s", data.SavegameFileExt)
-	saves, err := data.DirFilesNames(flameconf.ModuleSavegamesPath(), savePattern)
+	savePattern := fmt.Sprintf(".*%s", flamedata.SavegameFileExt)
+	saves, err := flamedata.DirFilesNames(flameconf.ModuleSavegamesPath(), savePattern)
 	if err != nil {
-		return nil, fmt.Errorf("fail to retrieve save files: %v")
+		return nil, fmt.Errorf("unable to retrieve save files: %v")
 	}
 	savename := ""
 	scan := bufio.NewScanner(os.Stdin)
@@ -68,10 +73,40 @@ func loadGameDialog() (*core.Game, error) {
 		}
 		accept = true
 	}
-	game, err := data.ImportGame(flame.Mod(), flameconf.ModuleSavegamesPath(), savename)
+	// Game.
+	game, err := flamedata.ImportGame(flame.Mod(), flameconf.ModuleSavegamesPath(), savename)
 	if err != nil {
-		return nil, fmt.Errorf("fail to load saved game: %v", err)
+		return nil, fmt.Errorf("unable to load saved game: %v", err)
 	}
 	flame.SetGame(game)
+	// CLI.
+	savename = strings.TrimSuffix(savename, flamedata.SavegameFileExt)
+	cliSavePath := fmt.Sprintf("%s/%s%s", flameconf.ModuleSavegamesPath(), savename, CLISaveExt)
+	cliSave, err := loadCLI(cliSavePath)
+	if err != nil {
+		return nil, fmt.Errorf("unable to load CLI state: %v", err)
+	}
+	for _, pcSave := range cliSave.Players {
+		c := game.Module().Chapter().Character(pcSave.ID, pcSave.Serial)
+		if c == nil {
+			log.Err.Printf("load game: unable to find pc: %s%s", pcSave.ID, pcSave.Serial)
+		}
+		players = append(players, c)
+	}
 	return game, nil
+}
+
+// loadCLI loads CLI save file from specified path.
+func loadCLI(path string) (*CLISave, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("unable to open save file: %v", err)
+	}
+	data, _ := ioutil.ReadAll(file)
+	cliSave := new(CLISave)
+	err = xml.Unmarshal(data, cliSave)
+	if err != nil {
+		return nil, fmt.Errorf("unable to unmarshal xml data: %v", err)
+	}
+	return cliSave, nil
 }

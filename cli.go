@@ -166,13 +166,11 @@ func execute(input string) {
 		}
 		playableChars = append(playableChars, createdChar)
 	case NewGameCmd:
-		g, err := newGameDialog()
+		err := newGameDialog()
 		if err != nil {
 			log.Err.Printf("%s:%v", NewGameCmd, err)
 			break
 		}
-		game = g
-		activePC = game.Players()[0]
 		lastUpdate = time.Now()
 	case NewModCmd:
 		err := newModDialog()
@@ -186,13 +184,11 @@ func execute(input string) {
 			log.Err.Printf("%s: %v", SaveGameCmd, err)
 		}
 	case LoadGameCmd:
-		g, err := loadGameDialog()
+		err := loadGameDialog()
 		if err != nil {
 			log.Err.Printf("%s:%v", LoadGameCmd, err)
 			break
 		}
-		game = g
-		activePC = game.Players()[0]
 		lastUpdate = time.Now()
 	case ImportCharsCmd:
 		chars, err := data.ImportCharactersDir(flame.Mod().Conf().CharactersPath())

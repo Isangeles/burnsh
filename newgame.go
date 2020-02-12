@@ -30,7 +30,6 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame"
-	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
 )
@@ -40,12 +39,12 @@ var (
 )
 
 // newGameDialog starts CLI dialog for new game.
-func newGameDialog() (*core.Game, error) {
+func newGameDialog() error {
 	if flame.Mod() == nil {
-		return nil, fmt.Errorf("no_module_loaded")
+		return fmt.Errorf("no_module_loaded")
 	}
 	if len(playableChars) < 1 {
-		return nil, fmt.Errorf(lang.Text("cli_newgame_no_chars_err"))
+		return fmt.Errorf(lang.Text("cli_newgame_no_chars_err"))
 	}
 	var pc *character.Character
 	scan := bufio.NewScanner(os.Stdin)
@@ -68,7 +67,7 @@ func newGameDialog() (*core.Game, error) {
 			}
 		}
 
-		fmt.Printf("%s:%v\n", lang.Text("cli_newgame_summary"),
+		fmt.Printf("%s: %v\n", lang.Text("cli_newgame_summary"),
 			charDisplayString(pc))
 		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 		scan.Scan()
@@ -80,7 +79,9 @@ func newGameDialog() (*core.Game, error) {
 	players = append(players, pc)
 	g, err := flame.StartGame(players...)
 	if err != nil {
-		return nil, fmt.Errorf("%s:%v", lang.Text("cli_newgame_start_err"), err)
+		return fmt.Errorf("%s: %v", lang.Text("cli_newgame_start_err"), err)
 	}
-	return g, nil
+	game = g
+	activePC = players[0]
+	return nil
 }

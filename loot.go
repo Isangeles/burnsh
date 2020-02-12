@@ -1,7 +1,7 @@
 /*
  * cli.go
  *
- * Copyright 2019 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,15 +36,14 @@ func lootDialog() error {
 	if game == nil {
 		return fmt.Errorf("no game started")
 	}
-	if len(game.Players()) < 1 {
-		return fmt.Errorf("no players")
+	if activePC == nil {
+		return fmt.Errorf("no active player")
 	}
-	pc := game.Players()[0]
-	tar := pc.Targets()[0]
+	tar := activePC.Targets()[0]
 	if tar == nil {
 		return fmt.Errorf("no target")
 	}
-	if tar, ok := tar.(objects.Killable); ok && !tar.Live() {
+	if tar, ok := tar.(objects.Killable); ok && tar.Live() {
 		return fmt.Errorf("tar not lootable")
 	}
 	con, ok := tar.(item.Container)
@@ -55,7 +54,7 @@ func lootDialog() error {
 		if !it.Loot() {
 			continue
 		}
-		pc.Inventory().AddItem(it)
+		activePC.Inventory().AddItem(it)
 		con.Inventory().RemoveItem(it)
 	}
 	return nil

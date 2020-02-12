@@ -34,7 +34,6 @@ import (
 
 	"github.com/isangeles/flame"
 	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/core"
 	flamedata "github.com/isangeles/flame/core/data"
 	"github.com/isangeles/flame/core/data/res/lang"
 
@@ -43,14 +42,14 @@ import (
 
 // loadGameDialog starts CLI dialog for loading
 // saved game.
-func loadGameDialog() (*core.Game, error) {
+func loadGameDialog() error {
 	if flame.Mod() == nil {
-		return nil, fmt.Errorf("no module loaded")
+		return fmt.Errorf("no module loaded")
 	}
 	savePattern := fmt.Sprintf(".*%s", flamedata.SavegameFileExt)
 	saves, err := flamedata.DirFilesNames(flameconf.ModuleSavegamesPath(), savePattern)
 	if err != nil {
-		return nil, fmt.Errorf("unable to retrieve save files: %v")
+		return fmt.Errorf("unable to retrieve save files: %v")
 	}
 	savename := ""
 	scan := bufio.NewScanner(os.Stdin)
@@ -74,17 +73,18 @@ func loadGameDialog() (*core.Game, error) {
 		accept = true
 	}
 	// Game.
-	game, err := flamedata.ImportGame(flame.Mod(), flameconf.ModuleSavegamesPath(), savename)
+	g, err := flamedata.ImportGame(flame.Mod(), flameconf.ModuleSavegamesPath(), savename)
 	if err != nil {
-		return nil, fmt.Errorf("unable to load saved game: %v", err)
+		return fmt.Errorf("unable to load saved game: %v", err)
 	}
+	game = g
 	flame.SetGame(game)
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.SavegameFileExt)
 	cliSavePath := fmt.Sprintf("%s/%s%s", flameconf.ModuleSavegamesPath(), savename, CLISaveExt)
 	cliSave, err := loadCLI(cliSavePath)
 	if err != nil {
-		return nil, fmt.Errorf("unable to load CLI state: %v", err)
+		return fmt.Errorf("unable to load CLI state: %v", err)
 	}
 	for _, pcSave := range cliSave.Players {
 		c := game.Module().Chapter().Character(pcSave.ID, pcSave.Serial)
@@ -93,7 +93,8 @@ func loadGameDialog() (*core.Game, error) {
 		}
 		players = append(players, c)
 	}
-	return game, nil
+	activePC = players[0]
+	return nil
 }
 
 // loadCLI loads CLI save file from specified path.

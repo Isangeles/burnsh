@@ -37,6 +37,8 @@ import (
 	flamedata "github.com/isangeles/flame/core/data"
 	"github.com/isangeles/flame/core/data/res/lang"
 
+	"github.com/isangeles/burn"
+
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -79,6 +81,7 @@ func loadGameDialog() error {
 	}
 	game = g
 	flame.SetGame(game)
+	burn.Game = g
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.SavegameFileExt)
 	cliSavePath := fmt.Sprintf("%s/%s%s", flameconf.ModuleSavegamesPath(), savename, CLISaveExt)

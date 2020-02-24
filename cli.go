@@ -322,5 +322,6 @@ func loadModule(path, langID string) error {
 		return fmt.Errorf("fail to load data: %v", err)
 	}
 	flame.SetModule(m)
+	burn.Module = m
 	return nil
 }

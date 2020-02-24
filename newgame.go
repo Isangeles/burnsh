@@ -32,6 +32,8 @@ import (
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
+
+	"github.com/isangeles/burn"
 )
 
 var (
@@ -82,6 +84,7 @@ func newGameDialog() error {
 		return fmt.Errorf("%s: %v", lang.Text("cli_newgame_start_err"), err)
 	}
 	game = g
+	burn.Game = g
 	activePC = players[0]
 	return nil
 }

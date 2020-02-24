@@ -312,7 +312,7 @@ func gameLoop(g *core.Game) {
 // loadModule loads module with all module data
 // from directory with specified path.
 func loadModule(path, langID string) error {
-	m, err := data.Module(flameconf.ModulePath(), flameconf.LangID())
+	m, err := data.ImportModule(flameconf.ModulePath(), flameconf.LangID())
 	if err != nil {
 		return fmt.Errorf("fail to dir: %v", err)
 	}

@@ -89,22 +89,22 @@ func init() {
 	// Load flame config.
 	err := flameconf.LoadConfig()
 	if err != nil {
-		log.Err.Printf("fail to load flame config: %v", err)
+		log.Err.Printf("unable to load flame config: %v", err)
 	}
 	// Load UI translation.
 	err = data.LoadTranslationData(flameconf.LangPath())
 	// Load module.
-	err = loadModule(flameconf.ModulePath(), flameconf.LangID())
+	err = loadModule(flameconf.ModulePath, flameconf.Lang)
 	if err != nil {
-		log.Err.Printf("fail to load ui translation data: %v", err)
+		log.Err.Printf("unable to load ui translation data: %v", err)
 	}
 	if err != nil {
-		log.Err.Printf("fail to load module: %v", err)
+		log.Err.Printf("unable to load module: %v", err)
 	}
 	// Load CLI config.
 	err = config.LoadConfig()
 	if err != nil {
-		log.Err.Printf("fail to load config: %v", err)
+		log.Err.Printf("unable to load config: %v", err)
 	}
 }
 
@@ -140,7 +140,7 @@ func main() {
 		}
 	}
 	if err := scan.Err(); err != nil {
-		log.Err.Printf("input scanner init fail : %v\n", err)
+		log.Err.Printf("unable to init input scanner : %v\n", err)
 	}
 }
 
@@ -150,12 +150,11 @@ func execute(input string) {
 	case CloseCmd:
 		err := flameconf.SaveConfig()
 		if err != nil {
-			log.Err.Printf("engine config save fail: %v",
-				err)
+			log.Err.Printf("unable to save engine config: %v", err)
 		}
 		err = config.SaveConfig()
 		if err != nil {
-			log.Err.Printf("config save fail: %v", err)
+			log.Err.Printf("unable to save config: %v", err)
 		}
 		os.Exit(0)
 	case NewCharCmd:
@@ -268,18 +267,18 @@ func executeFile(bgrun bool, fileName string, args ...string) {
 		fileName)
 	file, err := os.Open(path)
 	if err != nil {
-		log.Err.Printf("fail to open file: %v", err)
+		log.Err.Printf("unable to open file: %v", err)
 		return
 	}
 	text, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Err.Printf("fail to read file: %v", err)
+		log.Err.Printf("unable to read file: %v", err)
 		return
 	}
 	scriptName := filepath.Base(path)
 	scr, err := ash.NewScript(scriptName, fmt.Sprintf("%s", text), args...)
 	if err != nil {
-		log.Err.Printf("fail to parse script: %v", err)
+		log.Err.Printf("unable to parse script: %v", err)
 		return
 	}
 	if bgrun {
@@ -293,7 +292,7 @@ func executeFile(bgrun bool, fileName string, args ...string) {
 func runScript(s *ash.Script) {
 	err := ash.Run(s)
 	if err != nil {
-		log.Err.Printf("script run fail: %v", err)
+		log.Err.Printf("unable to run script: %v", err)
 		return
 	}
 }
@@ -312,14 +311,14 @@ func gameLoop(g *core.Game) {
 // loadModule loads module with all module data
 // from directory with specified path.
 func loadModule(path, langID string) error {
-	m, err := data.ImportModule(flameconf.ModulePath(), flameconf.LangID())
+	m, err := data.ImportModule(flameconf.ModulePath, flameconf.Lang)
 	if err != nil {
-		return fmt.Errorf("fail to dir: %v", err)
+		return fmt.Errorf("unable to import module: %v", err)
 	}
 	// Load module data.
 	err = data.LoadModuleData(m)
 	if err != nil {
-		return fmt.Errorf("fail to load data: %v", err)
+		return fmt.Errorf("unable to load data: %v", err)
 	}
 	flame.SetModule(m)
 	burn.Module = m

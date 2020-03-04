@@ -40,6 +40,7 @@ import (
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data"
+	"github.com/isangeles/flame/core/module"
 	"github.com/isangeles/flame/core/module/character"
 
 	"github.com/isangeles/burn"
@@ -77,6 +78,7 @@ const (
 )
 
 var (
+	mod         *module.Module
 	game        *core.Game
 	players     []*character.Character
 	activePC    *character.Character
@@ -93,11 +95,11 @@ func init() {
 	}
 	// Load UI translation.
 	err = data.LoadTranslationData(flameconf.LangPath())
-	// Load module.
-	err = loadModule(flameconf.ModulePath, flameconf.Lang)
 	if err != nil {
 		log.Err.Printf("unable to load ui translation data: %v", err)
 	}
+	// Load module.
+	err = loadModule(flameconf.ModulePath, flameconf.Lang)
 	if err != nil {
 		log.Err.Printf("unable to load module: %v", err)
 	}
@@ -158,7 +160,7 @@ func execute(input string) {
 		}
 		os.Exit(0)
 	case NewCharCmd:
-		createdChar, err := newCharacterDialog(flame.Mod())
+		createdChar, err := newCharacterDialog(mod)
 		if err != nil {
 			log.Err.Printf("%s\n", err)
 			break
@@ -167,14 +169,14 @@ func execute(input string) {
 	case NewGameCmd:
 		err := newGameDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", NewGameCmd, err)
+			log.Err.Printf("%s: %v", NewGameCmd, err)
 			break
 		}
 		lastUpdate = time.Now()
 	case NewModCmd:
 		err := newModDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", NewModCmd, err)
+			log.Err.Printf("%s: %v", NewModCmd, err)
 			break
 		}
 	case SaveGameCmd:
@@ -185,12 +187,15 @@ func execute(input string) {
 	case LoadGameCmd:
 		err := loadGameDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", LoadGameCmd, err)
+			log.Err.Printf("%s: %v", LoadGameCmd, err)
 			break
 		}
 		lastUpdate = time.Now()
 	case ImportCharsCmd:
-		chars, err := data.ImportCharactersDir(flame.Mod().Conf().CharactersPath())
+		if mod == nil {
+			log.Err.Printf("%s: no module loaded", ImportCharsCmd)
+		}
+		chars, err := data.ImportCharactersDir(mod.Conf().CharactersPath())
 		if err != nil {
 			log.Err.Printf("%s:%v", ImportCharsCmd, err)
 			break
@@ -202,51 +207,51 @@ func execute(input string) {
 	case LootTargetCmd:
 		err := lootDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", LootTargetCmd, err)
+			log.Err.Printf("%s: %v", LootTargetCmd, err)
 			break
 		}
 	case TalkTargetCmd:
 		err := talkDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", TalkTargetCmd, err)
+			log.Err.Printf("%s: %v", TalkTargetCmd, err)
 			break
 		}
 	case FindTargetCmd:
 		err := targetDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", FindTargetCmd, err)
+			log.Err.Printf("%s: %v", FindTargetCmd, err)
 			break
 		}
 	case TargetInfoCmd:
 		err := targetInfoDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", TargetInfoCmd, err)
+			log.Err.Printf("%s: %v", TargetInfoCmd, err)
 			break
 		}
 	case QuestsCmd:
 		err := questsDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", QuestsCmd, err)
+			log.Err.Printf("%s: %v", QuestsCmd, err)
 		}
 	case UseSkillCmd:
 		err := useSkillDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", UseSkillCmd, err)
+			log.Err.Printf("%s: %v", UseSkillCmd, err)
 		}
 	case CraftingCmd:
 		err := craftingDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", CraftingCmd, err)
+			log.Err.Printf("%s: %v", CraftingCmd, err)
 		}
 	case TradeTargetCmd:
 		err := tradeDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", TradeTargetCmd, err)
+			log.Err.Printf("%s: %v", TradeTargetCmd, err)
 		}
 	case TrainTargetCmd:
 		err := trainDialog()
 		if err != nil {
-			log.Err.Printf("%s:%v", TrainTargetCmd, err)
+			log.Err.Printf("%s: %v", TrainTargetCmd, err)
 		}
 	case RepeatInputCmd:
 		execute(lastCommand)
@@ -321,6 +326,7 @@ func loadModule(path, langID string) error {
 		return fmt.Errorf("unable to load data: %v", err)
 	}
 	flame.SetModule(m)
+	mod = m
 	burn.Module = m
 	return nil
 }

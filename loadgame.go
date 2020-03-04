@@ -32,7 +32,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/isangeles/flame"
 	flameconf "github.com/isangeles/flame/config"
 	flamedata "github.com/isangeles/flame/core/data"
 	"github.com/isangeles/flame/core/data/res/lang"
@@ -45,7 +44,7 @@ import (
 // loadGameDialog starts CLI dialog for loading
 // saved game.
 func loadGameDialog() error {
-	if flame.Mod() == nil {
+	if mod == nil {
 		return fmt.Errorf("no module loaded")
 	}
 	savePattern := fmt.Sprintf(".*%s", flamedata.SavegameFileExt)
@@ -75,12 +74,11 @@ func loadGameDialog() error {
 		accept = true
 	}
 	// Game.
-	g, err := flamedata.ImportGame(flame.Mod(), flameconf.ModuleSavegamesPath(), savename)
+	g, err := flamedata.ImportGame(mod, flameconf.ModuleSavegamesPath(), savename)
 	if err != nil {
 		return fmt.Errorf("unable to load saved game: %v", err)
 	}
 	game = g
-	flame.SetGame(game)
 	burn.Game = g
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.SavegameFileExt)

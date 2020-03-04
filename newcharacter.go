@@ -29,7 +29,6 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/core/data/res"
 	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module"
@@ -44,8 +43,8 @@ import (
 // newCharacterDialog starts CLI dialog to create new playable
 // game character.
 func newCharacterDialog(mod *module.Module) (*character.Character, error) {
-	if flame.Mod() == nil {
-		return nil, fmt.Errorf("no_module_loaded")
+	if mod == nil {
+		return nil, fmt.Errorf("no module loaded")
 	}
 	var (
 		name     string

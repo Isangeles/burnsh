@@ -42,8 +42,8 @@ var (
 
 // newGameDialog starts CLI dialog for new game.
 func newGameDialog() error {
-	if flame.Mod() == nil {
-		return fmt.Errorf("no_module_loaded")
+	if mod == nil {
+		return fmt.Errorf("no module loaded")
 	}
 	if len(playableChars) < 1 {
 		return fmt.Errorf(lang.Text("cli_newgame_no_chars_err"))

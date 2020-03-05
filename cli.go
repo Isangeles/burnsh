@@ -99,7 +99,7 @@ func init() {
 		log.Err.Printf("unable to load ui translation data: %v", err)
 	}
 	// Load module.
-	err = loadModule(flameconf.ModulePath, flameconf.Lang)
+	err = loadModule(flameconf.ModulePath())
 	if err != nil {
 		log.Err.Printf("unable to load module: %v", err)
 	}
@@ -110,9 +110,10 @@ func init() {
 	}
 }
 
+// Main function.
 func main() {
 	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
-		flame.Name, flame.Version)
+		flameconf.Name, flameconf.Version)
 	fmt.Print(InputIndicator)
 	scan := bufio.NewScanner(os.Stdin)
 	for scan.Scan() {
@@ -146,7 +147,7 @@ func main() {
 	}
 }
 
-// execute passes specified command to CI.
+// execute handles specified command or passes it to CI.
 func execute(input string) {
 	switch input {
 	case CloseCmd:
@@ -315,11 +316,12 @@ func gameLoop(g *core.Game) {
 
 // loadModule loads module with all module data
 // from directory with specified path.
-func loadModule(path, langID string) error {
-	m, err := data.ImportModule(flameconf.ModulePath, flameconf.Lang)
+func loadModule(path string) error {
+	m, err := data.ImportModule(flameconf.ModulePath())
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
+	m.Conf().Lang = flameconf.Lang
 	// Load module data.
 	err = data.LoadModuleData(m)
 	if err != nil {

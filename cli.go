@@ -36,7 +36,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/isangeles/flame"
 	flameconf "github.com/isangeles/flame/config"
 	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data"
@@ -321,13 +320,11 @@ func loadModule(path string) error {
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
-	m.Conf().Lang = flameconf.Lang
 	// Load module data.
-	err = data.LoadModuleData(m)
+	err = data.LoadModuleLang(m, flameconf.Lang)
 	if err != nil {
-		return fmt.Errorf("unable to load data: %v", err)
+		return fmt.Errorf("unable to load module translation data: %v", err)
 	}
-	flame.SetModule(m)
 	mod = m
 	burn.Module = m
 	return nil

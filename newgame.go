@@ -29,7 +29,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame"
+	"github.com/isangeles/flame/core"
 	"github.com/isangeles/flame/core/data/res/lang"
 	"github.com/isangeles/flame/core/module/character"
 
@@ -79,12 +79,22 @@ func newGameDialog() error {
 		}
 	}
 	players = append(players, pc)
-	g, err := flame.StartGame(players...)
-	if err != nil {
-		return fmt.Errorf("%s: %v", lang.Text("cli_newgame_start_err"), err)
+	game = core.NewGame(mod)
+	// All players to start area.
+	chapter := mod.Chapter()
+	startArea := chapter.Area(chapter.Conf().StartArea)
+	if startArea == nil {
+		return fmt.Errorf("start area not found: %s",
+			chapter.Conf().StartArea)
 	}
-	game = g
-	burn.Game = g
+	for _, pc := range players {
+		startArea.AddCharacter(pc)
+	}
+	// Set start positions for players.
+	for _, pc := range players {
+		pc.SetPosition(chapter.Conf().StartPosX, chapter.Conf().StartPosY)
+	}
+	burn.Game = game
 	activePC = players[0]
 	return nil
 }

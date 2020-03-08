@@ -28,7 +28,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/isangeles/flame/core/data/res/lang"
+	"github.com/isangeles/flame/data/res/lang"
 )
 
 // newModDialog starts new CLI dialog to

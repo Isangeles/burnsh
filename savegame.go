@@ -31,8 +31,8 @@ import (
 	"path/filepath"
 
 	flameconf "github.com/isangeles/flame/config"
-	flamedata "github.com/isangeles/flame/core/data"
-	"github.com/isangeles/flame/core/data/res/lang"
+	flamedata "github.com/isangeles/flame/data"
+	"github.com/isangeles/flame/data/res/lang"
 
 	"github.com/isangeles/burnsh/log"
 )

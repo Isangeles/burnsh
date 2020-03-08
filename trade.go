@@ -30,9 +30,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/isangeles/flame/core/data/res/lang"
-	char "github.com/isangeles/flame/core/module/character"
-	"github.com/isangeles/flame/core/module/item"
+	"github.com/isangeles/flame/data/res/lang"
+	char "github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/module/item"
 )
 
 // tradeDialog starts CLI dialog for trade with

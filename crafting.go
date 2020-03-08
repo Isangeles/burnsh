@@ -29,9 +29,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/core/data/res/lang"
-	"github.com/isangeles/flame/core/module/character"
-	"github.com/isangeles/flame/core/module/craft"
+	"github.com/isangeles/flame/data/res/lang"
+	"github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/module/craft"
 )
 
 // craftingDialog starts CLI dialog for

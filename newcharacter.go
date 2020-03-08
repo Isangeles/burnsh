@@ -29,12 +29,12 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/core/data/res"
-	"github.com/isangeles/flame/core/data/res/lang"
-	"github.com/isangeles/flame/core/module"
-	"github.com/isangeles/flame/core/module/character"
-	"github.com/isangeles/flame/core/module/item"
-	"github.com/isangeles/flame/core/module/skill"
+	"github.com/isangeles/flame/data/res"
+	"github.com/isangeles/flame/data/res/lang"
+	"github.com/isangeles/flame/module"
+	"github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/module/item"
+	"github.com/isangeles/flame/module/skill"
 
 	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"

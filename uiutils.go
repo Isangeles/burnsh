@@ -26,9 +26,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/isangeles/flame/core/data/res/lang"
-	"github.com/isangeles/flame/core/module/character"
-	"github.com/isangeles/flame/core/module/req"
+	"github.com/isangeles/flame/data/res/lang"
+	"github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/module/req"
 )
 
 // charDisplayString returns string with character

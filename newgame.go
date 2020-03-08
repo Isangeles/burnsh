@@ -29,9 +29,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/core"
-	"github.com/isangeles/flame/core/data/res/lang"
-	"github.com/isangeles/flame/core/module/character"
+	"github.com/isangeles/flame"
+	"github.com/isangeles/flame/data/res/lang"
+	"github.com/isangeles/flame/module/character"
 
 	"github.com/isangeles/burn"
 )
@@ -79,7 +79,7 @@ func newGameDialog() error {
 		}
 	}
 	players = append(players, pc)
-	game = core.NewGame(mod)
+	game = flame.NewGame(mod)
 	// All players to start area.
 	chapter := mod.Chapter()
 	startArea := chapter.Area(chapter.Conf().StartArea)

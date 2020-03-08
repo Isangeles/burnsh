@@ -29,10 +29,10 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/core/data/res/lang"
-	char "github.com/isangeles/flame/core/module/character"
-	"github.com/isangeles/flame/core/module/req"
-	"github.com/isangeles/flame/core/module/train"
+	"github.com/isangeles/flame/data/res/lang"
+	char "github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/module/req"
+	"github.com/isangeles/flame/module/train"
 )
 
 // tradeDialog starts CLI dialog for train

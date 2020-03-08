@@ -29,8 +29,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/core/data/res/lang"
-	"github.com/isangeles/flame/core/module/skill"
+	"github.com/isangeles/flame/data/res/lang"
+	"github.com/isangeles/flame/module/skill"
 )
 
 // useSkillDialog starts CLI dialog for

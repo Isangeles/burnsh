@@ -27,9 +27,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
+	"strconv"
 
-	"github.com/isangeles/flame/data/text"
+	"github.com/isangeles/flame/data/parsetxt"
 
 	"github.com/isangeles/burnsh/log"
 )
@@ -39,94 +39,53 @@ const (
 )
 
 var (
-	restrictMode    = false
-	newCharAttrsPts = 10
-	newCharSkills   []string
-	newCharItems    []string
-	scriptsDir      = "data/scripts"
+	NewCharAttrs  = 10
+	NewCharSkills []string
+	NewCharItems  []string
 )
 
 // LoadConfig Loads CLI config file.
 func LoadConfig() error {
-	// Read config file.
-	values, err := text.ReadValue(ConfigFileName, "restrict-mode",
-		"new-char-attrs", "new-char-skills", "new-char-items")
+	file, err := os.Open(ConfigFileName)
 	if err != nil {
-		return fmt.Errorf("fail_to_read_values:%v", err)
+		return fmt.Errorf("unable to open config file: %v", err)
 	}
-	// Set values.
-	restrictMode = values["restrict_mode"] == "true"
-	for _, sid := range strings.Split(values["new-char-skills"], ";") {
-		newCharSkills = append(newCharSkills, sid)
+	defer file.Close()
+	conf := parsetxt.UnmarshalConfig(file)
+	if len(conf["new-char-attrs"]) > 0 {
+		NewCharAttrs, _ = strconv.Atoi(conf["new-char-attrs"][0])
 	}
-	for _, iid := range strings.Split(values["new-char-items"], ";") {
-		newCharItems = append(newCharItems, iid)
-	}
-	log.Dbg.Println("config file loaded")
+	NewCharSkills = conf["new-char-skills"]
+	NewCharItems = conf["new-char-items"]
+	log.Dbg.Println("Config file loaded")
 	return nil
 }
 
 // SaveConfig Saves current config values in config file.
 func SaveConfig() error {
 	// Create file.
-	f, err := os.Create(ConfigFileName)
+	file, err := os.Create(ConfigFileName)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer file.Close()
+	// Marshal config.
+	conf := make(map[string][]string)
+	conf["new-char-attrs"] = []string{fmt.Sprintf("%d", NewCharAttrs)}
+	conf["new-char-skills"] = NewCharSkills
+	conf["new-char-items"] = NewCharItems
+	confText := parsetxt.MarshalConfig(conf)
 	// Write values.
-	w := bufio.NewWriter(f)
-	w.WriteString(fmt.Sprintf("%s\n", "# Flame CLI configuration file")) // default header
-	w.WriteString(fmt.Sprintf("restrict-mode:%v\n", restrictMode))
-	w.WriteString(fmt.Sprintf("new-char-attrs:%d\n", newCharAttrsPts))
-	w.WriteString("new-char-skills:")
-	for _, sid := range newCharSkills {
-		w.WriteString(sid + ";")
-	}
-	w.WriteString("\n")
-	w.WriteString("new-char-items:")
-	for _, iid := range newCharItems {
-		w.WriteString(iid + ";")
-	}
-	w.WriteString("\n")
+	w := bufio.NewWriter(file)
+	w.WriteString(confText)
 	// Save.
 	w.Flush()
-	log.Dbg.Println("config file saved")
+	log.Dbg.Println("Config file saved")
 	return nil
-}
-
-// NewCharAttrs returns amount of attributes
-// points for new character.
-func NewCharAttrs() int {
-	return newCharAttrsPts
-}
-
-// NewCharSkills returns IDs of skills
-// for new character.
-func NewCharSkills() (ids []string) {
-	for _, id := range newCharSkills {
-		if len(id) < 1 {
-			continue
-		}
-		ids = append(ids, id)
-	}
-	return
-}
-
-// NewCharItems retuns IDs of items
-// for new character.
-func NewCharItems() (ids []string) {
-	for _, id := range newCharItems {
-		if len(id) < 1 {
-			continue
-		}
-		ids = append(ids, id)
-	}
-	return
 }
 
 // ScriptsPath returns path to
 // scripts directory.
 func ScriptsPath() string {
-	return scriptsDir
+	return "data/scripts"
 }

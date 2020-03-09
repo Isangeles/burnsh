@@ -51,7 +51,7 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		race     character.Race
 		sex      character.Gender
 		attrs    character.Attributes
-		attrsPts = config.NewCharAttrs()
+		attrsPts = config.NewCharAttrs
 		c        *character.Character
 	)
 	// Character creation dialog
@@ -302,7 +302,7 @@ func charNameValid(name string) bool {
 func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.Character {
 	char := character.New(*charData)
 	// Add player skills & items from interface config.
-	for _, sid := range config.NewCharSkills() {
+	for _, sid := range config.NewCharSkills {
 		sd := res.Skill(sid)
 		if sd == nil {
 			log.Err.Printf("new char dialog: fail to retrieve new player skill data: %s",
@@ -312,7 +312,7 @@ func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.
 		s := skill.New(*sd)
 		char.AddSkill(s)
 	}
-	for _, iid := range config.NewCharItems() {
+	for _, iid := range config.NewCharItems {
 		id := res.Item(iid)
 		if id == nil {
 			log.Err.Printf("new char dialog: fail to retireve new player item data: %s",

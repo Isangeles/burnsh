@@ -93,7 +93,7 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			Sex:       int(sex),
 			Race:      int(race),
 			Attitude:  int(character.Friendly),
-			Alignment: int(character.True_neutral),
+			Alignment: int(character.TrueNeutral),
 			Str:       attrs.Str,
 			Con:       attrs.Con,
 			Dex:       attrs.Dex,

@@ -46,18 +46,12 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 	if mod == nil {
 		return nil, fmt.Errorf("no module loaded")
 	}
-	var (
-		name     string
-		race     character.Race
-		sex      character.Gender
-		attrs    character.Attributes
-		attrsPts = config.NewCharAttrs
-		c        *character.Character
-	)
 	// Character creation dialog
+	var char *character.Character
 	scan := bufio.NewScanner(os.Stdin)
 	for mainAccept := false; !mainAccept; {
 		// Name
+		name := ""
 		fmt.Printf("%s:", lang.Text("cli_newchar_name"))
 		for scan.Scan() {
 			name = scan.Text()
@@ -69,10 +63,12 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			break
 		}
 		// Race.
-		race = raceDialog()
+		race := raceDialog()
 		// Gender.
-		sex = genderDialog()
+		sex := genderDialog()
 		// Attributes.
+		attrs := character.Attributes{}
+		attrsPts := config.NewCharAttrs
 		for accept := false; !accept; {
 			attrs = newAttributesDialog(attrsPts)
 			fmt.Printf("%s: %s\n", lang.Text("cli_newchar_attrs_summary"), attrs)
@@ -91,7 +87,7 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			Name:      name,
 			Level:     1,
 			Sex:       int(sex),
-			Race:      int(race),
+			Race:      race,
 			Attitude:  int(character.Friendly),
 			Alignment: int(character.TrueNeutral),
 			Str:       attrs.Str,
@@ -100,9 +96,9 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			Int:       attrs.Int,
 			Wis:       attrs.Wis,
 		}
-		c = buildCharacter(mod, &charData)
+		char = buildCharacter(mod, &charData)
 		fmt.Printf("%s: %s\n", lang.Text("cli_newchar_summary"),
-			charDisplayString(c))
+			charDisplayString(char))
 		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 		scan.Scan()
 		input := scan.Text()
@@ -110,42 +106,39 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			mainAccept = true
 		}
 	}
-	return c, nil
+	return char, nil
 }
 
 // raceDialog starts CLI dialog for game character race.
 // Returns character race.
-func raceDialog() character.Race {
+func raceDialog() string {
 	scan := bufio.NewScanner(os.Stdin)
 	fmt.Printf("%s:", lang.Text("cli_newchar_race"))
-	racesNames := make([]string, 4)
-	racesNames[0] = lang.Text("race_human")
-	racesNames[1] = lang.Text("race_elf")
-	racesNames[2] = lang.Text("race_dwarf")
-	racesNames[3] = lang.Text("race_gnome")
-	s := make([]interface{}, 0)
-	for _, v := range racesNames {
-		s = append(s, v)
+	races := make([]res.RaceData, 0)
+	for _, r := range res.Races() {
+		if !r.Playable {
+			continue
+		}
+		races = append(races, *r)
 	}
-	for true {
-		fmt.Printf("[1 - %s, 2 - %s, 3 - %s, 4 - %s]:", s...)
+	race := ""
+	for len(race) < 1 {
+		fmt.Printf("[")
+		for i, r := range races {
+			fmt.Printf("%d - %s ", i, lang.Text(r.ID))
+		}
+		fmt.Printf("]:")
 		scan.Scan()
 		input := scan.Text()
-		switch input {
-		case "1":
-			return character.Human
-		case "2":
-			return character.Elf
-		case "3":
-			return character.Dwarf
-		case "4":
-			return character.Gnome
-		default:
-			fmt.Printf("%s:%s\n", lang.Text("cli_newchar_invalid_value_err"),
+		i, err := strconv.Atoi(input)
+		if err != nil || i < 0 || i > len(races)-1 {
+			fmt.Printf("%s: %s\n", lang.Text("cli_newchar_invalid_value_err"),
 				input)
+			continue
 		}
+		race = races[i].ID
 	}
-	return character.Human
+	return race
 }
 
 // genderDialog starts CLI dialog for game character gender.

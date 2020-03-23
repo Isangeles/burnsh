@@ -86,7 +86,7 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			ID:        charID,
 			Name:      name,
 			Level:     1,
-			Sex:       int(sex),
+			Sex:       string(sex),
 			Race:      race,
 			Attitude:  int(character.Friendly),
 			Alignment: int(character.TrueNeutral),
@@ -163,7 +163,7 @@ func genderDialog() character.Gender {
 		case "2":
 			return character.Female
 		default:
-			fmt.Printf("%s:%s\n", lang.Text("cli_newchar_invalid_value_err"),
+			fmt.Printf("%s: %s\n", lang.Text("cli_newchar_invalid_value_err"),
 				input)
 		}
 	}

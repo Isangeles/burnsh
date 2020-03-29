@@ -88,8 +88,8 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			Level:     1,
 			Sex:       string(sex),
 			Race:      race,
-			Attitude:  int(character.Friendly),
-			Alignment: int(character.TrueNeutral),
+			Attitude:  string(character.Friendly),
+			Alignment: string(character.TrueNeutral),
 			Str:       attrs.Str,
 			Con:       attrs.Con,
 			Dex:       attrs.Dex,
@@ -147,8 +147,8 @@ func genderDialog() character.Gender {
 	scan := bufio.NewScanner(os.Stdin)
 	fmt.Printf("%s:", lang.Text("cli_newchar_gender"))
 	genderNames := make([]string, 2)
-	genderNames[0] = lang.Text("gender_male")
-	genderNames[1] = lang.Text("gender_female")
+	genderNames[0] = lang.Text(string(character.Male))
+	genderNames[1] = lang.Text(string(character.Female))
 	s := make([]interface{}, 0)
 	for _, v := range genderNames {
 		s = append(s, v)

@@ -70,3 +70,15 @@ cli_newgame_no_chars_err:No playable characters
 cli_newgame_start_err:Fail to start new game
 cli_nan_error:NaN
 cli_no_mod_err:No module loaded
+attNeutral:Neutral
+attFriendly:Friendly
+attHostile:Hostile
+aliLawfulGood:Lawful good
+aliNeutralGood:Neutral good
+aliChaoticGood:Chaotic good
+aliLawfulNeutral:Lawful neutral
+aliTrueNeutral:True neutral
+aliChaoticNeutral:Chaotic neutral
+aliLawfulEvil:Lawful evil
+aliNeutralEvil:Neutral evil
+aliChaoticEvil:Chaotic evil

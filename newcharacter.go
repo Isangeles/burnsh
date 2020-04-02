@@ -81,8 +81,7 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		}
 		// Summary.
 		charID := fmt.Sprintf("player_%s", name)
-		charData := res.CharacterData{}
-		charData.BasicData = res.CharacterBasicData{
+		charData := res.CharacterData{
 			ID:        charID,
 			Name:      name,
 			Level:     1,

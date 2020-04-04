@@ -89,11 +89,13 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			Race:      race,
 			Attitude:  string(character.Friendly),
 			Alignment: string(character.TrueNeutral),
-			Str:       attrs.Str,
-			Con:       attrs.Con,
-			Dex:       attrs.Dex,
-			Int:       attrs.Int,
-			Wis:       attrs.Wis,
+		}
+		charData.Attributes = res.AttributesData{
+			Str: attrs.Str,
+			Con: attrs.Con,
+			Dex: attrs.Dex,
+			Int: attrs.Int,
+			Wis: attrs.Wis,
 		}
 		char = buildCharacter(mod, &charData)
 		fmt.Printf("%s: %s\n", lang.Text("cli_newchar_summary"),

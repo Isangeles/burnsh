@@ -83,7 +83,9 @@ func saveGameDialog() error {
 		return fmt.Errorf("unable to save cli: %v", err)
 	}
 	// Game.
-	err = flamedata.ExportGame(game, flameconf.ModuleSavegamesPath(), save.Name)
+	savepath := filepath.Join(flameconf.ModuleSavegamesPath(),
+		save.Name+flamedata.SavegameFileExt)
+	err = flamedata.ExportGame(game, savepath)
 	if err != nil {
 		return fmt.Errorf("unable to export game: %v", err)
 	}

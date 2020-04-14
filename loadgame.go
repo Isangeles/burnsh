@@ -29,6 +29,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -74,7 +75,8 @@ func loadGameDialog() error {
 		accept = true
 	}
 	// Game.
-	g, err := flamedata.ImportGame(mod, flameconf.ModuleSavegamesPath(), savename)
+	savepath := filepath.Join(flameconf.ModuleSavegamesPath(), savename)
+	g, err := flamedata.ImportGame(mod, savepath)
 	if err != nil {
 		return fmt.Errorf("unable to load saved game: %v", err)
 	}

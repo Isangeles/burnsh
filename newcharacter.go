@@ -120,7 +120,7 @@ func raceDialog() string {
 		if !r.Playable {
 			continue
 		}
-		races = append(races, *r)
+		races = append(races, r)
 	}
 	race := ""
 	for len(race) < 1 {

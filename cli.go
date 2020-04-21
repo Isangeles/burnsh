@@ -88,7 +88,7 @@ var (
 // On init.
 func init() {
 	// Load flame config.
-	err := flameconf.LoadConfig()
+	err := flameconf.Load()
 	if err != nil {
 		log.Err.Printf("unable to load flame config: %v", err)
 	}
@@ -150,7 +150,7 @@ func main() {
 func execute(input string) {
 	switch input {
 	case CloseCmd:
-		err := flameconf.SaveConfig()
+		err := flameconf.Save()
 		if err != nil {
 			log.Err.Printf("unable to save engine config: %v", err)
 		}

@@ -29,7 +29,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/data/parsetxt"
+	"github.com/isangeles/flame/data/text"
 
 	"github.com/isangeles/burnsh/log"
 )
@@ -51,7 +51,10 @@ func LoadConfig() error {
 		return fmt.Errorf("unable to open config file: %v", err)
 	}
 	defer file.Close()
-	conf := parsetxt.UnmarshalConfig(file)
+	conf, err := text.UnmarshalConfig(file)
+	if err != nil {
+		return fmt.Errorf("unable to unmarshal config file: %v", err)
+	}
 	if len(conf["new-char-attrs"]) > 0 {
 		NewCharAttrs, _ = strconv.Atoi(conf["new-char-attrs"][0])
 	}
@@ -74,7 +77,7 @@ func SaveConfig() error {
 	conf["new-char-attrs"] = []string{fmt.Sprintf("%d", NewCharAttrs)}
 	conf["new-char-skills"] = NewCharSkills
 	conf["new-char-items"] = NewCharItems
-	confText := parsetxt.MarshalConfig(conf)
+	confText := text.MarshalConfig(conf)
 	// Write values.
 	w := bufio.NewWriter(file)
 	w.WriteString(confText)

@@ -44,8 +44,8 @@ var (
 	NewCharItems  []string
 )
 
-// LoadConfig Loads CLI config file.
-func LoadConfig() error {
+// Load loads CLI config file.
+func Load() error {
 	file, err := os.Open(ConfigFileName)
 	if err != nil {
 		return fmt.Errorf("unable to open config file: %v", err)
@@ -64,8 +64,8 @@ func LoadConfig() error {
 	return nil
 }
 
-// SaveConfig Saves current config values in config file.
-func SaveConfig() error {
+// Save saves current config values in config file.
+func Save() error {
 	// Create file.
 	file, err := os.Create(ConfigFileName)
 	if err != nil {

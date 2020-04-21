@@ -103,7 +103,7 @@ func init() {
 		log.Err.Printf("unable to load module: %v", err)
 	}
 	// Load CLI config.
-	err = config.LoadConfig()
+	err = config.Load()
 	if err != nil {
 		log.Err.Printf("unable to load config: %v", err)
 	}
@@ -154,7 +154,7 @@ func execute(input string) {
 		if err != nil {
 			log.Err.Printf("unable to save engine config: %v", err)
 		}
-		err = config.SaveConfig()
+		err = config.Save()
 		if err != nil {
 			log.Err.Printf("unable to save config: %v", err)
 		}

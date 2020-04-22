@@ -195,13 +195,14 @@ func execute(input string) {
 		if mod == nil {
 			log.Err.Printf("%s: no module loaded", ImportCharsCmd)
 		}
-		chars, err := data.ImportCharactersDir(mod.Conf().CharactersPath())
+		chars, err := data.ImportCharactersDataDir(mod.Conf().CharactersPath())
 		if err != nil {
 			log.Err.Printf("%s:%v", ImportCharsCmd, err)
 			break
 		}
 		log.Inf.Printf("imported chars: %d\n", len(chars))
-		for _, c := range chars {
+		for _, cd := range chars {
+			c := character.New(cd)
 			playableChars = append(playableChars, c)
 		}
 	case LootTargetCmd:

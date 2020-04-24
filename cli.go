@@ -195,7 +195,7 @@ func execute(input string) {
 		if mod == nil {
 			log.Err.Printf("%s: no module loaded", ImportCharsCmd)
 		}
-		chars, err := data.ImportCharactersDataDir(mod.Conf().CharactersPath())
+		chars, err := data.ImportCharactersDir(mod.Conf().CharactersPath())
 		if err != nil {
 			log.Err.Printf("%s:%v", ImportCharsCmd, err)
 			break

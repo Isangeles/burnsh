@@ -36,7 +36,6 @@ import (
 	"github.com/isangeles/flame/module/item"
 	"github.com/isangeles/flame/module/skill"
 
-	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -68,7 +67,7 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		sex := genderDialog()
 		// Attributes.
 		attrs := character.Attributes{}
-		attrsPts := config.NewCharAttrs
+		attrsPts := mod.Chapter().Conf().StartAttrs
 		for accept := false; !accept; {
 			attrs = newAttributesDialog(attrsPts)
 			fmt.Printf("%s: %s\n", lang.Text("cli_newchar_attrs_summary"), attrs)
@@ -296,7 +295,7 @@ func charNameValid(name string) bool {
 func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.Character {
 	char := character.New(*charData)
 	// Add player skills & items from interface config.
-	for _, sid := range config.NewCharSkills {
+	for _, sid := range mod.Chapter().Conf().StartSkills {
 		sd := res.Skill(sid)
 		if sd == nil {
 			log.Err.Printf("new char dialog: fail to retrieve new player skill data: %s",
@@ -306,7 +305,7 @@ func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.
 		s := skill.New(*sd)
 		char.AddSkill(s)
 	}
-	for _, iid := range config.NewCharItems {
+	for _, iid := range mod.Chapter().Conf().StartItems {
 		id := res.Item(iid)
 		if id == nil {
 			log.Err.Printf("new char dialog: fail to retireve new player item data: %s",

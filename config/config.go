@@ -27,7 +27,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/isangeles/flame/data/text"
 
@@ -38,12 +37,6 @@ const (
 	ConfigFileName = ".burnsh"
 )
 
-var (
-	NewCharAttrs  = 10
-	NewCharSkills []string
-	NewCharItems  []string
-)
-
 // Load loads CLI config file.
 func Load() error {
 	file, err := os.Open(ConfigFileName)
@@ -51,15 +44,10 @@ func Load() error {
 		return fmt.Errorf("unable to open config file: %v", err)
 	}
 	defer file.Close()
-	conf, err := text.UnmarshalConfig(file)
+	_, err = text.UnmarshalConfig(file)
 	if err != nil {
 		return fmt.Errorf("unable to unmarshal config file: %v", err)
 	}
-	if len(conf["new-char-attrs"]) > 0 {
-		NewCharAttrs, _ = strconv.Atoi(conf["new-char-attrs"][0])
-	}
-	NewCharSkills = conf["new-char-skills"]
-	NewCharItems = conf["new-char-items"]
 	log.Dbg.Println("Config file loaded")
 	return nil
 }
@@ -74,9 +62,6 @@ func Save() error {
 	defer file.Close()
 	// Marshal config.
 	conf := make(map[string][]string)
-	conf["new-char-attrs"] = []string{fmt.Sprintf("%d", NewCharAttrs)}
-	conf["new-char-skills"] = NewCharSkills
-	conf["new-char-items"] = NewCharItems
 	confText := text.MarshalConfig(conf)
 	// Write values.
 	w := bufio.NewWriter(file)

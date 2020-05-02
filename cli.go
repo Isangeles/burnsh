@@ -321,7 +321,7 @@ func loadModule(path string) error {
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
-	mod := module.New(modData)
+	mod = module.New(modData)
 	// Load module data.
 	err = data.LoadModuleLang(mod, flameconf.Lang)
 	if err != nil {

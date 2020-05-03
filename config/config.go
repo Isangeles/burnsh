@@ -21,12 +21,14 @@
  *
  */
 
+// Package with CLI configuration values.
 package config
 
 import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/isangeles/flame/data/text"
 
@@ -37,22 +39,37 @@ const (
 	ConfigFileName = ".burnsh"
 )
 
-// Load loads CLI config file.
+var (
+	Module = ""
+	Lang   = "english"
+	Debug  = false
+)
+
+// Load loads the CLI config file.
 func Load() error {
 	file, err := os.Open(ConfigFileName)
 	if err != nil {
 		return fmt.Errorf("unable to open config file: %v", err)
 	}
 	defer file.Close()
-	_, err = text.UnmarshalConfig(file)
+	conf, err := text.UnmarshalConfig(file)
 	if err != nil {
 		return fmt.Errorf("unable to unmarshal config file: %v", err)
+	}
+	if len(conf["module"]) > 0 {
+		Module = conf["module"][0]
+	}
+	if len(conf["lang"]) > 0 {
+		Lang = conf["lang"][0]
+	}
+	if len(conf["debug"]) > 0 {
+		Debug = conf["debug"][0] == "true"
 	}
 	log.Dbg.Println("Config file loaded")
 	return nil
 }
 
-// Save saves current config values in config file.
+// Save saves current config values in the config file.
 func Save() error {
 	// Create file.
 	file, err := os.Create(ConfigFileName)
@@ -62,8 +79,11 @@ func Save() error {
 	defer file.Close()
 	// Marshal config.
 	conf := make(map[string][]string)
+	conf["module"] = []string{Module}
+	conf["lang"] = []string{Lang}
+	conf["debug"] = []string{fmt.Sprintf("%v", Debug)}
 	confText := text.MarshalConfig(conf)
-	// Write values.
+	// Write to file.
 	w := bufio.NewWriter(file)
 	w.WriteString(confText)
 	// Save.
@@ -72,8 +92,17 @@ func Save() error {
 	return nil
 }
 
-// ScriptsPath returns path to
-// scripts directory.
+// ModulePath returns path to the directory of current module.
+func ModulePath() string {
+	return filepath.Join("data/modules", Module)
+}
+
+// LangPath returns path to the CLI lang directory.
+func LangPath() string {
+	return filepath.Join("data/lang", Lang)
+}
+
+// ScriptsPath returns path to the scripts directory.
 func ScriptsPath() string {
-	return "data/scripts"
+	return filepath.FromSlash("data/scripts")
 }

@@ -87,25 +87,20 @@ var (
 
 // On init.
 func init() {
-	// Load flame config.
-	err := flameconf.Load()
+	// Load CLI config.
+	err := config.Load()
 	if err != nil {
-		log.Err.Printf("unable to load flame config: %v", err)
+		log.Err.Printf("unable to load config: %v", err)
 	}
 	// Load UI translation.
-	err = data.LoadTranslationData(flameconf.LangPath())
+	err = data.LoadTranslationData(config.LangPath())
 	if err != nil {
 		log.Err.Printf("unable to load ui translation data: %v", err)
 	}
 	// Load module.
-	err = loadModule(flameconf.ModulePath())
+	err = loadModule(config.ModulePath())
 	if err != nil {
 		log.Err.Printf("unable to load module: %v", err)
-	}
-	// Load CLI config.
-	err = config.Load()
-	if err != nil {
-		log.Err.Printf("unable to load config: %v", err)
 	}
 }
 
@@ -150,11 +145,7 @@ func main() {
 func execute(input string) {
 	switch input {
 	case CloseCmd:
-		err := flameconf.Save()
-		if err != nil {
-			log.Err.Printf("unable to save engine config: %v", err)
-		}
-		err = config.Save()
+		err := config.Save()
 		if err != nil {
 			log.Err.Printf("unable to save config: %v", err)
 		}
@@ -317,13 +308,13 @@ func gameLoop(g *flame.Game) {
 // loadModule loads module with all module data
 // from directory with specified path.
 func loadModule(path string) error {
-	modData, err := data.ImportModule(flameconf.ModulePath())
+	modData, err := data.ImportModule(config.ModulePath())
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
 	mod = module.New(modData)
 	// Load module data.
-	err = data.LoadModuleLang(mod, flameconf.Lang)
+	err = data.LoadModuleLang(mod, config.Lang)
 	if err != nil {
 		return fmt.Errorf("unable to load module translation data: %v", err)
 	}

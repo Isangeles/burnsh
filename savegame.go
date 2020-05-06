@@ -30,7 +30,6 @@ import (
 	"os"
 	"path/filepath"
 
-	flameconf "github.com/isangeles/flame/config"
 	flamedata "github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/data/res/lang"
 
@@ -38,7 +37,8 @@ import (
 )
 
 var (
-	CLISaveExt = ".savecli"
+	SaveExt         = ".savecli"
+	ModuleSavesPath = "ui/burnsh/saves"
 )
 
 // Struct for CLI save node.
@@ -78,12 +78,13 @@ func saveGameDialog() error {
 		}
 		save.Players = append(save.Players, pcSave)
 	}
-	err := saveCLI(save, flameconf.ModuleSavegamesPath())
+	cliSavepath := filepath.Join(mod.Conf().Path, ModuleSavesPath)
+	err := saveCLI(save, cliSavepath)
 	if err != nil {
 		return fmt.Errorf("unable to save cli: %v", err)
 	}
 	// Game.
-	savepath := filepath.Join(flameconf.ModuleSavegamesPath(),
+	savepath := filepath.Join(mod.Conf().SavesPath(),
 		save.Name+flamedata.SavegameFileExt)
 	err = flamedata.ExportGame(game, savepath)
 	if err != nil {
@@ -99,11 +100,15 @@ func saveCLI(save *CLISave, path string) error {
 		return fmt.Errorf("unable to marshal save: %v", err)
 	}
 	xml := string(out[:])
-	savePath := fmt.Sprintf("%s/%s%s", path, save.Name, CLISaveExt)
+	savePath := fmt.Sprintf("%s/%s%s", path, save.Name, SaveExt)
 	savePath = filepath.FromSlash(savePath)
+	err = os.MkdirAll(filepath.Dir(savePath), 0755)
+	if err != nil {
+		return fmt.Errorf("unable to create save directory: %v", err)
+	}
 	file, err := os.Create(savePath)
 	if err != nil {
-		return fmt.Errorf("unable to create cli save file: %v", err)
+		return fmt.Errorf("unable to create save file: %v", err)
 	}
 	defer file.Close()
 	w := bufio.NewWriter(file)

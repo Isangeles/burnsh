@@ -115,7 +115,7 @@ func raceDialog() string {
 	scan := bufio.NewScanner(os.Stdin)
 	fmt.Printf("%s:", lang.Text("cli_newchar_race"))
 	races := make([]res.RaceData, 0)
-	for _, r := range res.Races() {
+	for _, r := range res.Races {
 		if !r.Playable {
 			continue
 		}

@@ -50,10 +50,7 @@ func lootDialog() error {
 	if !ok {
 		return fmt.Errorf("target have no inventory")
 	}
-	for _, it := range con.Inventory().Items() {
-		if !it.Loot() {
-			continue
-		}
+	for _, it := range con.Inventory().LootItems() {
 		activePC.Inventory().AddItem(it)
 		con.Inventory().RemoveItem(it)
 	}

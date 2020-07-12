@@ -47,10 +47,10 @@ func reqsInfo(reqs ...req.Requirement) string {
 	out := ""
 	for _, r := range reqs {
 		switch r := r.(type) {
-		case *req.LevelReq:
+		case *req.Level:
 			out = fmt.Sprintf("%s\n%s\t%d", out, lang.Text("req_level"),
 				r.MinLevel())
-		case *req.ItemReq:
+		case *req.Item:
 			out = fmt.Sprintf("%s\n%s:%s\tx%d", out, lang.Text("req_item"),
 				r.ItemID(), r.ItemAmount())
 		default:

@@ -64,6 +64,6 @@ func useSkillDialog() error {
 		}
 		skill = skills[id]
 	}
-	activePC.UseSkill(skill)
+	activePC.Use(skill)
 	return nil
 }

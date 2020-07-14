@@ -32,6 +32,7 @@ import (
 	"github.com/isangeles/flame/data/res/lang"
 	"github.com/isangeles/flame/module/character"
 	"github.com/isangeles/flame/module/craft"
+	"github.com/isangeles/flame/module/effect"
 )
 
 // craftingDialog starts CLI dialog for
@@ -56,12 +57,15 @@ func craftingDialog() error {
 		fmt.Printf("%s:\t%s\n", lang.Text("crafting_recipe"),
 			recipe.ID())
 		fmt.Printf("%s:\t%s\n", lang.Text("crafting_category"),
-			recipe.CategoryID())
+			recipe.Category())
 		fmt.Printf("%s:\t%s\n", lang.Text("crafting_reqs"),
-			reqsInfo(recipe.Reqs()...))
+			reqsInfo(recipe.UseAction().Requirements()...))
 		fmt.Printf("%s:\n", lang.Text("crafting_result"))
-		for _, r := range recipe.Result() {
-			fmt.Printf("\t%s\tx%d\n", r.ID, r.Amount)
+		for _, m := range recipe.UseAction().UserMods() {
+			m, ok := m.(*effect.AddItemMod)
+			if ok {
+				fmt.Printf("\t%s\tx%d\n", m.ItemID(), m.Amount())
+			}
 		}
 		// Recipe options.
 		ans := 0
@@ -94,7 +98,7 @@ func craftingDialog() error {
 			break
 		}
 		if ans == 1 {
-			activePC.Craft(recipe)
+			activePC.Use(recipe)
 			break
 		}
 	}
@@ -114,7 +118,7 @@ func recipeDialog(c *character.Character) (*craft.Recipe, error) {
 		// List recipes.
 		fmt.Printf("%s:\n", lang.Text("crafting_recipes"))
 		for i, r := range recipes {
-			fmt.Printf("[%d]%s\t%s\n", i, r.ID(), r.CategoryID())
+			fmt.Printf("[%d]%s\t%s\n", i, r.ID(), r.Category())
 		}
 		// Select ID.
 		fmt.Printf("%s:", lang.Text("crafting_select_recipe"))

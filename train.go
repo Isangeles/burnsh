@@ -32,7 +32,7 @@ import (
 	"github.com/isangeles/flame/data/res/lang"
 	char "github.com/isangeles/flame/module/character"
 	"github.com/isangeles/flame/module/req"
-	"github.com/isangeles/flame/module/train"
+	"github.com/isangeles/flame/module/training"
 )
 
 // tradeDialog starts CLI dialog for train
@@ -62,30 +62,27 @@ func trainDialog() error {
 		fmt.Printf("%s\n", msg)
 		return nil
 	}
-	err := activePC.Train(t)
-	if err != nil {
-		return err
-	}
+	activePC.Use(t)
 	return nil
 }
 
 // selectTrainings starts dialog for selecting training from
 // specified trainings.
-func selectTraining(trainings []train.Training) train.Training {
+func selectTraining(trainings []*training.TrainerTraining) *training.TrainerTraining {
 	if len(trainings) < 1 {
 		msg := lang.Text("train_no_trainings")
 		fmt.Printf("%s\n", msg)
 		return nil
 	}
-	var training train.Training
+	var training *training.TrainerTraining
 	for training == nil {
 		// List available trainings.
 		fmt.Printf("%s:\n", lang.Text("train_trainings"))
 		for i, t := range trainings {
-			fmt.Printf("\t[%d]%s\n", i, trainingInfo(t))
+			fmt.Printf("\t[%d]%s\n", i, t.Name())
 			// List training reqs.
 			fmt.Printf("\t%s:\n", lang.Text("train_reqs"))
-			for _, r := range t.Reqs() {
+			for _, r := range t.Requirements() {
 				fmt.Printf("\t%s\n", reqInfo(r))
 			}
 		}
@@ -109,40 +106,6 @@ func selectTraining(trainings []train.Training) train.Training {
 		training = trainings[id]
 	}
 	return training
-}
-
-// trainingInfo returns information about
-// training do display.
-func trainingInfo(t train.Training) string {
-	// Train info.
-	info := ""
-	switch t := t.(type) {
-	case *train.AttrsTraining:
-		info = fmt.Sprintf("%s", lang.Text("train_attrs_training"))
-		if t.Strenght() > 0 {
-			strLabel := lang.Text("attr_str")
-			info = fmt.Sprintf("%s: %s(%d)", info, strLabel, t.Strenght())
-		}
-		if t.Constitution() > 0 {
-			conLabel := lang.Text("attr_con")
-			info = fmt.Sprintf("%s: %s(%d)", info, conLabel, t.Constitution())
-		}
-		if t.Dexterity() > 0 {
-			dexLabel := lang.Text("attr_dex")
-			info = fmt.Sprintf("%s: %s(%d)", info, dexLabel, t.Dexterity())
-		}
-		if t.Wisdom() > 0 {
-			wisLabel := lang.Text("attr_wis")
-			info = fmt.Sprintf("%s: %s(%d)", info, wisLabel, t.Wisdom())
-		}
-		if t.Intelligence() > 0 {
-			intLabel := lang.Text("attr_int")
-			info = fmt.Sprintf("%s: %s(%d)", info, intLabel, t.Intelligence())
-		}
-	default:
-		info = fmt.Sprintf("%s%s", info, "unknown")
-	}
-	return info
 }
 
 // reqInfo returns information about specified

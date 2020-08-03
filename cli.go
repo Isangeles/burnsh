@@ -126,7 +126,7 @@ func main() {
 			}
 			executeFile(bgrun, scrArgs[0], scrArgs...)
 		} else if activePC != nil {
-			activePC.SendChat(input)
+			activePC.ChatLog().Add(input)
 		} else {
 			log.Inf.Println(input)
 		}

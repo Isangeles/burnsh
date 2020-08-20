@@ -38,7 +38,6 @@ import (
 
 	"github.com/isangeles/burn"
 
-	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -76,7 +75,7 @@ func loadGameDialog() error {
 	}
 	// Game.
 	savepath := filepath.Join(mod.Conf().SavesPath(), savename)
-	g, err := flamedata.ImportGame(mod, savepath, config.Lang)
+	g, err := flamedata.ImportGame(mod, savepath)
 	if err != nil {
 		return fmt.Errorf("unable to load saved game: %v", err)
 	}

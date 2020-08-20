@@ -308,16 +308,11 @@ func gameLoop(g *flame.Game) {
 // loadModule loads module with all module data
 // from directory with specified path.
 func loadModule(path string) error {
-	modData, err := data.ImportModule(config.ModulePath())
+	modData, err := data.ImportModule(config.ModulePath(), config.Lang)
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
 	mod = module.New(modData)
-	// Load module data.
-	err = data.LoadModuleLang(mod, config.Lang)
-	if err != nil {
-		return fmt.Errorf("unable to load module translation data: %v", err)
-	}
 	burn.Module = mod
 	return nil
 }

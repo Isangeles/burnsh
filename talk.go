@@ -45,11 +45,11 @@ func talkDialog() error {
 		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
-	tar := activePC.Targets()[0]
-	if tar == nil {
+	if len(activePC.Targets()) < 1 {
 		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
 	}
+	tar := activePC.Targets()[0]
 	tarChar, ok := tar.(*character.Character)
 	if !ok {
 		return fmt.Errorf("invalid_target")
@@ -69,7 +69,7 @@ func talkDialog() error {
 			return fmt.Errorf(lang.Text("talk_no_stage_err"))
 		}
 		// Dialog stage text.
-		fmt.Printf("[%s]: %s\n", d.Owner().Name(), d.Stage())
+		fmt.Printf("[%s]: %s\n", d.Owner().Name(), dialogText(d, d.Stage().ID()))
 		// Answer.
 		var answer *dialog.Answer
 		for answer == nil {
@@ -84,7 +84,7 @@ func talkDialog() error {
 			// Print answers.
 			fmt.Printf("%s:\n", lang.Text("talk_answers"))
 			for i, a := range answers {
-				fmt.Printf("[%d]%s\n", i, a)
+				fmt.Printf("[%d]%s\n", i, dialogText(d, a.ID()))
 			}
 			// Select answer.
 			fmt.Printf("%s:", lang.Text("talk_answers_select"))
@@ -101,7 +101,7 @@ func talkDialog() error {
 			}
 			answer = answers[id]
 		}
-		fmt.Printf("[%s]: %s\n", activePC.Name(), answer)
+		fmt.Printf("[%s]: %s\n", activePC.Name(), dialogText(d, answer.ID()))
 		// Dialog progress.
 		d.Next(answer)
 		if d.Trading() {
@@ -121,4 +121,9 @@ func talkDialog() error {
 		}
 	}
 	return nil
+}
+
+// dialogText returns translated text for dialog with specified ID.
+func dialogText(d *dialog.Dialog, textID string) string {
+	return d.DialogText(lang.Text(textID))
 }

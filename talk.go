@@ -69,7 +69,8 @@ func talkDialog() error {
 			return fmt.Errorf(lang.Text("talk_no_stage_err"))
 		}
 		// Dialog stage text.
-		fmt.Printf("[%s]: %s\n", d.Owner().Name(), dialogText(d, d.Stage().ID()))
+		fmt.Printf("[%s]: %s\n", lang.Text(d.Owner().ID()),
+			dialogText(d, d.Stage().ID()))
 		// Answer.
 		var answer *dialog.Answer
 		for answer == nil {
@@ -101,7 +102,8 @@ func talkDialog() error {
 			}
 			answer = answers[id]
 		}
-		fmt.Printf("[%s]: %s\n", activePC.Name(), dialogText(d, answer.ID()))
+		fmt.Printf("[%s]: %s\n", lang.Text(activePC.ID()),
+			dialogText(d, answer.ID()))
 		// Dialog progress.
 		d.Next(answer)
 		if d.Trading() {

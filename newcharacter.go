@@ -47,10 +47,10 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 	}
 	// Character creation dialog
 	var char *character.Character
+	name := ""
 	scan := bufio.NewScanner(os.Stdin)
 	for mainAccept := false; !mainAccept; {
 		// Name
-		name := ""
 		fmt.Printf("%s:", lang.Text("cli_newchar_name"))
 		for scan.Scan() {
 			name = scan.Text()
@@ -82,7 +82,6 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		charID := fmt.Sprintf("player_%s", name)
 		charData := res.CharacterData{
 			ID:        charID,
-			Name:      name,
 			Level:     1,
 			Sex:       string(sex),
 			Race:      race,
@@ -106,6 +105,9 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			mainAccept = true
 		}
 	}
+	// Add translation for new character name.
+	nameTrans := res.TranslationData{char.ID(), []string{name}}
+	res.Translations = append(res.Translations, nameTrans)
 	return char, nil
 }
 

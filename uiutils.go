@@ -35,7 +35,7 @@ import (
 // stats and info.
 func charDisplayString(char *character.Character) string {
 	return fmt.Sprintf("%s:%s,%s,%s:%d,%d,%d,%d,%d",
-		char.Name(), char.Race().ID(), char.Gender(),
+		lang.Text(char.ID()), char.Race().ID(), char.Gender(),
 		"Stats", char.Attributes().Str, char.Attributes().Con,
 		char.Attributes().Dex, char.Attributes().Wis,
 		char.Attributes().Int)

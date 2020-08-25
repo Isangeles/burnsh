@@ -30,7 +30,6 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/character"
 	"github.com/isangeles/flame/module/effect"
 )
 
@@ -51,11 +50,7 @@ func targetDialog() error {
 			return nil
 		}
 		for i, t := range targets {
-			name := lang.Text(t.ID())
-			if t, ok := t.(*character.Character); ok {
-				name = t.Name()
-			}
-			fmt.Printf("[%d]%s\n", i, name)
+			fmt.Printf("[%d]%s\n", i, lang.Text(t.ID()))
 		}
 		fmt.Printf("%s:", lang.Text("target_select_target"))
 		scan.Scan()

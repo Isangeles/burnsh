@@ -1,4 +1,5 @@
 MAJOR:
 * Save game dialog
+* Export name translations for characters created by the user to module lang directory
 MINOR:
 * Update modbuilder

@@ -44,7 +44,7 @@ func useSkillDialog() error {
 	fmt.Printf("%s:\n", lang.Text("useskill_skills"))
 	skills := activePC.Skills()
 	for i, s := range skills {
-		fmt.Printf("[%d]%s\n", i, s.Name())
+		fmt.Printf("[%d]%s\n", i, lang.Text(s.ID()))
 	}
 	// Select skill.
 	scan := bufio.NewScanner(os.Stdin)

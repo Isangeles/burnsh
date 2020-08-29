@@ -79,7 +79,7 @@ func selectTraining(trainings []*training.TrainerTraining) *training.TrainerTrai
 		// List available trainings.
 		fmt.Printf("%s:\n", lang.Text("train_trainings"))
 		for i, t := range trainings {
-			fmt.Printf("\t[%d]%s\n", i, t.Name())
+			fmt.Printf("\t[%d]%s\n", i, lang.Text(t.ID()))
 			// List training reqs.
 			fmt.Printf("\t%s:\n", lang.Text("train_reqs"))
 			for _, r := range t.Requirements() {

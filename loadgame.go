@@ -38,6 +38,7 @@ import (
 
 	"github.com/isangeles/burn"
 
+	"github.com/isangeles/burnsh/game"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -79,17 +80,17 @@ func loadGameDialog() error {
 	if err != nil {
 		return fmt.Errorf("unable to load saved game: %v", err)
 	}
-	game = g
+	activeGame = game.New(g)
 	burn.Game = g
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.SavegameFileExt)
-	cliSavePath := filepath.Join(mod.Conf().Path, ModuleSavesPath, savename + SaveExt)
+	cliSavePath := filepath.Join(mod.Conf().Path, ModuleSavesPath, savename+SaveExt)
 	cliSave, err := loadCLI(cliSavePath)
 	if err != nil {
 		return fmt.Errorf("unable to load CLI state: %v", err)
 	}
 	for _, pcSave := range cliSave.Players {
-		c := game.Module().Chapter().Character(pcSave.ID, pcSave.Serial)
+		c := activeGame.Module().Chapter().Character(pcSave.ID, pcSave.Serial)
 		if c == nil {
 			log.Err.Printf("load game: unable to find pc: %s%s", pcSave.ID, pcSave.Serial)
 		}

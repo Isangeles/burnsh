@@ -38,7 +38,7 @@ import (
 // tradeDialog starts CLI dialog for trade with
 // current PC target.
 func tradeDialog() error {
-	if game == nil {
+	if activeGame == nil {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}

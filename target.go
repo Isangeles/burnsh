@@ -36,10 +36,10 @@ import (
 // targetDialog starts target CLI dialog for
 // active player.
 func targetDialog() error {
-	if game == nil {
+	if activeGame == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_game_err"))
 	}
-	mod := game.Module()
+	mod := activeGame.Module()
 	area := mod.Chapter().CharacterArea(activePC)
 	scan := bufio.NewScanner(os.Stdin)
 	var tar effect.Target

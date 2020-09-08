@@ -58,7 +58,7 @@ type PlayerSave struct {
 // saveGameDialog starts CLI dialog for saving
 // current game state.
 func saveGameDialog() error {
-	if game == nil {
+	if activeGame == nil {
 		return fmt.Errorf("no game started")
 	}
 	// CLI.
@@ -86,7 +86,7 @@ func saveGameDialog() error {
 	// Game.
 	savepath := filepath.Join(mod.Conf().SavesPath(),
 		save.Name+flamedata.SavegameFileExt)
-	err = flamedata.ExportGame(game, savepath)
+	err = flamedata.ExportGame(activeGame.Game, savepath)
 	if err != nil {
 		return fmt.Errorf("unable to export game: %v", err)
 	}

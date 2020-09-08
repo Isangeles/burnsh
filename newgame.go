@@ -34,6 +34,8 @@ import (
 	"github.com/isangeles/flame/module/character"
 
 	"github.com/isangeles/burn"
+
+	"github.com/isangeles/burnsh/game"
 )
 
 var (
@@ -79,7 +81,7 @@ func newGameDialog() error {
 		}
 	}
 	players = append(players, pc)
-	game = flame.NewGame(mod)
+	activeGame = game.New(flame.NewGame(mod))
 	// All players to start area.
 	chapter := mod.Chapter()
 	startArea := chapter.Area(chapter.Conf().StartArea)
@@ -94,7 +96,7 @@ func newGameDialog() error {
 	for _, pc := range players {
 		pc.SetPosition(chapter.Conf().StartPosX, chapter.Conf().StartPosY)
 	}
-	burn.Game = game
+	burn.Game = activeGame.Game
 	activePC = players[0]
 	return nil
 }

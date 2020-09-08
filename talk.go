@@ -37,7 +37,7 @@ import (
 // talkDialog starts CLI dialog for dialog with
 // current target of active PC.
 func talkDialog() error {
-	if game == nil {
+	if activeGame == nil {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}

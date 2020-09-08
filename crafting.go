@@ -38,7 +38,7 @@ import (
 // craftingDialog starts CLI dialog for
 // active PC crafting.
 func craftingDialog() error {
-	if game == nil {
+	if activeGame == nil {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}

@@ -37,7 +37,6 @@ import (
 	"time"
 
 	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/module"
 	"github.com/isangeles/flame/module/character"
@@ -47,6 +46,7 @@ import (
 	"github.com/isangeles/burn/syntax"
 
 	"github.com/isangeles/burnsh/config"
+	"github.com/isangeles/burnsh/game"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -78,7 +78,7 @@ const (
 
 var (
 	mod         *module.Module
-	game        *flame.Game
+        activeGame  *game.Game
 	players     []*character.Character
 	activePC    *character.Character
 	lastCommand string
@@ -132,8 +132,8 @@ func main() {
 		}
 		fmt.Print(InputIndicator)
 		// Game update on input.
-		if game != nil {
-			go gameLoop(game)
+		if activeGame != nil {
+			go gameLoop(activeGame)
 		}
 	}
 	if err := scan.Err(); err != nil {
@@ -295,7 +295,7 @@ func runScript(s *ash.Script) {
 }
 
 // gameLoop handles game updating.
-func gameLoop(g *flame.Game) {
+func gameLoop(g *game.Game) {
 	// Delta.
 	dtNano := time.Since(lastUpdate).Nanoseconds()
 	delta := dtNano / int64(time.Millisecond) // delta to milliseconds

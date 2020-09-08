@@ -33,7 +33,7 @@ import (
 // lootDialog start CLI dialog current
 // PC target loot.
 func lootDialog() error {
-	if game == nil {
+	if activeGame == nil {
 		return fmt.Errorf("no game started")
 	}
 	if activePC == nil {

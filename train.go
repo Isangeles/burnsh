@@ -38,7 +38,7 @@ import (
 // tradeDialog starts CLI dialog for train
 // with current PC target.
 func trainDialog() error {
-	if game == nil {
+	if activeGame == nil {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}

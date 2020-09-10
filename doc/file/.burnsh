@@ -1,0 +1,52 @@
+.TH .burnsh
+.SH NAME
+\[char46]burnsh - file for the interface configuration.
+.SH DESCRIPTION
+This file contains the interface configuration values.
+.br
+The configuration file is loaded by the interface on startup.
+.SH VALUES
+.P
+* lang
+.br
+Specifies game language.
+.br
+Value is name of directory with translation files in lang directories.
+.P
+* module
+.br
+Specifies module from `data/modules` directory to load at start.
+.br
+Value is an ID specified in `.module` file inside main module directory.
+.P
+* debug
+.br
+Enables engine debug mode(shows debug messages in engine log).
+.br
+Value 'true' enables mode, everything else sets mode disabled.
+.P
+* fire
+.br
+Enables Fire server mode.
+.br
+Value 'true' enables Fire server mode, everything else sets mode disabled.
+.P
+* server
+.br
+Specified server host and port for Fire mode.
+.br
+First value is used as server host, second as server port.
+.P
+* server-user
+.br
+Specifies user login and password for Fire mode.
+.br
+First value is for login, second for password.
+.SH EXAMPLE
+.nf
+lang:english
+module:test
+debug:false
+fire:true
+server:localhost;8000
+server-user:u1;asd12

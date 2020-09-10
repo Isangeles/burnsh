@@ -40,9 +40,14 @@ const (
 )
 
 var (
-	Module = ""
-	Lang   = "english"
-	Debug  = false
+	Module      = ""
+	Lang        = "english"
+	Fire        = false
+	ServerHost  = ""
+	ServerPort  = "8000"
+	ServerLogin = ""
+	ServerPass  = ""
+	Debug       = false
 )
 
 // Load loads the CLI config file.
@@ -61,6 +66,17 @@ func Load() error {
 	}
 	if len(conf["lang"]) > 0 {
 		Lang = conf["lang"][0]
+	}
+	if len(conf["fire"]) > 0 {
+		Fire = conf["fire"][0] == "true"
+	}
+	if len(conf["server"]) > 1 {
+		ServerHost = conf["server"][0]
+		ServerPort = conf["server"][1]
+	}
+	if len(conf["server-user"]) > 1 {
+		ServerLogin = conf["server-user"][0]
+		ServerPass = conf["server-user"][1]
 	}
 	if len(conf["debug"]) > 0 {
 		Debug = conf["debug"][0] == "true"
@@ -81,6 +97,9 @@ func Save() error {
 	conf := make(map[string][]string)
 	conf["module"] = []string{Module}
 	conf["lang"] = []string{Lang}
+	conf["fire"] = []string{fmt.Sprintf("%v", Fire)}
+	conf["server"] = []string{ServerHost, ServerPort}
+	conf["server-user"] = []string{ServerLogin, ServerPass}
 	conf["debug"] = []string{fmt.Sprintf("%v", Debug)}
 	confText := text.MarshalConfig(conf)
 	// Write to file.

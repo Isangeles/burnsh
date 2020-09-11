@@ -41,15 +41,15 @@ func talkDialog() error {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}
-	if activePC == nil {
+	if activeGame.ActivePlayer() == nil {
 		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
-	if len(activePC.Targets()) < 1 {
+	if len(activeGame.ActivePlayer().Targets()) < 1 {
 		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
 	}
-	tar := activePC.Targets()[0]
+	tar := activeGame.ActivePlayer().Targets()[0]
 	tarChar, ok := tar.(*character.Character)
 	if !ok {
 		return fmt.Errorf("invalid_target")
@@ -60,7 +60,7 @@ func talkDialog() error {
 	d := tarChar.Dialogs()[0]
 	scan := bufio.NewScanner(os.Stdin)
 	d.Restart()
-	d.SetTarget(activePC)
+	d.SetTarget(activeGame.ActivePlayer())
 	// Dialog.
 	for {
 		fmt.Printf("%s:\n", lang.Text("talk_dialog"))
@@ -77,7 +77,7 @@ func talkDialog() error {
 			// Select answers.
 			answers := make([]*dialog.Answer, 0)
 			for _, a := range d.Stage().Answers() {
-				if !activePC.MeetReqs(a.Requirements()...) {
+				if !activeGame.ActivePlayer().MeetReqs(a.Requirements()...) {
 					continue
 				}
 				answers = append(answers, a)
@@ -102,7 +102,7 @@ func talkDialog() error {
 			}
 			answer = answers[id]
 		}
-		fmt.Printf("[%s]: %s\n", lang.Text(activePC.ID()),
+		fmt.Printf("[%s]: %s\n", lang.Text(activeGame.ActivePlayer().ID()),
 			dialogText(d, answer.ID()))
 		// Dialog progress.
 		d.Next(answer)

@@ -71,7 +71,7 @@ func saveGameDialog() error {
 			break
 		}
 	}
-	for _, pc := range players {
+	for _, pc := range activeGame.Players() {
 		pcSave := PlayerSave{
 			ID:     pc.ID(),
 			Serial: pc.Serial(),

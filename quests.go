@@ -31,11 +31,14 @@ import (
 
 // questsDialog starts quests journal CLI dialog.
 func questsDialog() error {
-	if activePC == nil {
-		return fmt.Errorf("no active PC")
+	if activeGame == nil {
+		return fmt.Errorf("No active game")
+	}
+	if activeGame.ActivePlayer() == nil {
+		return fmt.Errorf("No active PC")
 	}
 	fmt.Printf("%s:\n", lang.Text("quests_list"))
-	for i, q := range activePC.Journal().Quests() {
+	for i, q := range activeGame.ActivePlayer().Journal().Quests() {
 		questInfo := lang.Texts(q.ID())
 		fmt.Printf("[%d]%s\n", i, questInfo[0])
 		if len(questInfo) > 1 {

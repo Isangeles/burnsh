@@ -79,8 +79,6 @@ const (
 var (
 	mod         *module.Module
         activeGame  *game.Game
-	players     []*character.Character
-	activePC    *character.Character
 	lastCommand string
 	lastUpdate  time.Time
 )
@@ -125,8 +123,8 @@ func main() {
 				scrArgs[0] = strings.TrimSuffix(scrArgs[0], RunBGSuffix)
 			}
 			executeFile(bgrun, scrArgs[0], scrArgs...)
-		} else if activePC != nil {
-			activePC.ChatLog().Add(input)
+		} else if activeGame != nil && activeGame.ActivePlayer() != nil {
+			activeGame.ActivePlayer().ChatLog().Add(input)
 		} else {
 			log.Inf.Println(input)
 		}

@@ -39,13 +39,17 @@ func targetDialog() error {
 	if activeGame == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_game_err"))
 	}
+	if activeGame.ActivePlayer() == nil {
+		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
+	}
 	mod := activeGame.Module()
-	area := mod.Chapter().CharacterArea(activePC)
+	area := mod.Chapter().CharacterArea(activeGame.ActivePlayer().Character)
 	scan := bufio.NewScanner(os.Stdin)
 	var tar effect.Target
 	for tar == nil {
 		fmt.Printf("%s:\n", lang.Text("target_near_targets"))
-		targets := area.NearTargets(activePC, activePC.SightRange())
+		targets := area.NearTargets(activeGame.ActivePlayer(),
+			activeGame.ActivePlayer().SightRange())
 		if len(targets) < 1 {
 			return nil
 		}
@@ -67,6 +71,6 @@ func targetDialog() error {
 		}
 		tar = targets[id]
 	}
-	activePC.SetTarget(tar)
+	activeGame.ActivePlayer().SetTarget(tar)
 	return nil
 }

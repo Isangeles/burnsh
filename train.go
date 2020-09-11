@@ -42,11 +42,11 @@ func trainDialog() error {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}
-	if activePC == nil {
+	if activeGame.ActivePlayer() == nil {
 		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
-	tar := activePC.Targets()[0]
+	tar := activeGame.ActivePlayer().Targets()[0]
 	if tar == nil {
 		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
@@ -62,7 +62,7 @@ func trainDialog() error {
 		fmt.Printf("%s\n", msg)
 		return nil
 	}
-	activePC.Use(t)
+	activeGame.ActivePlayer().Use(t)
 	return nil
 }
 

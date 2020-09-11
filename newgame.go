@@ -80,8 +80,8 @@ func newGameDialog() error {
 			accept = true
 		}
 	}
-	players = append(players, pc)
 	activeGame = game.New(flame.NewGame(mod))
+	activeGame.AddPlayer(pc)
 	// All players to start area.
 	chapter := mod.Chapter()
 	startArea := chapter.Area(chapter.Conf().StartArea)
@@ -89,14 +89,14 @@ func newGameDialog() error {
 		return fmt.Errorf("start area not found: %s",
 			chapter.Conf().StartArea)
 	}
-	for _, pc := range players {
-		startArea.AddCharacter(pc)
+	for _, pc := range activeGame.Players() {
+		startArea.AddCharacter(pc.Character)
 	}
 	// Set start positions for players.
-	for _, pc := range players {
+	for _, pc := range activeGame.Players() {
 		pc.SetPosition(chapter.Conf().StartPosX, chapter.Conf().StartPosY)
 	}
 	burn.Game = activeGame.Game
-	activePC = players[0]
+	activeGame.SetActivePlayer(activeGame.Players()[0])
 	return nil
 }

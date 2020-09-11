@@ -36,13 +36,17 @@ import (
 // useSkillDialog starts CLI dialog for
 // using skills.
 func useSkillDialog() error {
-	if activePC == nil {
+	if activeGame == nil {
+		msg := lang.Text("no_game_err")
+		return fmt.Errorf(msg)
+	}
+	if activeGame.ActivePlayer() == nil {
 		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
 	// List skills.
 	fmt.Printf("%s:\n", lang.Text("useskill_skills"))
-	skills := activePC.Skills()
+	skills := activeGame.ActivePlayer().Skills()
 	for i, s := range skills {
 		fmt.Printf("[%d]%s\n", i, lang.Text(s.ID()))
 	}
@@ -64,6 +68,6 @@ func useSkillDialog() error {
 		}
 		skill = skills[id]
 	}
-	activePC.Use(skill)
+	activeGame.ActivePlayer().Use(skill)
 	return nil
 }

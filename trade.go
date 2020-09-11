@@ -42,11 +42,11 @@ func tradeDialog() error {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}
-	if activePC == nil {
+	if activeGame.ActivePlayer() == nil {
 		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
-	tar := activePC.Targets()[0]
+	tar := activeGame.ActivePlayer().Targets()[0]
 	if tar == nil {
 		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
@@ -59,7 +59,7 @@ func tradeDialog() error {
 	fmt.Printf("%s:\n", lang.Text("trade_buy_items"))
 	buyItems := selectBuyItems(tarChar.Inventory().TradeItems())
 	fmt.Printf("%s:\n", lang.Text("trade_sell_items"))
-	sellItems := selectSellItems(activePC.Inventory().Items())
+	sellItems := selectSellItems(activeGame.ActivePlayer().Inventory().Items())
 	// Check trade value.
 	buyValue := 0
 	for _, it := range buyItems {
@@ -92,12 +92,12 @@ func tradeDialog() error {
 	}
 	// Trade items.
 	for _, it := range buyItems {
-		activePC.Inventory().AddItem(it)
+		activeGame.ActivePlayer().Inventory().AddItem(it)
 		tarChar.Inventory().RemoveItem(it)
 	}
 	for _, it := range sellItems {
 		tarChar.Inventory().AddItem(it)
-		activePC.Inventory().RemoveItem(it)
+		activeGame.ActivePlayer().Inventory().RemoveItem(it)
 	}
 	return nil
 }

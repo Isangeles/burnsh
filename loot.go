@@ -36,10 +36,10 @@ func lootDialog() error {
 	if activeGame == nil {
 		return fmt.Errorf("no game started")
 	}
-	if activePC == nil {
+	if activeGame.ActivePlayer() == nil {
 		return fmt.Errorf("no active player")
 	}
-	tar := activePC.Targets()[0]
+	tar := activeGame.ActivePlayer().Targets()[0]
 	if tar == nil {
 		return fmt.Errorf("no target")
 	}
@@ -51,7 +51,7 @@ func lootDialog() error {
 		return fmt.Errorf("target have no inventory")
 	}
 	for _, it := range con.Inventory().LootItems() {
-		activePC.Inventory().AddItem(it)
+		activeGame.ActivePlayer().Inventory().AddItem(it)
 		con.Inventory().RemoveItem(it)
 	}
 	return nil

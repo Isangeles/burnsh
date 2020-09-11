@@ -42,13 +42,13 @@ func craftingDialog() error {
 		msg := lang.Text("no_game_err")
 		return fmt.Errorf(msg)
 	}
-	if activePC == nil {
+	if activeGame.ActivePlayer() == nil {
 		msg := lang.Text("no_pc_err")
 		return fmt.Errorf(msg)
 	}
 	for {
 		// Select recipe.
-		recipe, err := recipeDialog(activePC)
+		recipe, err := recipeDialog(activeGame.ActivePlayer().Character)
 		if err != nil {
 			fmt.Printf("%v\n", err)
 			break
@@ -98,7 +98,7 @@ func craftingDialog() error {
 			break
 		}
 		if ans == 1 {
-			activePC.Use(recipe)
+			activeGame.ActivePlayer().Use(recipe)
 			break
 		}
 	}

@@ -40,10 +40,13 @@ type InfoTarget interface {
 // targetInfoDialog starts CLI dialog that prints informations
 // about current PC target.
 func targetInfoDialog() error {
-	if activePC == nil {
+	if activeGame == nil {
+		return fmt.Errorf("%s\n", lang.Text("no_game_err"))
+	}
+	if activeGame.ActivePlayer() == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
 	}
-	pcTar := activePC.Targets()[0]
+	pcTar := activeGame.ActivePlayer().Targets()[0]
 	if pcTar == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_tar_err"))
 	}

@@ -27,6 +27,8 @@ import (
 	"fmt"
 
 	"github.com/isangeles/flame/data/res/lang"
+	"github.com/isangeles/flame/module"
+	"github.com/isangeles/flame/module/area"
 	"github.com/isangeles/flame/module/character"
 	"github.com/isangeles/flame/module/req"
 )
@@ -58,4 +60,27 @@ func reqsInfo(reqs ...req.Requirement) string {
 		}
 	}
 	return out
+}
+
+// charArea returns area with character with specified ID and serial from
+// specified module chapter.
+func charArea(chap *module.Chapter, charID, charSerial string) *area.Area {
+	fmt.Printf("a char: %s %s\n", charID, charSerial)
+	for _, a := range chap.Areas() {
+		for _, c := range a.Characters() {
+			fmt.Printf("char: %s %s\n", c.ID(), c.Serial())
+			if c.ID() == charID && c.Serial() == charSerial {
+				return a
+			}
+		}
+		for _, sa := range a.Subareas() {
+			for _, c := range sa.Characters() {
+				fmt.Printf("char: %s %s\n", c.ID(), c.Serial())
+				if c.ID() == charID && c.Serial() == charSerial {
+					return sa
+				}
+			}
+		}
+	}
+	return nil
 }

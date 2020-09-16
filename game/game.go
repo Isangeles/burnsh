@@ -25,31 +25,51 @@
 package game
 
 import (
+	"bufio"
 	"fmt"
 
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/module/character"
+
+	"github.com/isangeles/fire/response"
+
+	"github.com/isangeles/burnsh/log"
 )
 
 // Struct for game wrapper.
 type Game struct {
 	*flame.Game
+	server       *Server
 	players      []*Player
 	activePlayer *Player
+	onLoginFunc  func(g *Game)
 }
 
 // New creates new game wrapper for specified game.
-func New(game *flame.Game) *Game {
+func New(game *flame.Game, server *Server) *Game {
 	g := Game{Game: game}
+	g.server = server
+	if g.server != nil {
+		go g.listenServer()
+	}
 	return &g
 }
 
-// Players adds new player.
+// Players returns player characters.
 func (g *Game) Players() []*Player {
 	return g.players
 }
 
+// AddPlayer adds new player character.
 func (g *Game) AddPlayer(char *character.Character) error {
+	if g.server != nil {
+		err := g.server.NewCharacter(char.Data())
+		if err != nil {
+			return fmt.Errorf("Unable to send new character request: %v",
+				err)
+		}
+		return nil
+	}
 	player, err := g.newPlayer(char)
 	if err != nil {
 		return fmt.Errorf("Unable to create player: %v", err)
@@ -68,6 +88,16 @@ func (g *Game) SetActivePlayer(player *Player) {
 	g.activePlayer = player
 }
 
+// Server retruns game server.
+func (g *Game) Server() *Server {
+	return g.server
+}
+
+// SetOnLoginFunc sets function triggered on login.
+func (g *Game) SetOnLoginFunc(f func(g *Game)) {
+	g.onLoginFunc = f
+}
+
 // newPlayer creates new character avatar for the player from specified data and
 // places this character in the start area of game module.
 func (g *Game) newPlayer(char *character.Character) (*Player, error) {
@@ -83,4 +113,27 @@ func (g *Game) newPlayer(char *character.Character) (*Player, error) {
 	startArea.AddCharacter(char)
 	player := Player{char, g}
 	return &player, nil
+}
+
+// listenServer handles game server messages sent to the client.
+func (g *Game) listenServer() {
+	if g.server == nil {
+		return
+	}
+	out := bufio.NewScanner(g.server)
+	outBuff := make([]byte, 99999999)
+	out.Buffer(outBuff, len(outBuff))
+	for out.Scan() {
+		resp, err := response.Unmarshal(out.Text())
+		if err != nil {
+			log.Err.Printf("Game: Unable to unmarshal server resonse: %v",
+				err)
+			continue
+		}
+		go g.handleResponse(resp)
+	}
+	if out.Err() != nil {
+		log.Err.Printf("Game: Unable to read from server: %v",
+			out.Err())
+	}
 }

@@ -35,11 +35,14 @@ import (
 
 	"github.com/isangeles/burn"
 
+	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/game"
+	"github.com/isangeles/burnsh/log"
 )
 
 var (
 	playableChars []*character.Character
+	newGamePlayer *character.Character
 )
 
 // newGameDialog starts CLI dialog for new game.
@@ -50,7 +53,6 @@ func newGameDialog() error {
 	if len(playableChars) < 1 {
 		return fmt.Errorf(lang.Text("cli_newgame_no_chars_err"))
 	}
-	var pc *character.Character
 	scan := bufio.NewScanner(os.Stdin)
 	for accept := false; !accept; {
 		fmt.Printf("%s:\n", lang.Text("cli_newgame_chars"))
@@ -66,13 +68,13 @@ func newGameDialog() error {
 					lang.Text("cli_nan_error"), input)
 			}
 			if id >= 0 && id < len(playableChars) {
-				pc = playableChars[id]
+				newGamePlayer = playableChars[id]
 				break
 			}
 		}
 
 		fmt.Printf("%s: %v\n", lang.Text("cli_newgame_summary"),
-			charDisplayString(pc))
+			charDisplayString(newGamePlayer))
 		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 		scan.Scan()
 		input := scan.Text()
@@ -80,23 +82,41 @@ func newGameDialog() error {
 			accept = true
 		}
 	}
-	activeGame = game.New(flame.NewGame(mod))
-	activeGame.AddPlayer(pc)
-	// All players to start area.
-	chapter := mod.Chapter()
-	startArea := chapter.Area(chapter.Conf().StartArea)
-	if startArea == nil {
-		return fmt.Errorf("start area not found: %s",
-			chapter.Conf().StartArea)
+	var server *game.Server
+	if config.Fire {
+		serv, err := game.NewServer(config.ServerHost, config.ServerPort)
+		if err != nil {
+			return fmt.Errorf("Unable to create game server connection: %v",
+				err)
+		}
+		server = serv
 	}
-	for _, pc := range activeGame.Players() {
-		startArea.AddCharacter(pc.Character)
+	activeGame = game.New(flame.NewGame(mod), server)
+	if activeGame.Server() != nil {
+		activeGame.SetOnLoginFunc(onServerLogin)
+		err := activeGame.Server().Login(config.ServerLogin,
+			config.ServerPass)
+		if err != nil {
+			return fmt.Errorf("Unable to send login request: %v",
+				err)
+		}
+		return nil
 	}
-	// Set start positions for players.
-	for _, pc := range activeGame.Players() {
-		pc.SetPosition(chapter.Conf().StartPosX, chapter.Conf().StartPosY)
-	}
-	burn.Game = activeGame.Game
+	activeGame.AddPlayer(newGamePlayer)
 	activeGame.SetActivePlayer(activeGame.Players()[0])
+	burn.Game = activeGame.Game
 	return nil
+}
+
+// onServerLogin callback function called after successful login.
+func onServerLogin(game *game.Game) {
+	game.SetOnLoginFunc(nil)
+	err := game.AddPlayer(newGamePlayer)
+	if err != nil {
+		log.Err.Printf("New game: Unable to add player: %v",
+			err)
+		return
+	}
+	burn.Game = game.Game
+	fmt.Printf("Game started\n")
 }

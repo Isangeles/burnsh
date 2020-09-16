@@ -43,7 +43,11 @@ func targetDialog() error {
 		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
 	}
 	mod := activeGame.Module()
-	area := mod.Chapter().CharacterArea(activeGame.ActivePlayer().Character)
+	area := charArea(mod.Chapter(), activeGame.ActivePlayer().ID(),
+		activeGame.ActivePlayer().Serial())
+	if area == nil {
+		return fmt.Errorf("no area for active player")
+	}
 	scan := bufio.NewScanner(os.Stdin)
 	var tar effect.Target
 	for tar == nil {

@@ -24,17 +24,27 @@
 package game
 
 import (
+	"bufio"
 	"fmt"
 	"net"
 
 	flameres "github.com/isangeles/flame/data/res"
 
+	"github.com/isangeles/fire/response"
 	"github.com/isangeles/fire/request"
+
+	"github.com/isangeles/burnsh/log"
+)
+
+const (
+	responseBufferSize = 99999999
 )
 
 // Struct for server connection.
 type Server struct {
-	net.Conn
+	closed     bool
+	conn       net.Conn
+	onResponse func(r response.Response)
 }
 
 // NewServer creates new server connection struct with connection
@@ -46,8 +56,30 @@ func NewServer(host, port string) (*Server, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Unable to dial server: %v", err)
 	}
-	s.Conn = conn
+	s.conn = conn
+	go s.handleResponses()
 	return s, nil
+}
+
+// Close closes server connection.
+func (s *Server) Close() error {
+	err := s.conn.Close()
+	if err != nil {
+		return fmt.Errorf("Unable to close server connection: %v",
+			err)
+	}
+	s.closed = true
+	return nil
+}
+
+// Closed checks if server connection was closed.
+func (s *Server) Closed() bool {
+	return s.closed
+}
+
+// SetOnServerResponseFunc sets function triggered on server reponse.
+func (s *Server) SetOnResponseFunc(f func(r response.Response)) {
+	s.onResponse = f
 }
 
 // Login sends login request to the server.
@@ -63,7 +95,7 @@ func (s *Server) Login(id, pass string) error {
 			err)
 	}
 	t = fmt.Sprintf("%s\r\n", t)
-	_, err = s.Write([]byte(t))
+	_, err = s.conn.Write([]byte(t))
 	if err != nil {
 		return fmt.Errorf("Unable to write login request: %v", err)
 	}
@@ -79,10 +111,33 @@ func (s *Server) NewCharacter(charData flameres.CharacterData) error {
 			err)
 	}
 	t = fmt.Sprintf("%s\r\n", t)
-	_, err = s.Write([]byte(t))
+	_, err = s.conn.Write([]byte(t))
 	if err != nil {
 		return fmt.Errorf("Unable to write new char request: %v", err)
 	}
 	return nil
+}
+
+// handleResponses handles responses from the server and
+// triggers onServerResponse for each response.
+func (s *Server) handleResponses() {
+	out := bufio.NewScanner(s.conn)
+	outBuff := make([]byte, responseBufferSize)
+	out.Buffer(outBuff, len(outBuff))
+	for out.Scan() && !s.Closed() {
+		resp, err := response.Unmarshal(out.Text())
+		if err != nil {
+			log.Err.Printf("Server: Unable to unmarshal server response: %v",
+				err)
+			continue
+		}
+		if s.onResponse != nil {
+			go s.onResponse(resp)
+		}
+	}
+	if out.Err() != nil {
+		log.Err.Printf("Server: Unable to read from the server: %v",
+			out.Err())
+	}
 }
 	

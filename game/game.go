@@ -25,15 +25,10 @@
 package game
 
 import (
-	"bufio"
 	"fmt"
 
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/module/character"
-
-	"github.com/isangeles/fire/response"
-
-	"github.com/isangeles/burnsh/log"
 )
 
 // Struct for game wrapper.
@@ -50,7 +45,7 @@ func New(game *flame.Game, server *Server) *Game {
 	g := Game{Game: game}
 	g.server = server
 	if g.server != nil {
-		go g.listenServer()
+		g.server.SetOnResponseFunc(g.handleResponse)
 	}
 	return &g
 }
@@ -113,27 +108,4 @@ func (g *Game) newPlayer(char *character.Character) (*Player, error) {
 	startArea.AddCharacter(char)
 	player := Player{char, g}
 	return &player, nil
-}
-
-// listenServer handles game server messages sent to the client.
-func (g *Game) listenServer() {
-	if g.server == nil {
-		return
-	}
-	out := bufio.NewScanner(g.server)
-	outBuff := make([]byte, 99999999)
-	out.Buffer(outBuff, len(outBuff))
-	for out.Scan() {
-		resp, err := response.Unmarshal(out.Text())
-		if err != nil {
-			log.Err.Printf("Game: Unable to unmarshal server resonse: %v",
-				err)
-			continue
-		}
-		go g.handleResponse(resp)
-	}
-	if out.Err() != nil {
-		log.Err.Printf("Game: Unable to read from server: %v",
-			out.Err())
-	}
 }

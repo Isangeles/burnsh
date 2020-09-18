@@ -1,5 +1,5 @@
 /*
- * uiutils.go
+ * utils.go
  *
  * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
  *
@@ -65,17 +65,14 @@ func reqsInfo(reqs ...req.Requirement) string {
 // charArea returns area with character with specified ID and serial from
 // specified module chapter.
 func charArea(chap *module.Chapter, charID, charSerial string) *area.Area {
-	fmt.Printf("a char: %s %s\n", charID, charSerial)
 	for _, a := range chap.Areas() {
 		for _, c := range a.Characters() {
-			fmt.Printf("char: %s %s\n", c.ID(), c.Serial())
 			if c.ID() == charID && c.Serial() == charSerial {
 				return a
 			}
 		}
 		for _, sa := range a.Subareas() {
 			for _, c := range sa.Characters() {
-				fmt.Printf("char: %s %s\n", c.ID(), c.Serial())
 				if c.ID() == charID && c.Serial() == charSerial {
 					return sa
 				}

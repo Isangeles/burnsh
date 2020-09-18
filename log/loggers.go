@@ -31,7 +31,12 @@ import (
 )
 
 var (
-	Inf *log.Logger = log.New(flamelog.InfWriter, "burnsh:", 0)
-	Err *log.Logger = log.New(flamelog.ErrWriter, "burnsh-err:", 0)
-	Dbg *log.Logger = log.New(flamelog.DbgWriter, "burnsh-debug:", 0)
+	Inf *log.Logger = log.New(flamelog.InfWriter, "burnsh: ", 0)
+	Err *log.Logger = log.New(flamelog.ErrWriter, "burnsh-err: ", 0)
+	Dbg *log.Logger = log.New(flamelog.DbgWriter, "burnsh-debug: ", 0)
 )
+
+// PrintStdOut enables/disables printing messages on the standard output.
+func PrintStdOut(print bool) {
+	flamelog.PrintStdOut = print
+}

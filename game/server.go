@@ -77,6 +77,11 @@ func (s *Server) Closed() bool {
 	return s.closed
 }
 
+// Address returns server address.
+func (s *Server) Address() string {
+	return s.conn.RemoteAddr().String()
+}
+
 // SetOnServerResponseFunc sets function triggered on server reponse.
 func (s *Server) SetOnResponseFunc(f func(r response.Response)) {
 	s.onResponse = f

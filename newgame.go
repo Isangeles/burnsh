@@ -82,15 +82,6 @@ func newGameDialog() error {
 			accept = true
 		}
 	}
-	var server *game.Server
-	if config.Fire {
-		serv, err := game.NewServer(config.ServerHost, config.ServerPort)
-		if err != nil {
-			return fmt.Errorf("Unable to create game server connection: %v",
-				err)
-		}
-		server = serv
-	}
 	activeGame = game.New(flame.NewGame(mod), server)
 	if activeGame.Server() != nil {
 		activeGame.SetOnLoginFunc(onServerLogin)

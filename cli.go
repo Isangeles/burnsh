@@ -78,6 +78,7 @@ const (
 
 var (
 	mod         *module.Module
+	server      *game.Server
         activeGame  *game.Game
 	lastCommand string
 	lastUpdate  time.Time
@@ -106,6 +107,16 @@ func init() {
 func main() {
 	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
 		flameconf.Name, flameconf.Version)
+	log.PrintStdOut(true)
+	if config.Fire {
+		serv, err := game.NewServer(config.ServerHost, config.ServerPort)
+		if err != nil {
+			panic(fmt.Errorf("Unable to create game server connection: %v",
+				err))
+		}
+		server = serv
+		log.Inf.Printf("Connected to the game server at: %s", server.Address())
+	}
 	fmt.Print(InputIndicator)
 	scan := bufio.NewScanner(os.Stdin)
 	for scan.Scan() {

@@ -35,9 +35,7 @@ import (
 
 	"github.com/isangeles/burn"
 
-	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/game"
-	"github.com/isangeles/burnsh/log"
 )
 
 var (
@@ -83,31 +81,10 @@ func newGameDialog() error {
 		}
 	}
 	activeGame = game.New(flame.NewGame(mod), server)
-	if activeGame.Server() != nil {
-		activeGame.SetOnLoginFunc(onServerLogin)
-		err := activeGame.Server().Login(config.ServerLogin,
-			config.ServerPass)
-		if err != nil {
-			return fmt.Errorf("Unable to send login request: %v",
-				err)
-		}
-		return nil
+	err := activeGame.AddPlayer(newGamePlayer)
+	if err != nil {
+		return fmt.Errorf("Unable to add player: %v", err)
 	}
-	activeGame.AddPlayer(newGamePlayer)
-	activeGame.SetActivePlayer(activeGame.Players()[0])
 	burn.Game = activeGame.Game
 	return nil
-}
-
-// onServerLogin callback function called after successful login.
-func onServerLogin(game *game.Game) {
-	game.SetOnLoginFunc(nil)
-	err := game.AddPlayer(newGamePlayer)
-	if err != nil {
-		log.Err.Printf("New game: Unable to add player: %v",
-			err)
-		return
-	}
-	burn.Game = game.Game
-	fmt.Printf("Game started\n")
 }

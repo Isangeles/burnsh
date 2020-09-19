@@ -70,6 +70,7 @@ func (g *Game) AddPlayer(char *character.Character) error {
 		return fmt.Errorf("Unable to create player: %v", err)
 	}
 	g.players = append(g.players, player)
+	g.SetActivePlayer(player)
 	return nil
 }
 

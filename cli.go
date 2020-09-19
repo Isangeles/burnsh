@@ -57,6 +57,7 @@ const (
 	ScriptPrefix   = "%"
 	RunBGSuffix    = "&"
 	CloseCmd       = "close"
+	LoginCmd       = "login"
 	NewCharCmd     = "newchar"
 	NewGameCmd     = "newgame"
 	NewModCmd      = "newmod"
@@ -159,6 +160,12 @@ func execute(input string) {
 			log.Err.Printf("unable to save config: %v", err)
 		}
 		os.Exit(0)
+	case LoginCmd:
+		err := loginDialog()
+		if err != nil {
+			log.Err.Printf("Login error: %v", err)
+			break
+		}
 	case NewCharCmd:
 		createdChar, err := newCharacterDialog(mod)
 		if err != nil {

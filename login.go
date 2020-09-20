@@ -32,6 +32,7 @@ import (
 
 	"github.com/isangeles/fire/response"
 
+	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -42,9 +43,9 @@ func loginDialog() error {
 	if server == nil {
 		return fmt.Errorf("No server connection")
 	}
-	scan := bufio.NewScanner(os.Stdin)
-	for reqSend := false; !reqSend; {
-		id := ""
+	id, pass := config.ServerLogin, config.ServerPass
+	if len(id) < 1 || len(pass) < 1 {
+		scan := bufio.NewScanner(os.Stdin)
 		fmt.Printf("%s:", lang.Text("cli_login_id"))
 		for scan.Scan() {
 			id = scan.Text()
@@ -52,7 +53,6 @@ func loginDialog() error {
 				break
 			}
 		}
-		pass := ""
 		fmt.Printf("%s:", lang.Text("cli_login_pass"))
 		for scan.Scan() {
 			pass = scan.Text()
@@ -60,14 +60,12 @@ func loginDialog() error {
 				break
 			}
 		}
-		server.SetOnResponseFunc(handleResponse)
-		err := server.Login(id, pass)
-		if err != nil {
-			return fmt.Errorf("Unable to send login request: %v",
-				err)
-		} else {
-			break
-		}
+	}
+	server.SetOnResponseFunc(handleResponse)
+	err := server.Login(id, pass)
+	if err != nil {
+		return fmt.Errorf("Unable to send login request: %v",
+			err)
 	}
 	return nil
 }

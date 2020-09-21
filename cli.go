@@ -64,6 +64,7 @@ const (
 	SaveGameCmd    = "savegame"
 	LoadGameCmd    = "loadgame"
 	ImportCharsCmd = "importchars"
+	MoveCmd        = "move"
 	LootTargetCmd  = "loot"
 	TalkTargetCmd  = "talk"
 	FindTargetCmd  = "target"
@@ -211,6 +212,12 @@ func execute(input string) {
 		for _, cd := range chars {
 			c := character.New(cd)
 			playableChars = append(playableChars, c)
+		}
+	case MoveCmd:
+		err := moveDialog()
+		if err != nil {
+			log.Err.Printf("%s: %v", MoveCmd, err)
+			break
 		}
 	case LootTargetCmd:
 		err := lootDialog()

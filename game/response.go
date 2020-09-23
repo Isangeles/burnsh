@@ -41,7 +41,7 @@ func (g *Game) handleResponse(resp response.Response) {
 	g.handleUpdateResponse(resp.Update)
 	g.handleNewCharResponse(resp.NewChar)
 	for _, r := range resp.Error {
-		log.Err.Printf("Game: server error response: %s", r)
+		log.Err.Printf("Game server error: %s", r)
 	}
 }
 

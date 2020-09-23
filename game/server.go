@@ -30,8 +30,8 @@ import (
 
 	flameres "github.com/isangeles/flame/data/res"
 
-	"github.com/isangeles/fire/response"
 	"github.com/isangeles/fire/request"
+	"github.com/isangeles/fire/response"
 
 	"github.com/isangeles/burnsh/log"
 )
@@ -123,6 +123,28 @@ func (s *Server) NewCharacter(charData flameres.CharacterData) error {
 	return nil
 }
 
+// Move sends move request to the server.
+func (s *Server) Move(id, serial string, x, y float64) error {
+	req := new(request.Request)
+	moveReq := request.Move{
+		ID:     id,
+		Serial: serial,
+		PosX:   10,
+		PosY:   20,
+	}
+	req.Move = append(req.Move, moveReq)
+	text, err := request.Marshal(req)
+	if err != nil {
+		return fmt.Errorf("Unable to marshal request: %v", err)
+	}
+	text = fmt.Sprintf("%s\r\n", text)
+	_, err = s.conn.Write([]byte(text))
+	if err != nil {
+		return fmt.Errorf("Unable to write request: %v", err)
+	}
+	return nil
+}
+
 // handleResponses handles responses from the server and
 // triggers onServerResponse for each response.
 func (s *Server) handleResponses() {
@@ -145,4 +167,3 @@ func (s *Server) handleResponses() {
 			out.Err())
 	}
 }
-	

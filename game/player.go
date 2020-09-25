@@ -25,10 +25,26 @@ package game
 
 import (
 	"github.com/isangeles/flame/module/character"
+
+	"github.com/isangeles/burnsh/log"
 )
 
 // Wrapper struct for player character.
 type Player struct {
 	*character.Character
 	game *Game
+}
+
+// SetDestPoint sets a specified XY position as current
+// as a character destination point.
+func (p *Player) SetDestPoint(x, y float64) {
+	p.Character.SetDestPoint(x, y)
+	if p.game.Server() == nil {
+		return
+	}
+	err := p.game.Server().Move(p.ID(), p.Serial(), x, y)
+	if err != nil {
+		log.Err.Printf("Player: %s %s: unable to send move request: %v",
+			p.ID(), p.Serial(), err)
+	}
 }

@@ -1,7 +1,7 @@
 MAJOR:
 * Save game dialog
 * Export name translations for characters created by the user to module lang directory
-* Integrate commands with Fire server mode: loot, trade, train, talk, loot, crafting, savegame
+* Support for server mode: loot, trade, train, talk, loot, crafting, savegame
 MINOR:
 * Update modbuilder
 * Login dialog

@@ -1,9 +1,9 @@
 ## Introduction
-  Burn Shell is command line interface for [Flame engine](https://github.com/isangeles/flame).
+Burn Shell is command line interface for [Flame engine](https://github.com/isangeles/flame).
 
-  CLI uses [Burn](https://github.com/Isangeles/burn) to handle user input and communicate with engine.
+CLI uses [Burn](https://github.com/Isangeles/burn) to handle user input and communicate with engine.
 
-  All commands must be prefixed with '$' character.
+All commands must be prefixed with '$' character.
 
 ## Build & Run
 Get sources from git:
@@ -22,6 +22,15 @@ Run shell:
 ```
   ./burnsh
 ```
+
+## Multiplayer
+It's possible to join an online game hosted on the [Fire](https://github.com/isangeles/fire) server.
+
+To connect to the remote server set the `fire` value in `.burnsh` config file to `true` and specify server host and port in `server` config value.
+
+After that Burn Shell will try to establish a connection with the game server on startup.
+
+If the connection was successful you can use the `login` command to log in to the server.
 
 ## Commands
 To run Burn or Burn Shell command use '$' character as prefix.
@@ -134,6 +143,19 @@ If you looking for things to do, then check TODO file or contact me(dev@isangele
 
 When you find something to do, create new branch for your feature.
 After you finish, open pull request to merge your changes with master branch.
+
+## Documentation
+Source code documentation can be easily browsed with `go doc` command.
+
+Documentation for config files in form of Troff pages is available under `doc` directory.
+
+You can easily view documentation pages with `man` command.
+
+For example to display documentation page for guiset command:
+```
+$ man doc/file/.burnsh
+```
+Note that documentation is still incomplete.
 
 ## Contact
 * Isangeles <<dev@isangeles.pl>>

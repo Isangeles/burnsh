@@ -70,7 +70,6 @@ func newGameDialog() error {
 				break
 			}
 		}
-
 		fmt.Printf("%s: %v\n", lang.Text("cli_newgame_summary"),
 			charDisplayString(newGamePlayer))
 		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
@@ -80,7 +79,10 @@ func newGameDialog() error {
 			accept = true
 		}
 	}
-	activeGame = game.New(flame.NewGame(mod), server)
+	activeGame = game.New(flame.NewGame(mod))
+	if server != nil {
+		activeGame.SetServer(server)
+	}
 	err := activeGame.AddPlayer(newGamePlayer)
 	if err != nil {
 		return fmt.Errorf("Unable to add player: %v", err)

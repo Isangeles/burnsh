@@ -80,7 +80,7 @@ func loadGameDialog() error {
 	if err != nil {
 		return fmt.Errorf("unable to load saved game: %v", err)
 	}
-	activeGame = game.New(g, nil)
+	activeGame = game.New(g)
 	burn.Game = g
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.SavegameFileExt)

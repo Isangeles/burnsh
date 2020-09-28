@@ -29,6 +29,8 @@ import (
 
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/module/character"
+
+	"github.com/isangeles/burnsh/log"
 )
 
 // Struct for game wrapper.
@@ -41,12 +43,8 @@ type Game struct {
 }
 
 // New creates new game wrapper for specified game.
-func New(game *flame.Game, server *Server) *Game {
+func New(game *flame.Game) *Game {
 	g := Game{Game: game}
-	g.server = server
-	if g.server != nil {
-		g.server.SetOnResponseFunc(g.handleResponse)
-	}
 	return &g
 }
 
@@ -82,6 +80,17 @@ func (g *Game) ActivePlayer() *Player {
 // SetActivePlayer sets specified player as active player.
 func (g *Game) SetActivePlayer(player *Player) {
 	g.activePlayer = player
+}
+
+// SetServer sets remote game server.
+func (g *Game) SetServer(server *Server) {
+	g.server = server
+	g.Server().SetOnResponseFunc(g.handleResponse)
+	err := g.Server().Update()
+	if err != nil {
+		log.Err.Printf("Game: unable to send update request to the server: %v",
+			err)
+	}
 }
 
 // Server retruns game server.

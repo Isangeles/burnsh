@@ -96,13 +96,27 @@ func (s *Server) Login(id, pass string) error {
 	req := request.Request{Login: []request.Login{login}}
 	t, err := request.Marshal(&req)
 	if err != nil {
-		return fmt.Errorf("Unable to marshal login request: %v",
-			err)
+		return fmt.Errorf("Unable to marshal request: %v", err)
 	}
 	t = fmt.Sprintf("%s\r\n", t)
 	_, err = s.conn.Write([]byte(t))
 	if err != nil {
-		return fmt.Errorf("Unable to write login request: %v", err)
+		return fmt.Errorf("Unable to write request: %v", err)
+	}
+	return nil
+}
+
+// Update sends update request to the server.
+func (s *Server) Update() error {
+	req := request.Request{}
+	t, err := request.Marshal(&req)
+	if err != nil {
+		return fmt.Errorf("Unable to marshal request: %v", err)
+	}
+	t = fmt.Sprintf("%s\r\n", t)
+	_, err = s.conn.Write([]byte(t))
+	if err != nil {
+		return fmt.Errorf("Unable to write request: %v", err)
 	}
 	return nil
 }
@@ -112,13 +126,12 @@ func (s *Server) NewCharacter(charData flameres.CharacterData) error {
 	req := request.Request{NewChar: []flameres.CharacterData{charData}}
 	t, err := request.Marshal(&req)
 	if err != nil {
-		return fmt.Errorf("Unable to marshal new char request: %v",
-			err)
+		return fmt.Errorf("Unable to marshal request: %v", err)
 	}
 	t = fmt.Sprintf("%s\r\n", t)
 	_, err = s.conn.Write([]byte(t))
 	if err != nil {
-		return fmt.Errorf("Unable to write new char request: %v", err)
+		return fmt.Errorf("Unable to write request: %v", err)
 	}
 	return nil
 }
@@ -129,8 +142,8 @@ func (s *Server) Move(id, serial string, x, y float64) error {
 	moveReq := request.Move{
 		ID:     id,
 		Serial: serial,
-		PosX:   10,
-		PosY:   20,
+		PosX:   x,
+		PosY:   y,
 	}
 	req.Move = append(req.Move, moveReq)
 	text, err := request.Marshal(req)

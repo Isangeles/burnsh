@@ -1,5 +1,5 @@
 /*
- * login.go
+ * response.go
  *
  * Copyright 2020 Dariusz Sikora <dev@isangeles.pl>
  *
@@ -24,44 +24,29 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"os"
+	"github.com/isangeles/flame/module"
 
-	"github.com/isangeles/flame/data/res/lang"
+	"github.com/isangeles/fire/response"
 
-	"github.com/isangeles/burnsh/config"
+	"github.com/isangeles/burnsh/log"
 )
 
-var logged bool
+// handleResponse handles response from the Fire server.
+func handleResponse(resp response.Response) {
+	if !resp.Logon {
+		log.Inf.Printf("Logged at: %s", server.Address())
+		handleUpdateResponse(resp.Update)
+	}
+	for _, r := range resp.Error {
+		log.Err.Printf("Server error response: %s", r)
+	}
+}
 
-// login start CLI dialog for game server login.
-func loginDialog() error {
-	if server == nil {
-		return fmt.Errorf("No server connection")
+// handleUpdateResponse handles update response from the server.
+func handleUpdateResponse(resp response.Update) {
+	if mod == nil {
+		mod = module.New(resp.Module)
+		return
 	}
-	id, pass := config.ServerLogin, config.ServerPass
-	if len(id) < 1 || len(pass) < 1 {
-		scan := bufio.NewScanner(os.Stdin)
-		fmt.Printf("%s:", lang.Text("cli_login_id"))
-		for scan.Scan() {
-			id = scan.Text()
-			if len(id) > 0 {
-				break
-			}
-		}
-		fmt.Printf("%s:", lang.Text("cli_login_pass"))
-		for scan.Scan() {
-			pass = scan.Text()
-			if len(pass) > 0 {
-				break
-			}
-		}
-	}
-	err := server.Login(id, pass)
-	if err != nil {
-		return fmt.Errorf("Unable to send login request: %v",
-			err)
-	}
-	return nil
+	mod.Apply(resp.Module)
 }

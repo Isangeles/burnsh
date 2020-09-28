@@ -81,13 +81,14 @@ const (
 var (
 	mod         *module.Module
 	server      *game.Server
-        activeGame  *game.Game
+	activeGame  *game.Game
 	lastCommand string
 	lastUpdate  time.Time
 )
 
 // On init.
 func init() {
+	log.PrintStdOut(config.Debug)
 	// Load CLI config.
 	err := config.Load()
 	if err != nil {
@@ -109,7 +110,6 @@ func init() {
 func main() {
 	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
 		flameconf.Name, flameconf.Version)
-	log.PrintStdOut(true)
 	if config.Fire {
 		serv, err := game.NewServer(config.ServerHost, config.ServerPort)
 		if err != nil {
@@ -117,6 +117,7 @@ func main() {
 				err))
 		}
 		server = serv
+		server.SetOnResponseFunc(handleResponse)
 		log.Inf.Printf("Connected to the game server at: %s", server.Address())
 	}
 	fmt.Print(InputIndicator)
@@ -203,13 +204,8 @@ func execute(input string) {
 		if mod == nil {
 			log.Err.Printf("%s: no module loaded", ImportCharsCmd)
 		}
-		chars, err := data.ImportCharactersDir(mod.Conf().CharactersPath())
-		if err != nil {
-			log.Err.Printf("%s:%v", ImportCharsCmd, err)
-			break
-		}
-		log.Inf.Printf("imported chars: %d\n", len(chars))
-		for _, cd := range chars {
+		log.Inf.Printf("Imported characters: %d\n", len(mod.Res.Characters))
+		for _, cd := range mod.Res.Characters {
 			c := character.New(cd)
 			playableChars = append(playableChars, c)
 		}

@@ -331,7 +331,8 @@ func loadModule(path string) error {
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
-	mod = module.New(modData)
+	mod = module.New()
+	mod.Apply(modData)
 	burn.Module = mod
 	err = data.LoadModuleLang(mod, config.Lang)
 	if err != nil {

@@ -50,7 +50,8 @@ func NewModule(name string) error {
 	startArea := res.AreaData{ID: "area1"}
 	modData.Chapter.Areas = append(modData.Chapter.Areas, startArea)
 	// Export module.
-	mod := module.New(modData)
+	mod := module.New()
+	mod.Apply(modData)
 	err := data.ExportModule(mod, path)
 	if err != nil {
 		return fmt.Errorf("unable to export module: %v", err)

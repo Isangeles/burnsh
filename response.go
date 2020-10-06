@@ -45,7 +45,8 @@ func handleResponse(resp response.Response) {
 // handleUpdateResponse handles update response from the server.
 func handleUpdateResponse(resp response.Update) {
 	if mod == nil {
-		mod = module.New(resp.Module)
+		mod = module.New()
+		mod.Apply(resp.Module)
 		return
 	}
 	mod.Apply(resp.Module)

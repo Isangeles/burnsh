@@ -334,9 +334,5 @@ func loadModule(path string) error {
 	mod = module.New()
 	mod.Apply(modData)
 	burn.Module = mod
-	err = data.LoadModuleLang(mod, config.Lang)
-	if err != nil {
-		log.Err.Printf("unable to load module translation: %v", err)
-	}
 	return nil
 }

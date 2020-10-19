@@ -36,6 +36,7 @@ import (
 	"github.com/isangeles/flame/module/item"
 	"github.com/isangeles/flame/module/skill"
 
+	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -107,7 +108,8 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 	}
 	// Add translation for new character name.
 	nameTrans := res.TranslationData{char.ID(), []string{name}}
-	res.Translations = append(res.Translations, nameTrans)
+	res.Translations[config.Lang] = append(res.Translations[config.Lang],
+		nameTrans)
 	return char, nil
 }
 

@@ -86,30 +86,26 @@ var (
 	lastUpdate  time.Time
 )
 
-// On init.
-func init() {
-	log.PrintStdOut(config.Debug)
+// Main function.
+func main() {
+	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
+		flameconf.Name, flameconf.Version)
 	// Load CLI config.
 	err := config.Load()
 	if err != nil {
 		log.Err.Printf("unable to load config: %v", err)
+	}
+	log.PrintStdOut(config.Debug)
+	// Load module.
+	err = loadModule(config.ModulePath())
+	if err != nil {
+		log.Err.Printf("unable to load module: %v", err)
 	}
 	// Load UI translation.
 	err = data.LoadTranslationData(config.LangPath())
 	if err != nil {
 		log.Err.Printf("unable to load ui translation data: %v", err)
 	}
-	// Load module.
-	err = loadModule(config.ModulePath())
-	if err != nil {
-		log.Err.Printf("unable to load module: %v", err)
-	}
-}
-
-// Main function.
-func main() {
-	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
-		flameconf.Name, flameconf.Version)
 	if config.Fire {
 		serv, err := game.NewServer(config.ServerHost, config.ServerPort)
 		if err != nil {

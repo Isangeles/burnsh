@@ -38,7 +38,7 @@ import (
 
 var (
 	SaveExt         = ".savecli"
-	ModuleSavesPath = "ui/burnsh/saves"
+	ModuleSavesPath = "burnsh/saves"
 )
 
 // Struct for CLI save node.

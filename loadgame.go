@@ -33,7 +33,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/isangeles/flame"
 	flamedata "github.com/isangeles/flame/data"
+	"github.com/isangeles/flame/module"
 	"github.com/isangeles/flame/data/res/lang"
 
 	"github.com/isangeles/burn"
@@ -48,7 +50,7 @@ func loadGameDialog() error {
 	if mod == nil {
 		return fmt.Errorf("no module loaded")
 	}
-	savePattern := fmt.Sprintf(".*%s", flamedata.SavegameFileExt)
+	savePattern := fmt.Sprintf(".*%s", flamedata.ModuleFileExt)
 	saves, err := flamedata.DirFilesNames(mod.Conf().SavesPath(), savePattern)
 	if err != nil {
 		return fmt.Errorf("unable to retrieve save files: %v")
@@ -76,14 +78,16 @@ func loadGameDialog() error {
 	}
 	// Game.
 	savepath := filepath.Join(mod.Conf().SavesPath(), savename)
-	g, err := flamedata.ImportGame(mod, savepath)
+	modData, err := flamedata.ImportModuleFile(savepath)
 	if err != nil {
-		return fmt.Errorf("unable to load saved game: %v", err)
+		return fmt.Errorf("unable to import module file: %v", err)
 	}
-	activeGame = game.New(g)
-	burn.Game = g
+	m := module.New()
+	m.Apply(modData)
+	activeGame = game.New(flame.NewGame(m))
+	burn.Game = activeGame.Game
 	// CLI.
-	savename = strings.TrimSuffix(savename, flamedata.SavegameFileExt)
+	savename = strings.TrimSuffix(savename, flamedata.ModuleFileExt)
 	cliSavePath := filepath.Join(mod.Conf().Path, ModuleSavesPath, savename+SaveExt)
 	cliSave, err := loadCLI(cliSavePath)
 	if err != nil {

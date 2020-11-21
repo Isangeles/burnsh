@@ -139,10 +139,6 @@ func main() {
 			log.Inf.Println(input)
 		}
 		fmt.Print(InputIndicator)
-		// Game update on input.
-		if activeGame != nil {
-			go gameLoop(activeGame)
-		}
 	}
 	if err := scan.Err(); err != nil {
 		log.Err.Printf("unable to init input scanner : %v\n", err)
@@ -177,7 +173,7 @@ func execute(input string) {
 			log.Err.Printf("%s: %v", NewGameCmd, err)
 			break
 		}
-		lastUpdate = time.Now()
+		go gameLoop(activeGame)
 	case NewModCmd:
 		err := newModDialog()
 		if err != nil {
@@ -311,13 +307,15 @@ func runScript(s *ash.Script) {
 
 // gameLoop handles game updating.
 func gameLoop(g *game.Game) {
-	// Delta.
-	dtNano := time.Since(lastUpdate).Nanoseconds()
-	delta := dtNano / int64(time.Millisecond) // delta to milliseconds
-	// Game.
-	g.Update(delta)
-	// Update time.
 	lastUpdate = time.Now()
+	for {
+		dtNano := time.Since(lastUpdate).Nanoseconds()
+		delta := dtNano / int64(time.Millisecond) // delta to milliseconds
+		g.Update(delta)
+		lastUpdate = time.Now()
+		// Wait for 16 millis.
+		time.Sleep(time.Duration(16) * time.Millisecond)
+	}
 }
 
 // loadModule loads module with all module data

@@ -312,6 +312,7 @@ func gameLoop(g *game.Game) {
 		dtNano := time.Since(lastUpdate).Nanoseconds()
 		delta := dtNano / int64(time.Millisecond) // delta to milliseconds
 		g.Update(delta)
+		updateChat()
 		lastUpdate = time.Now()
 		// Wait for 16 millis.
 		time.Sleep(time.Duration(16) * time.Millisecond)

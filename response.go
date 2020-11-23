@@ -24,7 +24,9 @@
 package main
 
 import (
+	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/module"
+	"github.com/isangeles/flame/module/serial"
 
 	"github.com/isangeles/fire/response"
 
@@ -44,6 +46,8 @@ func handleResponse(resp response.Response) {
 
 // handleUpdateResponse handles update response from the server.
 func handleUpdateResponse(resp response.Update) {
+	serial.Reset()
+	flameres.Clear()
 	if mod == nil {
 		mod = module.New()
 		mod.Apply(resp.Module)

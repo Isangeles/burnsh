@@ -48,3 +48,16 @@ func (p *Player) SetDestPoint(x, y float64) {
 			p.ID(), p.Serial(), err)
 	}
 }
+
+// AddChatMessage adds new message to player chat log.
+func (p *Player) AddChatMessage(message string) {
+	p.ChatLog().Add(message)
+	if p.game.Server() == nil {
+		return
+	}
+	err := p.game.Server().Chat(p.ID(), p.Serial(), message)
+	if err != nil {
+		log.Err.Printf("Player: %s %s: unable to send chat request: %v",
+			p.ID(), p.Serial(), err)
+	}
+}

@@ -106,6 +106,7 @@ func main() {
 	if err != nil {
 		log.Err.Printf("unable to load ui translation data: %v", err)
 	}
+	// Fire server.
 	if config.Fire {
 		serv, err := game.NewServer(config.ServerHost, config.ServerPort)
 		if err != nil {
@@ -134,7 +135,7 @@ func main() {
 			}
 			executeFile(bgrun, scrArgs[0], scrArgs...)
 		} else if activeGame != nil && activeGame.ActivePlayer() != nil {
-			activeGame.ActivePlayer().ChatLog().Add(input)
+			activeGame.ActivePlayer().AddChatMessage(input)
 		} else {
 			log.Inf.Println(input)
 		}

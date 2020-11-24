@@ -29,9 +29,9 @@ Run shell:
 $ ./burnsh
 ```
 ## Module directory
-All UI-related files, must be stored in the `data/modules/[module name]/burnsh` directory.
+All UI-related files must be stored in the `data/modules/[module name]/burnsh` directory.
 
-Translations for UI elements needs to be stored in the `burnsh/lang` sub-directory of the module directory.
+Translations for the UI needs to be stored in the `burnsh/lang` sub-directory of the module directory.
 
 You can find default translations for the GUI in the `res/lang` directory of this repository.
 
@@ -80,6 +80,12 @@ Import exported characters:
 ```
 Description: imports all characters from XML files in
 data/modules/[module]/characters directory.
+
+Login:
+```
+$login
+```
+Description: starts dialog for the authorization with remote game server.
 
 Set target:
 ```
@@ -148,7 +154,7 @@ Use '&' suffix to run script in background.
 ## Contributing
 You are welcome to contribute to project development.
 
-If you looking for things to do, then check TODO file or contact me(dev@isangeles.pl).
+If you looking for things to do, then check TODO file or contact maintainer(dev@isangeles.pl).
 
 When you find something to do, create new branch for your feature.
 After you finish, open pull request to merge your changes with master branch.

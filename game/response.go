@@ -29,6 +29,7 @@ import (
 
 	"github.com/isangeles/fire/response"
 
+	"github.com/isangeles/burnsh/data/res"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -64,5 +65,6 @@ func (g *Game) handleNewCharResponse(resp []response.NewChar) {
 func (g *Game) handleUpdateResponse(resp response.Update) {
 	serial.Reset()
 	flameres.Clear()
+	flameres.Add(flameres.ResourcesData{TranslationBases: res.TranslationBases})
 	g.Module().Apply(resp.Module)
 }

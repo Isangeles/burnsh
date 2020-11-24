@@ -30,6 +30,7 @@ import (
 
 	"github.com/isangeles/fire/response"
 
+	"github.com/isangeles/burnsh/data/res"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -48,6 +49,7 @@ func handleResponse(resp response.Response) {
 func handleUpdateResponse(resp response.Update) {
 	serial.Reset()
 	flameres.Clear()
+	flameres.Add(flameres.ResourcesData{TranslationBases: res.TranslationBases})
 	if mod == nil {
 		mod = module.New()
 		mod.Apply(resp.Module)

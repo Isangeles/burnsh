@@ -37,7 +37,7 @@ import (
 	"time"
 
 	flameconf "github.com/isangeles/flame/config"
-	"github.com/isangeles/flame/data"
+	flamedata "github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/module"
 	"github.com/isangeles/flame/module/character"
 
@@ -46,6 +46,7 @@ import (
 	"github.com/isangeles/burn/syntax"
 
 	"github.com/isangeles/burnsh/config"
+	"github.com/isangeles/burnsh/data"
 	"github.com/isangeles/burnsh/game"
 	"github.com/isangeles/burnsh/log"
 )
@@ -93,18 +94,18 @@ func main() {
 	// Load CLI config.
 	err := config.Load()
 	if err != nil {
-		log.Err.Printf("unable to load config: %v", err)
+		log.Err.Printf("Unable to load config: %v", err)
 	}
 	log.PrintStdOut(config.Debug)
 	// Load module.
 	err = loadModule(config.ModulePath())
 	if err != nil {
-		log.Err.Printf("unable to load module: %v", err)
+		log.Err.Printf("Unable to load module: %v", err)
 	}
-	// Load UI translation.
-	err = data.LoadTranslationData(config.LangPath())
+	// Load UI data.
+	err = data.LoadUIData(filepath.Join(config.ModulePath(), data.UIDirPath))
 	if err != nil {
-		log.Err.Printf("unable to load ui translation data: %v", err)
+		log.Err.Printf("Unable to load UI data: %v", err)
 	}
 	// Fire server.
 	if config.Fire {
@@ -323,7 +324,7 @@ func gameLoop(g *game.Game) {
 // loadModule loads module with all module data
 // from directory with specified path.
 func loadModule(path string) error {
-	modData, err := data.ImportModule(config.ModulePath())
+	modData, err := flamedata.ImportModule(config.ModulePath())
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}

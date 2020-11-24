@@ -4,25 +4,38 @@ Burn Shell is command line interface for [Flame engine](https://github.com/isang
 CLI uses [Burn](https://github.com/Isangeles/burn) to handle user input and communicate with engine.
 
 All commands must be prefixed with '$' character.
-
 ## Build & Run
 Get sources from git:
 ```
-  go get -u github.com/isangeles/burnsh
+$ go get -u github.com/isangeles/burnsh
 ```
 Build shell:
 ```
-  go build github.com/isangeles/burnsh
+$ go build github.com/isangeles/burnsh
 ```
-Copy `data` directory from `res` to directory with `burnsh` executable(it contains default translation files for UI), for example:
+Now, specify the ID of a valid Flame module in the configuration file:
+
+Create file `.burnsh` in the Burn Shell executable directory(or run Burn Shell to create it
+automatically) and add the following line:
 ```
-  cp -r ~/go/src/github.com/isangeles/burnsh/res/data .
+module:[module ID]
 ```
+Burn Shell will search the default modules directory(`data/modules`) for a module with the specified ID.
+
+Flame modules are available for download [here](http://flame.isangeles.pl/mods).
+
 Run shell:
 ```
-  ./burnsh
+$ ./burnsh
 ```
+## Module directory
+All UI-related files, must be stored in the `data/modules/[module name]/burnsh` directory.
 
+Translations for UI elements needs to be stored in the `burnsh/lang` sub-directory of the module directory.
+
+You can find default translations for the GUI in the `res/lang` directory of this repository.
+
+For example check [Arena](https://github.com/Isangeles/arena) module.
 ## Multiplayer
 It's possible to join an online game hosted on the [Fire](https://github.com/isangeles/fire) server.
 
@@ -31,12 +44,10 @@ To connect to the remote server set the `fire` value in `.burnsh` config file to
 After that Burn Shell will try to establish a connection with the game server on startup.
 
 If the connection was successful you can use the `login` command to log in to the server.
-
 ## Commands
 To run Burn or Burn Shell command use '$' character as prefix.
 Without prefix, command will be treated as text and printed to out or sent to active player
 chat channel if game was started.
-
 ### Burn Shell build-in commands:
 
 Create module:
@@ -129,13 +140,11 @@ Exit program:
   $close
 ```
 Description: terminates program.
-
 ## Scripts
 Burn Shell supports [Ash](https://github.com/Isangeles/burn/tree/master/ash) scripting language.
 
 To run Ash script use '%' prefix, scripts are executed from 'data/scripts' directory.
 Use '&' suffix to run script in background.
-
 ## Contributing
 You are welcome to contribute to project development.
 
@@ -143,7 +152,6 @@ If you looking for things to do, then check TODO file or contact me(dev@isangele
 
 When you find something to do, create new branch for your feature.
 After you finish, open pull request to merge your changes with master branch.
-
 ## Documentation
 Source code documentation can be easily browsed with `go doc` command.
 
@@ -156,10 +164,8 @@ For example to display documentation page for guiset command:
 $ man doc/file/.burnsh
 ```
 Note that documentation is still incomplete.
-
 ## Contact
 * Isangeles <<dev@isangeles.pl>>
-
 ## License
 Copyright 2018-2020 Dariusz Sikora <<dev@isangeles.pl>>
 

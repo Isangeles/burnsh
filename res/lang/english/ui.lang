@@ -70,6 +70,8 @@ cli_newchar_invalid_value_err:Invalid value
 cli_newchar_no_pts_error:Not enought attributes points
 cli_newgame_no_chars_err:No playable characters
 cli_newgame_start_err:Fail to start new game
+cli_login_id:ID
+cli_login_pass:Password
 cli_nan_error:NaN
 cli_no_mod_err:No module loaded
 attNeutral:Neutral

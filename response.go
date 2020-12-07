@@ -47,10 +47,10 @@ func handleResponse(resp response.Response) {
 
 // handleUpdateResponse handles update response from the server.
 func handleUpdateResponse(resp response.Update) {
-	serial.Reset()
 	flameres.Clear()
 	flameres.Add(flameres.ResourcesData{TranslationBases: res.TranslationBases})
 	if mod == nil {
+		serial.Reset()
 		mod = module.New()
 		mod.Apply(resp.Module)
 		return

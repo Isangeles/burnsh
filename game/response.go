@@ -63,7 +63,6 @@ func (g *Game) handleNewCharResponse(resp []response.NewChar) {
 
 // handleUpdateRespone handles update response.
 func (g *Game) handleUpdateResponse(resp response.Update) {
-	serial.Reset()
 	flameres.Clear()
 	flameres.Add(flameres.ResourcesData{TranslationBases: res.TranslationBases})
 	g.Module().Apply(resp.Module)

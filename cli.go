@@ -53,7 +53,7 @@ import (
 
 const (
 	Name           = "Burn Shell"
-	Version        = "0.0.0"
+	Version        = "0.1.0-dev"
 	CommandPrefix  = "$"
 	ScriptPrefix   = "%"
 	RunBGSuffix    = "&"

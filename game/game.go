@@ -28,7 +28,10 @@ import (
 	"fmt"
 
 	"github.com/isangeles/flame"
+	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/module/character"
+
+	"github.com/isangeles/fire/request"
 
 	"github.com/isangeles/burnsh/log"
 )
@@ -56,7 +59,8 @@ func (g *Game) Players() []*Player {
 // AddPlayer adds new player character.
 func (g *Game) AddPlayer(char *character.Character) error {
 	if g.server != nil {
-		err := g.server.NewCharacter(char.Data())
+		req := request.Request{NewChar: []flameres.CharacterData{char.Data()}}
+		err := g.server.Send(req)
 		if err != nil {
 			return fmt.Errorf("Unable to send new character request: %v",
 				err)

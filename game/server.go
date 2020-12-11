@@ -28,8 +28,6 @@ import (
 	"fmt"
 	"net"
 
-	flameres "github.com/isangeles/flame/data/res"
-
 	"github.com/isangeles/fire/request"
 	"github.com/isangeles/fire/response"
 
@@ -87,131 +85,14 @@ func (s *Server) SetOnResponseFunc(f func(r response.Response)) {
 	s.onResponse = f
 }
 
-// Login sends login request to the server.
-func (s *Server) Login(id, pass string) error {
-	login := request.Login{
-		ID:   id,
-		Pass: pass,
-	}
-	req := request.Request{Login: []request.Login{login}}
-	t, err := request.Marshal(&req)
-	if err != nil {
-		return fmt.Errorf("Unable to marshal request: %v", err)
-	}
-	t = fmt.Sprintf("%s\r\n", t)
-	_, err = s.conn.Write([]byte(t))
-	if err != nil {
-		return fmt.Errorf("Unable to write request: %v", err)
-	}
-	return nil
-}
-
-// Update sends update request to the server.
+// Update sends an empty request to the server to trigger the update response.
 func (s *Server) Update() error {
-	req := request.Request{}
-	t, err := request.Marshal(&req)
-	if err != nil {
-		return fmt.Errorf("Unable to marshal request: %v", err)
-	}
-	t = fmt.Sprintf("%s\r\n", t)
-	_, err = s.conn.Write([]byte(t))
-	if err != nil {
-		return fmt.Errorf("Unable to write request: %v", err)
-	}
-	return nil
+	return s.Send(request.Request{})
 }
 
-// NewCharacter sends new character request to the server.
-func (s *Server) NewCharacter(charData flameres.CharacterData) error {
-	req := request.Request{NewChar: []flameres.CharacterData{charData}}
-	t, err := request.Marshal(&req)
-	if err != nil {
-		return fmt.Errorf("Unable to marshal request: %v", err)
-	}
-	t = fmt.Sprintf("%s\r\n", t)
-	_, err = s.conn.Write([]byte(t))
-	if err != nil {
-		return fmt.Errorf("Unable to write request: %v", err)
-	}
-	return nil
-}
-
-// Move sends move request to the server.
-func (s *Server) Move(id, serial string, x, y float64) error {
-	req := new(request.Request)
-	moveReq := request.Move{
-		ID:     id,
-		Serial: serial,
-		PosX:   x,
-		PosY:   y,
-	}
-	req.Move = append(req.Move, moveReq)
-	text, err := request.Marshal(req)
-	if err != nil {
-		return fmt.Errorf("Unable to marshal request: %v", err)
-	}
-	text = fmt.Sprintf("%s\r\n", text)
-	_, err = s.conn.Write([]byte(text))
-	if err != nil {
-		return fmt.Errorf("Unable to write request: %v", err)
-	}
-	return nil
-}
-
-// Chat sends chat request to the server.
-func (s *Server) Chat(id, serial, message string) error {
-	req := new(request.Request)
-	chatReq := request.Chat{
-		ObjectID:     id,
-		ObjectSerial: serial,
-		Message:      message,
-	}
-	req.Chat = append(req.Chat, chatReq)
-	text, err := request.Marshal(req)
-	if err != nil {
-		return fmt.Errorf("Unable to marshal request: %v", err)
-	}
-	text = fmt.Sprintf("%s\r\n", text)
-	_, err = s.conn.Write([]byte(text))
-	if err != nil {
-		return fmt.Errorf("Unable to write request: %v", err)
-	}
-	return nil
-}
-
-// Target sends target request to the server.
-func (s *Server) Target(obID, obSerial, tarID, tarSerial string) error {
-	req := new(request.Request)
-	targetReq := request.Target{
-		ObjectID:     obID,
-		ObjectSerial: obSerial,
-		TargetID:     tarID,
-		TargetSerial: tarSerial,
-	}
-	req.Target = append(req.Target, targetReq)
-	text, err := request.Marshal(req)
-	if err != nil {
-		return fmt.Errorf("Unable to marshal request: %v", err)
-	}
-	text = fmt.Sprintf("%s\r\n", text)
-	_, err = s.conn.Write([]byte(text))
-	if err != nil {
-		return fmt.Errorf("Unable to write request: %v", err)
-	}
-	return nil
-}
-
-// Use sends use request to the server.
-func (s *Server) Use(userID, userSerial, objectID, objectSerial string) error {
-	req := new(request.Request)
-	useReq := request.Use{
-		UserID:       userID,
-		UserSerial:   userSerial,
-		ObjectID:     objectID,
-		ObjectSerial: objectSerial,
-	}
-	req.Use = append(req.Use, useReq)
-	text, err := request.Marshal(req)
+// Send sends specified request to the server.
+func (s *Server) Send(req request.Request) error {
+	text, err := request.Marshal(&req)
 	if err != nil {
 		return fmt.Errorf("Unable to marshal request: %v", err)
 	}

@@ -163,12 +163,13 @@ func execute(input string) {
 			break
 		}
 	case NewCharCmd:
-		createdChar, err := newCharacterDialog(mod)
+		charData, err := newCharacterDialog(mod)
 		if err != nil {
 			log.Err.Printf("%s\n", err)
 			break
 		}
-		playableChars = append(playableChars, createdChar)
+		char := character.New(charData)
+		playableChars = append(playableChars, char)
 	case NewGameCmd:
 		err := newGameDialog()
 		if err != nil {

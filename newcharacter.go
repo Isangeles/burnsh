@@ -29,24 +29,20 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/data/res"
+	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/data/res/lang"
 	"github.com/isangeles/flame/module"
 	"github.com/isangeles/flame/module/character"
-	"github.com/isangeles/flame/module/item"
-	"github.com/isangeles/flame/module/skill"
-
-	"github.com/isangeles/burnsh/log"
 )
 
 // newCharacterDialog starts CLI dialog to create new playable
 // game character.
-func newCharacterDialog(mod *module.Module) (*character.Character, error) {
+func newCharacterDialog(mod *module.Module) (flameres.CharacterData, error) {
+	var data flameres.CharacterData
 	if mod == nil {
-		return nil, fmt.Errorf("no module loaded")
+		return data, fmt.Errorf("no module loaded")
 	}
 	// Character creation dialog
-	var char *character.Character
 	name := ""
 	scan := bufio.NewScanner(os.Stdin)
 	for mainAccept := false; !mainAccept; {
@@ -80,7 +76,7 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 		}
 		// Summary.
 		charID := fmt.Sprintf("player_%s", name)
-		charData := res.CharacterData{
+		charData := flameres.CharacterData{
 			ID:        charID,
 			Level:     1,
 			Sex:       string(sex),
@@ -88,27 +84,36 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 			Attitude:  string(character.Friendly),
 			Alignment: string(character.TrueNeutral),
 		}
-		charData.Attributes = res.AttributesData{
+		charData.Attributes = flameres.AttributesData{
 			Str: attrs.Str,
 			Con: attrs.Con,
 			Dex: attrs.Dex,
 			Int: attrs.Int,
 			Wis: attrs.Wis,
 		}
-		char = buildCharacter(mod, &charData)
 		fmt.Printf("%s: %s\n", lang.Text("cli_newchar_summary"),
-			charDisplayString(char))
+			charData.ID)
 		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 		scan.Scan()
 		input := scan.Text()
 		if input != "r" {
+			data = charData
 			mainAccept = true
 		}
 	}
 	// Add translation for new character name.
-	nameTrans := res.TranslationData{char.ID(), []string{name}}
+	nameTrans := flameres.TranslationData{data.ID, []string{name}}
 	lang.AddTranslation(nameTrans)
-	return char, nil
+	// Add player skills & items from interface config.
+	for _, sid := range mod.Chapter().Conf().StartSkills {
+		skill := flameres.ObjectSkillData{ID: sid}
+		data.Skills = append(data.Skills, skill)
+	}
+	for _, iid := range mod.Chapter().Conf().StartItems {
+		item := flameres.InventoryItemData{ID: iid}
+		data.Inventory.Items = append(data.Inventory.Items, item)
+	}
+	return data, nil
 }
 
 // raceDialog starts CLI dialog for game character race.
@@ -116,8 +121,8 @@ func newCharacterDialog(mod *module.Module) (*character.Character, error) {
 func raceDialog() string {
 	scan := bufio.NewScanner(os.Stdin)
 	fmt.Printf("%s:", lang.Text("cli_newchar_race"))
-	races := make([]res.RaceData, 0)
-	for _, r := range res.Races {
+	races := make([]flameres.RaceData, 0)
+	for _, r := range flameres.Races {
 		if !r.Playable {
 			continue
 		}
@@ -291,31 +296,4 @@ func newAttributesDialog(attrsPoints int) (attrs character.Attributes) {
 // is valid character name.
 func charNameValid(name string) bool {
 	return len(name) > 0
-}
-
-// buildCharacter creates new character from specified data.
-func buildCharacter(mod *module.Module, charData *res.CharacterData) *character.Character {
-	char := character.New(*charData)
-	// Add player skills & items from interface config.
-	for _, sid := range mod.Chapter().Conf().StartSkills {
-		sd := res.Skill(sid)
-		if sd == nil {
-			log.Err.Printf("new char dialog: fail to retrieve new player skill data: %s",
-				sid)
-			break
-		}
-		s := skill.New(*sd)
-		char.AddSkill(s)
-	}
-	for _, iid := range mod.Chapter().Conf().StartItems {
-		id := res.Item(iid)
-		if id == nil {
-			log.Err.Printf("new char dialog: fail to retireve new player item data: %s",
-				iid)
-			continue
-		}
-		i := item.New(id)
-		char.Inventory().AddItem(i)
-	}
-	return char
 }

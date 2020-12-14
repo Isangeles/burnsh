@@ -39,7 +39,6 @@ import (
 	flameconf "github.com/isangeles/flame/config"
 	flamedata "github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/module"
-	"github.com/isangeles/flame/module/character"
 
 	"github.com/isangeles/burn"
 	"github.com/isangeles/burn/ash"
@@ -168,8 +167,7 @@ func execute(input string) {
 			log.Err.Printf("%s\n", err)
 			break
 		}
-		char := character.New(charData)
-		playableChars = append(playableChars, char)
+		playableChars = append(playableChars, charData)
 	case NewGameCmd:
 		err := newGameDialog()
 		if err != nil {
@@ -201,8 +199,7 @@ func execute(input string) {
 		}
 		log.Inf.Printf("Imported characters: %d\n", len(mod.Res.Characters))
 		for _, cd := range mod.Res.Characters {
-			c := character.New(cd)
-			playableChars = append(playableChars, c)
+			playableChars = append(playableChars, cd)
 		}
 	case MoveCmd:
 		err := moveDialog()

@@ -92,7 +92,7 @@ func newCharacterDialog(mod *module.Module) (flameres.CharacterData, error) {
 			Wis: attrs.Wis,
 		}
 		fmt.Printf("%s: %s\n", lang.Text("cli_newchar_summary"),
-			charData.ID)
+			charDataDisplayString(charData))
 		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 		scan.Scan()
 		input := scan.Text()

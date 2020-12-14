@@ -30,6 +30,7 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame"
+	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/data/res/lang"
 	"github.com/isangeles/flame/module/character"
 
@@ -39,8 +40,7 @@ import (
 )
 
 var (
-	playableChars []*character.Character
-	newGamePlayer *character.Character
+	playableChars []flameres.CharacterData
 )
 
 // newGameDialog starts CLI dialog for new game.
@@ -51,11 +51,12 @@ func newGameDialog() error {
 	if len(playableChars) < 1 {
 		return fmt.Errorf(lang.Text("cli_newgame_no_chars_err"))
 	}
+	var playerData flameres.CharacterData
 	scan := bufio.NewScanner(os.Stdin)
 	for accept := false; !accept; {
 		fmt.Printf("%s:\n", lang.Text("cli_newgame_chars"))
 		for i, c := range playableChars {
-			fmt.Printf("[%d]%v\n", i, charDisplayString(c))
+			fmt.Printf("[%d]%v\n", i, charDataDisplayString(c))
 		}
 		fmt.Printf("%s:", lang.Text("cli_newgame_select_char"))
 		for scan.Scan() {
@@ -66,12 +67,12 @@ func newGameDialog() error {
 					lang.Text("cli_nan_error"), input)
 			}
 			if id >= 0 && id < len(playableChars) {
-				newGamePlayer = playableChars[id]
+				playerData  = playableChars[id]
 				break
 			}
 		}
 		fmt.Printf("%s: %v\n", lang.Text("cli_newgame_summary"),
-			charDisplayString(newGamePlayer))
+			charDataDisplayString(playerData))
 		fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 		scan.Scan()
 		input := scan.Text()
@@ -83,7 +84,8 @@ func newGameDialog() error {
 	if server != nil {
 		activeGame.SetServer(server)
 	}
-	err := activeGame.AddPlayer(newGamePlayer)
+	char := character.New(playerData)
+	err := activeGame.AddPlayer(char)
 	if err != nil {
 		return fmt.Errorf("Unable to add player: %v", err)
 	}

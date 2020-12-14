@@ -26,21 +26,21 @@ package main
 import (
 	"fmt"
 
+	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/data/res/lang"
 	"github.com/isangeles/flame/module"
 	"github.com/isangeles/flame/module/area"
-	"github.com/isangeles/flame/module/character"
 	"github.com/isangeles/flame/module/req"
 )
 
-// charDisplayString returns string with character
+// charDataDisplayString returns string with character
 // stats and info.
-func charDisplayString(char *character.Character) string {
+func charDataDisplayString(data flameres.CharacterData) string {
 	return fmt.Sprintf("%s:%s,%s,%s:%d,%d,%d,%d,%d",
-		lang.Text(char.ID()), char.Race().ID(), char.Gender(),
-		"Stats", char.Attributes().Str, char.Attributes().Con,
-		char.Attributes().Dex, char.Attributes().Wis,
-		char.Attributes().Int)
+		lang.Text(data.ID), data.Race, data.Sex,
+		"Stats", data.Attributes.Str, data.Attributes.Con,
+		data.Attributes.Dex, data.Attributes.Wis,
+		data.Attributes.Int)
 }
 
 // reqsInfo returns text with info to display

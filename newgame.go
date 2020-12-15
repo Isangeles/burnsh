@@ -34,6 +34,8 @@ import (
 	"github.com/isangeles/flame/data/res/lang"
 	"github.com/isangeles/flame/module/character"
 
+	"github.com/isangeles/fire/request"
+
 	"github.com/isangeles/burn"
 
 	"github.com/isangeles/burnsh/game"
@@ -81,14 +83,21 @@ func newGameDialog() error {
 		}
 	}
 	activeGame = game.New(flame.NewGame(mod))
+	burn.Game = activeGame.Game
 	if server != nil {
 		activeGame.SetServer(server)
+		req := request.Request{NewChar: []flameres.CharacterData{playerData}}
+		err := activeGame.Server().Send(req)
+		if err != nil {
+			return fmt.Errorf("Unable to send new character request: %v",
+				err)
+		}
+		return nil
 	}
 	char := character.New(playerData)
 	err := activeGame.AddPlayer(char)
 	if err != nil {
 		return fmt.Errorf("Unable to add player: %v", err)
 	}
-	burn.Game = activeGame.Game
 	return nil
 }

@@ -28,10 +28,6 @@ import (
 	"fmt"
 
 	"github.com/isangeles/flame"
-	flameres "github.com/isangeles/flame/data/res"
-	"github.com/isangeles/flame/module/character"
-
-	"github.com/isangeles/fire/request"
 
 	"github.com/isangeles/burnsh/log"
 )
@@ -57,23 +53,9 @@ func (g *Game) Players() []*Player {
 }
 
 // AddPlayer adds new player character.
-func (g *Game) AddPlayer(char *character.Character) error {
-	if g.server != nil {
-		req := request.Request{NewChar: []flameres.CharacterData{char.Data()}}
-		err := g.server.Send(req)
-		if err != nil {
-			return fmt.Errorf("Unable to send new character request: %v",
-				err)
-		}
-		return nil
-	}
-	player, err := g.newPlayer(char)
-	if err != nil {
-		return fmt.Errorf("Unable to create player: %v", err)
-	}
+func (g *Game) AddPlayer(player *Player) {
 	g.players = append(g.players, player)
 	g.SetActivePlayer(player)
-	return nil
 }
 
 // ActivePlayer returns active player.
@@ -107,19 +89,18 @@ func (g *Game) SetOnLoginFunc(f func(g *Game)) {
 	g.onLoginFunc = f
 }
 
-// newPlayer creates new character avatar for the player from specified data and
-// places this character in the start area of game module.
-func (g *Game) newPlayer(char *character.Character) (*Player, error) {
+// SpawnPlayer places specified player in the area and on the position specified in
+// game module configuration.
+func (g *Game) SpawnPlayer(player *Player) error {
 	// Set start position.
-	char.SetPosition(g.Module().Chapter().Conf().StartPosX,
+	player.SetPosition(g.Module().Chapter().Conf().StartPosX,
 		g.Module().Chapter().Conf().StartPosY)
 	// Set start area.
 	startArea := g.Module().Chapter().Area(g.Module().Chapter().Conf().StartArea)
 	if startArea == nil {
-		return nil, fmt.Errorf("game: start area not found: %s",
+		return fmt.Errorf("game: start area not found: %s",
 			g.Module().Chapter().Conf().StartArea)
 	}
-	startArea.AddCharacter(char)
-	player := Player{char, g}
-	return &player, nil
+	startArea.AddCharacter(player.Character)
+	return nil
 }

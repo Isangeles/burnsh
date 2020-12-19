@@ -94,8 +94,12 @@ func newGameDialog() error {
 		}
 		return nil
 	}
-	char := character.New(playerData)
-	err := activeGame.AddPlayer(char)
+	player := game.NewPlayer(character.New(playerData), activeGame)
+	activeGame.AddPlayer(player)
+	err := activeGame.SpawnPlayer(player)
+	if err != nil {
+		return fmt.Errorf("Unable to spawn player: %v", err)
+	}
 	if err != nil {
 		return fmt.Errorf("Unable to add player: %v", err)
 	}

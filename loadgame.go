@@ -98,7 +98,7 @@ func loadGameDialog() error {
 		if c == nil {
 			log.Err.Printf("load game: unable to find pc: %s%s", pcSave.ID, pcSave.Serial)
 		}
-		activeGame.AddPlayer(c)
+		activeGame.AddPlayer(game.NewPlayer(c, activeGame))
 	}
 	if len(activeGame.Players()) > 0 {
 		activeGame.SetActivePlayer(activeGame.Players()[0])

@@ -40,6 +40,12 @@ type Player struct {
 	game *Game
 }
 
+// NewPlayer creates new game player.
+func NewPlayer(char *character.Character, game *Game) *Player {
+	p := Player{char, game}
+	return &p
+}
+
 // SetDestPoint sets a specified XY position as current
 // as a character destination point.
 func (p *Player) SetDestPoint(x, y float64) {

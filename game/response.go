@@ -55,9 +55,8 @@ func (g *Game) handleNewCharResponse(resp []response.NewChar) {
 				r.ID, r.Serial)
 			return
 		}
-		player := Player{char, g}
-		g.players = append(g.players, &player)
-		g.SetActivePlayer(&player)
+		player := NewPlayer(char, g)
+		g.AddPlayer(player)
 	}
 }
 

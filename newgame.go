@@ -86,7 +86,8 @@ func newGameDialog() error {
 	burn.Game = activeGame.Game
 	if server != nil {
 		activeGame.SetServer(server)
-		req := request.Request{NewChar: []flameres.CharacterData{playerData}}
+		newCharReq := request.NewChar{lang.Text(playerData.ID), playerData}
+		req := request.Request{NewChar: []request.NewChar{newCharReq}}
 		err := activeGame.Server().Send(req)
 		if err != nil {
 			return fmt.Errorf("Unable to send new character request: %v",

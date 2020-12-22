@@ -197,8 +197,8 @@ func execute(input string) {
 		if mod == nil {
 			log.Err.Printf("%s: no module loaded", ImportCharsCmd)
 		}
-		log.Inf.Printf("Imported characters: %d\n", len(mod.Res.Characters))
-		for _, cd := range mod.Res.Characters {
+		log.Inf.Printf("Imported characters: %d\n", len(mod.Resources().Characters))
+		for _, cd := range mod.Resources().Characters {
 			playableChars = append(playableChars, cd)
 		}
 	case MoveCmd:

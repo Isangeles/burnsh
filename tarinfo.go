@@ -32,7 +32,7 @@ import (
 // Interface for objects with info for
 // targetinfo command.
 type InfoTarget interface {
-	Name() string
+	ID() string
 	Health() int
 	Mana() int
 }
@@ -56,7 +56,7 @@ func targetInfoDialog() error {
 	}
 	// Name.
 	info := fmt.Sprintf("%s:%s", lang.Text("ob_name"),
-		tar.Name())
+		lang.Text(tar.ID()))
 	// Health.
 	info += fmt.Sprintf("\n%s:%d", lang.Text("ob_health"),
 		tar.Health())

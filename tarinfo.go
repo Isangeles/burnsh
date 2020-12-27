@@ -35,6 +35,7 @@ type InfoTarget interface {
 	ID() string
 	Health() int
 	Mana() int
+	Position() (float64, float64)
 }
 
 // targetInfoDialog starts CLI dialog that prints informations
@@ -55,14 +56,18 @@ func targetInfoDialog() error {
 		return fmt.Errorf("%s\n", lang.Text("invalid_tar"))
 	}
 	// Name.
-	info := fmt.Sprintf("%s:%s", lang.Text("ob_name"),
+	info := fmt.Sprintf("%s: %s", lang.Text("ob_name"),
 		lang.Text(tar.ID()))
 	// Health.
-	info += fmt.Sprintf("\n%s:%d", lang.Text("ob_health"),
+	info += fmt.Sprintf("\n%s: %d", lang.Text("ob_health"),
 		tar.Health())
 	// Mana.
-	info += fmt.Sprintf("\n%s:%d", lang.Text("ob_mana"),
+	info += fmt.Sprintf("\n%s: %d", lang.Text("ob_mana"),
 		tar.Mana())
+	// Position.
+	posX, posY := tar.Position()
+	info += fmt.Sprintf("\n%s: %fx%f", lang.Text("ob_pos"),
+		posX, posY)
 	// Print.
 	fmt.Printf("%s\n", info)
 	return nil

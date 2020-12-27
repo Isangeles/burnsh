@@ -5,6 +5,10 @@ talk_answers:Answers
 talk_answers_select:Select answer
 target_near_targets:Near targets
 target_select_target:Select target
+ob_name:Name
+ob_health:Health
+ob_mana:Mana
+ob_pos:Position
 quests_list:Quests
 quests_q_completed:Completed
 useskill_skills:Skills

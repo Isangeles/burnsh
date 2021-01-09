@@ -1,7 +1,7 @@
 /*
  * chat.go
  *
- * Copyright 2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,14 +72,6 @@ func updateChat() {
 				continue
 			}
 			for _, m := range tar.ChatLog().Messages() {
-				m := Message{
-					author: tar.ID(),
-					time:   m.Time(),
-					text:   fmt.Sprintf("%s\n", m.String()),
-				}
-				messages = append(messages, m)
-			}
-			for _, m := range tar.CombatLog().Messages() {
 				m := Message{
 					author: tar.ID(),
 					time:   m.Time(),

@@ -1,7 +1,7 @@
 /*
  * player.go
  *
- * Copyright 2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import (
 	"github.com/isangeles/flame/module/effect"
 	"github.com/isangeles/flame/module/serial"
 	"github.com/isangeles/flame/module/useaction"
+	"github.com/isangeles/flame/module/objects"
 
 	"github.com/isangeles/fire/request"
 
@@ -38,12 +39,22 @@ import (
 type Player struct {
 	*character.Character
 	game *Game
+	log  *objects.Log
 }
 
 // NewPlayer creates new game player.
 func NewPlayer(char *character.Character, game *Game) *Player {
-	p := Player{char, game}
+	p := Player{
+		Character: char,
+		game:      game,
+		log:       objects.NewLog(),
+	}
 	return &p
+}
+
+// Log returns player log.
+func (p *Player) Log() *objects.Log {
+	return p.log
 }
 
 // SetDestPoint sets a specified XY position as current

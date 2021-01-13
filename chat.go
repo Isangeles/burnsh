@@ -53,7 +53,7 @@ func updateChat() {
 	messages := make([]Message, 0)
 	for _, pc := range activeGame.Players() {
 		// PC's private messages.
-		for _, m := range pc.PrivateLog().Messages() {
+		for _, m := range pc.Log().Messages() {
 			m := Message{
 				author: pc.ID(),
 				time:   m.Time(),
@@ -61,7 +61,7 @@ func updateChat() {
 			}
 			messages = append(messages, m)
 		}
-		// Near objects chat & combat.
+		// Near objects chat.
 		area := activeGame.Module().Chapter().CharacterArea(pc.Character)
 		if area == nil {
 			continue

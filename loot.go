@@ -1,7 +1,7 @@
 /*
  * cli.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,9 @@ func lootDialog() error {
 	if !ok {
 		return fmt.Errorf("target have no inventory")
 	}
-	for _, it := range con.Inventory().LootItems() {
-		activeGame.ActivePlayer().Inventory().AddItem(it)
-		con.Inventory().RemoveItem(it)
+	err := activeGame.TransferItems(activeGame.ActivePlayer(), con, con.Inventory().LootItems()...)
+	if err != nil {
+		return fmt.Errorf("unable to transfer items: %v", err)
 	}
 	return nil
 }

@@ -2,8 +2,6 @@
 Burn Shell is command line interface for [Flame engine](https://github.com/isangeles/flame).
 
 CLI uses [Burn](https://github.com/Isangeles/burn) to handle user input and communicate with engine.
-
-All commands must be prefixed with '$' character.
 ## Build & Run
 Get sources from git:
 ```
@@ -173,7 +171,7 @@ Note that documentation is still incomplete.
 ## Contact
 * Isangeles <<dev@isangeles.pl>>
 ## License
-Copyright 2018-2020 Dariusz Sikora <<dev@isangeles.pl>>
+Copyright 2018-2021 Dariusz Sikora <<dev@isangeles.pl>>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

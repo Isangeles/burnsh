@@ -76,7 +76,7 @@ func (p *Player) SetDestPoint(x, y float64) {
 
 // AddChatMessage adds new message to player chat log.
 func (p *Player) AddChatMessage(message string) {
-	p.ChatLog().Add(message)
+	p.ChatLog().Add(objects.Message{Translated: true, Text: message})
 	if p.game.Server() == nil {
 		return
 	}
@@ -114,7 +114,7 @@ func (p *Player) SetTarget(tar effect.Target) {
 func (p *Player) Use(ob useaction.Usable) {
 	err := p.Character.Use(ob)
 	if err != nil {
-		p.Log().Add(lang.Text("cant_do_right_now"))
+		p.Log().Add(objects.Message{Text: lang.Text("cant_do_right_now")})
 		return
 	}
 	if p.game.Server() == nil {

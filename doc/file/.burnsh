@@ -41,6 +41,5 @@ First value is for login, second for password.
 lang:english
 module:test
 debug:false
-fire:true
 server:localhost;8000
 server-user:u1;asd12

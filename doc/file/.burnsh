@@ -25,21 +25,15 @@ Enables engine debug mode(shows debug messages in engine log).
 .br
 Value 'true' enables mode, everything else sets mode disabled.
 .P
-* fire
-.br
-Enables Fire server mode.
-.br
-Value 'true' enables Fire server mode, everything else sets mode disabled.
-.P
 * server
 .br
-Specified server host and port for Fire mode.
+Specified server host and port for multiplayer mode.
 .br
 First value is used as server host, second as server port.
 .P
 * server-user
 .br
-Specifies user login and password for Fire mode.
+Specifies user login and password for multiplayer mode.
 .br
 First value is for login, second for password.
 .SH EXAMPLE

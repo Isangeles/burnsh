@@ -43,7 +43,7 @@ var (
 	Module      = ""
 	Lang        = "english"
 	ServerHost  = ""
-	ServerPort  = "8000"
+	ServerPort  = ""
 	ServerLogin = ""
 	ServerPass  = ""
 	Debug       = false

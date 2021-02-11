@@ -1,7 +1,7 @@
 /*
  * config.go
  *
- * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@ const (
 var (
 	Module      = ""
 	Lang        = "english"
-	Fire        = false
 	ServerHost  = ""
 	ServerPort  = "8000"
 	ServerLogin = ""
@@ -66,9 +65,6 @@ func Load() error {
 	}
 	if len(conf["lang"]) > 0 {
 		Lang = conf["lang"][0]
-	}
-	if len(conf["fire"]) > 0 {
-		Fire = conf["fire"][0] == "true"
 	}
 	if len(conf["server"]) > 1 {
 		ServerHost = conf["server"][0]
@@ -97,7 +93,6 @@ func Save() error {
 	conf := make(map[string][]string)
 	conf["module"] = []string{Module}
 	conf["lang"] = []string{Lang}
-	conf["fire"] = []string{fmt.Sprintf("%v", Fire)}
 	conf["server"] = []string{ServerHost, ServerPort}
 	conf["server-user"] = []string{ServerLogin, ServerPass}
 	conf["debug"] = []string{fmt.Sprintf("%v", Debug)}
@@ -124,4 +119,9 @@ func LangPath() string {
 // ScriptsPath returns path to the scripts directory.
 func ScriptsPath() string {
 	return filepath.FromSlash("data/scripts")
+}
+
+// Multiplayer checks if multiplayer mode is active.
+func Multiplayer() bool {
+	return len(ServerHost + ServerPort) > 0
 }

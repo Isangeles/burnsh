@@ -5,11 +5,11 @@ CLI uses [Burn](https://github.com/Isangeles/burn) to handle user input and comm
 ## Build & Run
 Get sources from git:
 ```
-$ go get -u github.com/isangeles/burnsh
+go get -u github.com/isangeles/burnsh
 ```
 Build shell:
 ```
-$ go build github.com/isangeles/burnsh
+go build github.com/isangeles/burnsh
 ```
 Now, specify the ID of a valid Flame module in the configuration file:
 
@@ -24,7 +24,7 @@ Flame modules are available for download [here](http://flame.isangeles.pl/mods).
 
 Run shell:
 ```
-$ ./burnsh
+./burnsh
 ```
 ## Module directory
 All UI-related files must be stored in the `data/modules/[module name]/burnsh` directory.
@@ -37,7 +37,7 @@ For example check [Arena](https://github.com/Isangeles/arena) module.
 ## Multiplayer
 It's possible to join an online game hosted on the [Fire](https://github.com/isangeles/fire) server.
 
-To connect to the remote server set the `fire` value in `.burnsh` config file to `true` and specify server host and port in `server` config value.
+To connect to the remote server specify server host and port in `server` config value in `.burnsh` configuration file.
 
 After that Burn Shell will try to establish a connection with the game server on startup.
 

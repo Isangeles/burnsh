@@ -31,7 +31,7 @@ All UI-related files must be stored in the `data/modules/[module name]/burnsh` d
 
 Translations for the UI needs to be stored in the `burnsh/lang` sub-directory of the module directory.
 
-You can find default translations for the GUI in the `res/lang` directory of this repository.
+You can find default translations for the UI in the `res/lang` directory of this repository.
 
 For example check [Arena](https://github.com/Isangeles/arena) module.
 ## Multiplayer

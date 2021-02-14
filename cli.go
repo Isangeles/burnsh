@@ -74,6 +74,7 @@ const (
 	CraftingCmd    = "crafting"
 	TradeTargetCmd = "trade"
 	TrainTargetCmd = "train"
+	EquipCmd       = "equip"
 	RepeatInputCmd = "!"
 	InputIndicator = ">"
 )
@@ -255,6 +256,11 @@ func execute(input string) {
 		err := trainDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", TrainTargetCmd, err)
+		}
+	case EquipCmd:
+		err := equipDialog()
+		if err != nil {
+			log.Err.Printf("%s: %v", EquipCmd, err)
 		}
 	case RepeatInputCmd:
 		execute(lastCommand)

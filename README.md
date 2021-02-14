@@ -139,6 +139,12 @@ Train with target:
 ```
 Description: starts training dialog with current PC target.
 
+Equip item:
+```
+  $equip
+```
+Description: starts equip dialog for active PC.
+
 Exit program:
 ```
   $close

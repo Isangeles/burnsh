@@ -36,6 +36,11 @@ train_no_trainings:No trainings
 train_no_train_sel:No training selected
 train_reqs:Train requirements
 train_attrs_training:Attributes
+equip_items:Items
+equip_select:Select item to equip or unequip
+equip_error:Unable to equip item
+equip_no_free_slot_error:Free slot not found
+equip_no_valid_slot_error:No compatible slots
 reqs_not_meet:Requirements not meet
 talk_no_answer_id_err:Enter valid answer ID
 move_enter_x_position:Enter position X

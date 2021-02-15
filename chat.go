@@ -53,11 +53,14 @@ func updateChat() {
 	messages := make([]Message, 0)
 	for _, pc := range activeGame.Players() {
 		// PC's private messages.
-		for _, m := range pc.Log().Messages() {
+		for _, lm := range pc.Log().Messages() {
 			m := Message{
 				author: pc.ID(),
-				time:   m.Time(),
-				text:   fmt.Sprintf("%s\n", m.String()),
+				time:   lm.Time(),
+				text:   fmt.Sprintf("%s\n", lm.String()),
+			}
+			if !lm.Translated {
+				m.text = fmt.Sprintf("%s\n", lang.Text(lm.String()))
 			}
 			messages = append(messages, m)
 		}
@@ -71,11 +74,14 @@ func updateChat() {
 			if !ok {
 				continue
 			}
-			for _, m := range tar.ChatLog().Messages() {
+			for _, lm := range tar.ChatLog().Messages() {
 				m := Message{
 					author: tar.ID(),
-					time:   m.Time(),
-					text:   fmt.Sprintf("%s\n", m.String()),
+					time:   lm.Time(),
+					text:   fmt.Sprintf("%s\n", lm.String()),
+				}
+				if !lm.Translated {
+					m.text = fmt.Sprintf("%s\n", lang.Text(lm.String()))
 				}
 				messages = append(messages, m)
 			}

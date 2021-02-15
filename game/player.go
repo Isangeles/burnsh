@@ -114,7 +114,7 @@ func (p *Player) SetTarget(tar effect.Target) {
 func (p *Player) Use(ob useaction.Usable) {
 	err := p.Character.Use(ob)
 	if err != nil {
-		p.Log().Add(objects.Message{Text: lang.Text("cant_do_right_now")})
+		p.Log().Add(objects.Message{Text: "cant_do_right_now"})
 		return
 	}
 	if p.game.Server() == nil {

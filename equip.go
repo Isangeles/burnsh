@@ -80,40 +80,11 @@ func equipDialog() error {
 	if activeGame.ActivePlayer().Equipment().Equiped(item) {
 		activeGame.ActivePlayer().Equipment().Unequip(item)
 	} else {
-		err := equip(item)
+		err := activeGame.ActivePlayer().Equip(item)
 		if err != nil {
 			msg := lang.Text("equip_error")
 			return fmt.Errorf("%s: %s", msg, err)
 		}
-	}
-	return nil
-}
-
-// equip inserts specified equipable item to all
-// compatible slots in active PC equipment.
-func equip(it item.Equiper) error {
-	if !activeGame.ActivePlayer().MeetReqs(it.EquipReqs()...) {
-		return fmt.Errorf(lang.Text("reqs_not_meet"))
-	}
-	for _, itSlot := range it.Slots() {
-		equiped := false
-		for _, eqSlot := range activeGame.ActivePlayer().Equipment().Slots() {
-			if eqSlot.Item() != nil {
-				continue
-			}
-			if eqSlot.Type() == itSlot {
-				eqSlot.SetItem(it)
-				equiped = true
-				break
-			}
-		}
-		if !equiped {
-			activeGame.ActivePlayer().Equipment().Unequip(it)
-			return fmt.Errorf(lang.Text("equip_no_free_slot_error"))
-		}
-	}
-	if !activeGame.ActivePlayer().Equipment().Equiped(it) {
-		return fmt.Errorf(lang.Text("equip_no_valid_slot_error"))
 	}
 	return nil
 }

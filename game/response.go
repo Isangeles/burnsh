@@ -25,7 +25,6 @@ package game
 
 import (
 	flameres "github.com/isangeles/flame/data/res"
-	"github.com/isangeles/flame/module/serial"
 
 	"github.com/isangeles/fire/response"
 
@@ -48,7 +47,6 @@ func (g *Game) handleResponse(resp response.Response) {
 // handleNewCharResponse handles new characters from server response.
 func (g *Game) handleNewCharResponse(resp []response.NewChar) {
 	for _, r := range resp {
-		serial.Reset()
 		char := g.Module().Chapter().Character(r.ID, r.Serial)
 		if char == nil {
 			log.Err.Printf("Game server: handle new-char response: unable to find character in module: %s %s",

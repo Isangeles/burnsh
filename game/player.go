@@ -171,9 +171,9 @@ func (p *Player) Equip(it item.Equiper) error {
 		return nil
 	}
 	eqReq := request.Equip{
-		CharID: p.ID(),
+		CharID:     p.ID(),
 		CharSerial: p.Serial(),
-		ItemID: it.ID(),
+		ItemID:     it.ID(),
 		ItemSerial: it.Serial(),
 	}
 	for _, s := range slots {
@@ -190,4 +190,24 @@ func (p *Player) Equip(it item.Equiper) error {
 			p.ID(), p.Serial(), err)
 	}
 	return nil
+}
+
+// Unequip removes specified item from player equipment.
+func (p *Player) Unequip(it item.Equiper) {
+	p.Equipment().Unequip(it)
+	if p.game.Server() == nil {
+		return
+	}
+	uneqReq := request.Unequip{
+		CharID:     p.ID(),
+		CharSerial: p.Serial(),
+		ItemID:     it.ID(),
+		ItemSerial: it.Serial(),
+	}
+	req := request.Request{Unequip: []request.Unequip{uneqReq}}
+	err := p.game.Server().Send(req)
+	if err != nil {
+		log.Err.Printf("Player: %s %s: unable to send unequip request: %v",
+			p.ID(), p.Serial(), err)
+	}
 }

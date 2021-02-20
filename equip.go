@@ -78,7 +78,7 @@ func equipDialog() error {
 	}
 	// Equip/unequip item.
 	if activeGame.ActivePlayer().Equipment().Equiped(item) {
-		activeGame.ActivePlayer().Equipment().Unequip(item)
+		activeGame.ActivePlayer().Unequip(item)
 	} else {
 		err := activeGame.ActivePlayer().Equip(item)
 		if err != nil {

@@ -47,38 +47,22 @@ To run Burn or Burn Shell command use '$' character as prefix.
 Without prefix, command will be treated as text and printed to out or sent to active player
 chat channel if game was started.
 ### Burn Shell build-in commands:
-
-Create module:
-```
-  $newmod
-```
-Description: Starts new module creation dialog. New module will be created in 'data/modules' directory. New module contains one chapter and start area.
-
 Create new character:
 ```
-  $newchar
+$newchar
 ```
-Description: starts new character creation dialog.
-
 Start new game:
 ```
-  $newgame
+$newgame
 ```
-Description: starts new game dialog.
-
 Load game:
 ```
-  $loadgame
+$loadgame
 ```
-Description: starts load game dialog.
-
-Import exported characters:
+Import all module characters as playable characters:
 ```
-  $importchars
+$importchars
 ```
-Description: imports all characters from XML files in
-data/modules/[module]/characters directory.
-
 Login to the remote game server:
 ```
 $login

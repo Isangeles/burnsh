@@ -79,75 +79,57 @@ Import exported characters:
 Description: imports all characters from XML files in
 data/modules/[module]/characters directory.
 
-Login:
+Login to the remote game server:
 ```
 $login
 ```
-Description: starts dialog for the authorization with remote game server.
-
 Set target:
 ```
-  $target
+$target
 ```
-Description: searches current area for nearby targets to set for active PC.
-
 Target information:
 ```
-  $tarinfo
+$tarinfo
 ```
-Description: prints informations about active PC target.
-
 Loot target:
 ```
-  $loot
+$loot
 ```
-Description: transfers all items from current dead target to active PC.
-
 Talk with with target:
 ```
-  $talk
+$talk
 ```
-Description: starts dialog with current PC target.
-
-Show quests journal:
+Show quests in journal:
 ```
-  $quests
+$quests
 ```
-Description: shows active PC quests.
-
 Use character skill:
 ```
-  $useskill
+$useskill
 ```
-Description: starts dialog to use one of active PC skills.
-
 Crafting dialog:
 ```
-  $crafting
+$crafting
 ```
-Description: starts items crafting dialog.
-
 Trade with target:
 ```
-  $trade
+$trade
 ```
-Description: starts trade dialog with current PC target.
-
 Train with target:
 ```
-  $train
+$train
 ```
-Description: starts training dialog with current PC target.
-
 Equip item:
 ```
-  $equip
+$equip
 ```
-Description: starts equip dialog for active PC.
-
+List items in inventory:
+```
+$inventory
+```
 Exit program:
 ```
-  $close
+$close
 ```
 Description: terminates program.
 ## Scripts

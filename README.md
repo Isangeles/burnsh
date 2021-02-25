@@ -115,7 +115,6 @@ Exit program:
 ```
 $close
 ```
-Description: terminates program.
 ## Scripts
 Burn Shell supports [Ash](https://github.com/Isangeles/burn/tree/master/ash) scripting language.
 

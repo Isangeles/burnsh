@@ -270,11 +270,11 @@ func execute(input string) {
 		}
 	case RepeatInputCmd:
 		execute(lastCommand)
-		return
 	default: // pass command to CI
 		exp, err := syntax.NewSTDExpression(input)
 		if err != nil {
 			log.Err.Printf("command build error: %v", err)
+			break
 		}
 		res, out := burn.HandleExpression(exp)
 		log.Inf.Printf("burn[%d]: %s\n", res, out)

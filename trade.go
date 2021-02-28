@@ -1,7 +1,7 @@
 /*
  * trade.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,14 +57,14 @@ func tradeDialog() error {
 		return fmt.Errorf(msg)
 	}
 	fmt.Printf("%s:\n", lang.Text("trade_buy_items"))
-	buyItems := selectBuyItems(tarChar.Inventory().TradeItems())
+	buyItems := make([]item.Item, 0)
+	buyValue := 0
+	for _, i := range selectBuyItems(tarChar.Inventory().TradeItems()) {
+		buyItems = append(buyItems, i.Item)
+		buyValue += i.Price
+	}
 	fmt.Printf("%s:\n", lang.Text("trade_sell_items"))
 	sellItems := selectSellItems(activeGame.ActivePlayer().Inventory().Items())
-	// Check trade value.
-	buyValue := 0
-	for _, it := range buyItems {
-		buyValue += it.Price
-	}
 	sellValue := 0
 	for _, it := range sellItems {
 		sellValue += it.Value()
@@ -91,14 +91,7 @@ func tradeDialog() error {
 		return nil
 	}
 	// Trade items.
-	for _, it := range buyItems {
-		activeGame.ActivePlayer().Inventory().AddItem(it)
-		tarChar.Inventory().RemoveItem(it)
-	}
-	for _, it := range sellItems {
-		tarChar.Inventory().AddItem(it)
-		activeGame.ActivePlayer().Inventory().RemoveItem(it)
-	}
+	activeGame.Trade(tarChar, activeGame.ActivePlayer(), sellItems, buyItems)
 	return nil
 }
 

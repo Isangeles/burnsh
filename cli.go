@@ -44,6 +44,8 @@ import (
 	"github.com/isangeles/burn/ash"
 	"github.com/isangeles/burn/syntax"
 
+	"github.com/isangeles/fire/request"
+
 	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/data"
 	"github.com/isangeles/burnsh/game"
@@ -278,6 +280,10 @@ func execute(input string) {
 		}
 		res, out := burn.HandleExpression(exp)
 		log.Inf.Printf("burn[%d]: %s\n", res, out)
+		if server != nil {
+			req := request.Request{Command: []string{exp.String()}}
+			server.Send(req)
+		}
 	}
 }
 

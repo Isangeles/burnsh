@@ -83,7 +83,7 @@ func (p *Player) AddChatMessage(message string) {
 	if p.game.Server() == nil {
 		return
 	}
-	chatReq := request.Chat{p.ID(), p.Serial(), message}
+	chatReq := request.Chat{p.ID(), p.Serial(), message, true}
 	req := request.Request{Chat: []request.Chat{chatReq}}
 	err := p.game.Server().Send(req)
 	if err != nil {

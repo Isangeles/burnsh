@@ -1,7 +1,7 @@
 /*
  * response.go
  *
- * Copyright 2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,24 +38,29 @@ func (g *Game) handleResponse(resp response.Response) {
 		g.onLoginFunc(g)
 	}
 	g.handleUpdateResponse(resp.Update)
-	g.handleNewCharResponse(resp.NewChar)
+	for _, r := range resp.Character {
+		g.handleCharacterResponse(r)
+	}
 	for _, r := range resp.Error {
 		log.Err.Printf("Game server error: %s", r)
 	}
 }
 
-// handleNewCharResponse handles new characters from server response.
-func (g *Game) handleNewCharResponse(resp []response.NewChar) {
-	for _, r := range resp {
-		char := g.Module().Chapter().Character(r.ID, r.Serial)
-		if char == nil {
-			log.Err.Printf("Game server: handle new-char response: unable to find character in module: %s %s",
-				r.ID, r.Serial)
+// handleCharacterResponse handles new characters from server response.
+func (g *Game) handleCharacterResponse(resp response.Character) {
+	for _, p := range g.Players() {
+		if p.ID() == resp.ID && p.Serial() == resp.Serial {
 			return
 		}
-		player := NewPlayer(char, g)
-		g.AddPlayer(player)
 	}
+	char := g.Module().Chapter().Character(resp.ID, resp.Serial)
+	if char == nil {
+		log.Err.Printf("Game server: handle new-char response: unable to find character in module: %s %s",
+			resp.ID, resp.Serial)
+		return
+	}
+	player := NewPlayer(char, g)
+	g.AddPlayer(player)
 }
 
 // handleUpdateRespone handles update response.

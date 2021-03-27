@@ -42,6 +42,10 @@ To connect to the remote server specify server host and port in `server` config 
 After that Burn Shell will try to establish a connection with the game server on startup.
 
 If the connection was successful you can use the `login` command to log in to the server.
+## AI
+Burn Shell uses AI API from [Ignite](https://github.com/Isangeles/ignite) to control NPCs in single-player mode.
+
+All NPCs that should be controlled by the AI need to have the `igniteNpc` flag set.
 ## Commands
 To run Burn or Burn Shell command use '$' character as prefix.
 Without prefix, command will be treated as text and printed to out or sent to active player

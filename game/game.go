@@ -29,11 +29,18 @@ import (
 
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/module/dialog"
+	"github.com/isangeles/flame/module/flag"
 	"github.com/isangeles/flame/module/item"
 
 	"github.com/isangeles/fire/request"
 
+	"github.com/isangeles/ignite/ai"
+
 	"github.com/isangeles/burnsh/log"
+)
+
+const (
+	aiCharFlag = flag.Flag("igniteNpc")
 )
 
 // Struct for game wrapper.
@@ -42,13 +49,25 @@ type Game struct {
 	server       *Server
 	players      []*Player
 	activePlayer *Player
+	localAI      *ai.AI
 	onLoginFunc  func(g *Game)
 }
 
 // New creates new game wrapper for specified game.
 func New(game *flame.Game) *Game {
 	g := Game{Game: game}
+	g.localAI = ai.New(ai.NewGame(game))
 	return &g
+}
+
+// Update updates game.
+func (g *Game) Update(delta int64) {
+	g.Game.Update(delta)
+	if g.Server() != nil {
+		return
+	}
+	g.updateAIChars()
+	g.localAI.Update(delta)
 }
 
 // Players returns player characters.
@@ -151,7 +170,7 @@ func (g *Game) Trade(seller, buyer item.Container, sellItems, buyItems []item.It
 	for _, it := range sellItems {
 		buyer.Inventory().RemoveItem(it)
 		err := seller.Inventory().AddItem(it)
-		if err  != nil {
+		if err != nil {
 			log.Err.Printf("Game: trade items: unable to add sell item: %s %s: %v",
 				it.ID(), it.Serial(), err)
 		}
@@ -240,5 +259,22 @@ func (g *Game) AnswerDialog(dialog *dialog.Dialog, answer *dialog.Answer) {
 	if err != nil {
 		log.Err.Printf("Game: answer dialog: unable to send dialog answer: %v",
 			err)
+	}
+}
+
+// updateAIChars updates list of characters controlled by the AI.
+func (g *Game) updateAIChars() {
+outer:
+	for _, c := range g.Module().Chapter().Characters() {
+		for _, aic := range g.localAI.Game().Characters() {
+			if aic.ID() == c.ID() && aic.Serial() == c.Serial() {
+				continue outer
+			}
+		}
+		if !c.HasFlag(aiCharFlag) {
+			continue
+		}
+		aiChar := ai.NewCharacter(c, g.localAI.Game())
+		g.localAI.Game().AddCharacter(aiChar)
 	}
 }

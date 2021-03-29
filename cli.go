@@ -36,7 +36,7 @@ import (
 	"strings"
 	"time"
 
-	flameconf "github.com/isangeles/flame/config"
+	"github.com/isangeles/flame"
 	flamedata "github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/module"
 
@@ -93,7 +93,7 @@ var (
 // Main function.
 func main() {
 	fmt.Printf("*%s(%s)@%s(%s)*\n", Name, Version,
-		flameconf.Name, flameconf.Version)
+		flame.Name, flame.Version)
 	// Load CLI config.
 	err := config.Load()
 	if err != nil {

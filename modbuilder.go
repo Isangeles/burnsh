@@ -1,7 +1,7 @@
 /*
  * modbuilder.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,8 +33,8 @@ import (
 )
 
 // NewModule creates new module directory
-// in data/modules with all one chapter and
-// one empty start area.
+// in data/modules with one chapter and one
+// empty area.
 func NewModule(name string) error {
 	// Module data.
 	modData := res.ModuleData{}
@@ -52,7 +52,7 @@ func NewModule(name string) error {
 	// Export module.
 	mod := module.New()
 	mod.Apply(modData)
-	err := data.ExportModule(mod, path)
+	err := data.ExportModule(path, mod)
 	if err != nil {
 		return fmt.Errorf("unable to export module: %v", err)
 	}

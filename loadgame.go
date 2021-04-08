@@ -1,7 +1,7 @@
 /*
  * loadgame.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,8 +37,6 @@ import (
 	flamedata "github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/module"
 	"github.com/isangeles/flame/data/res/lang"
-
-	"github.com/isangeles/burn"
 
 	"github.com/isangeles/burnsh/game"
 	"github.com/isangeles/burnsh/log"
@@ -85,7 +83,6 @@ func loadGameDialog() error {
 	m := module.New()
 	m.Apply(modData)
 	activeGame = game.New(flame.NewGame(m))
-	burn.Game = activeGame.Game
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.ModuleFileExt)
 	cliSavePath := filepath.Join(mod.Conf().Path, ModuleSavesPath, savename+SaveExt)

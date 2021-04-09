@@ -1,7 +1,7 @@
 /*
  * response.go
  *
- * Copyright 2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
 package main
 
 import (
+	"github.com/isangeles/flame"
 	flameres "github.com/isangeles/flame/data/res"
-	"github.com/isangeles/flame/module"
-	"github.com/isangeles/flame/module/serial"
+	"github.com/isangeles/flame/serial"
 
 	"github.com/isangeles/fire/response"
 
@@ -51,7 +51,7 @@ func handleUpdateResponse(resp response.Update) {
 	flameres.Add(flameres.ResourcesData{TranslationBases: res.TranslationBases})
 	if mod == nil {
 		serial.Reset()
-		mod = module.New()
+		mod = flame.NewModule()
 		mod.Apply(resp.Module)
 		return
 	}

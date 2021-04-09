@@ -29,10 +29,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame"
 	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/character"
 
 	"github.com/isangeles/fire/request"
 
@@ -80,7 +79,7 @@ func newGameDialog() error {
 			accept = true
 		}
 	}
-	activeGame = game.New(flame.NewGame(mod))
+	activeGame = game.New(mod)
 	if server != nil {
 		activeGame.SetServer(server)
 		newCharReq := request.NewChar{lang.Text(playerData.ID), playerData}

@@ -26,11 +26,11 @@ package main
 import (
 	"fmt"
 
+	"github.com/isangeles/flame"
 	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module"
-	"github.com/isangeles/flame/module/area"
-	"github.com/isangeles/flame/module/req"
+	"github.com/isangeles/flame/area"
+	"github.com/isangeles/flame/req"
 )
 
 // charDataDisplayString returns string with character
@@ -64,7 +64,7 @@ func reqsInfo(reqs ...req.Requirement) string {
 
 // charArea returns area with character with specified ID and serial from
 // specified module chapter.
-func charArea(chap *module.Chapter, charID, charSerial string) *area.Area {
+func charArea(chap *flame.Chapter, charID, charSerial string) *area.Area {
 	for _, a := range chap.Areas() {
 		for _, c := range a.Characters() {
 			if c.ID() == charID && c.Serial() == charSerial {

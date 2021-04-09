@@ -30,8 +30,8 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/character"
-	"github.com/isangeles/flame/module/dialog"
+	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/dialog"
 )
 
 // talkDialog starts CLI dialog for dialog with

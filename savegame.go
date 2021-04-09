@@ -1,7 +1,7 @@
 /*
  * savegame.go
  *
- * Copyright 2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ func saveGameDialog() error {
 	// Game.
 	savepath := filepath.Join(mod.Conf().SavesPath(),
 		save.Name+flamedata.ModuleFileExt)
-	err = flamedata.ExportModuleFile(savepath, activeGame.Module())
+	err = flamedata.ExportModuleFile(savepath, activeGame.Module)
 	if err != nil {
 		return fmt.Errorf("unable to export module: %v", err)
 	}

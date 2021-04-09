@@ -30,7 +30,7 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/skill"
+	"github.com/isangeles/flame/skill"
 )
 
 // useSkillDialog starts CLI dialog for

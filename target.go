@@ -1,7 +1,7 @@
 /*
  * target.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/effect"
+	"github.com/isangeles/flame/effect"
 )
 
 // targetDialog starts target CLI dialog for
@@ -42,7 +42,7 @@ func targetDialog() error {
 	if activeGame.ActivePlayer() == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
 	}
-	mod := activeGame.Module()
+	mod := activeGame.Module
 	area := charArea(mod.Chapter(), activeGame.ActivePlayer().ID(),
 		activeGame.ActivePlayer().Serial())
 	if area == nil {

@@ -38,7 +38,6 @@ import (
 
 	"github.com/isangeles/flame"
 	flamedata "github.com/isangeles/flame/data"
-	"github.com/isangeles/flame/module"
 
 	"github.com/isangeles/burn"
 	"github.com/isangeles/burn/ash"
@@ -83,7 +82,7 @@ const (
 )
 
 var (
-	mod         *module.Module
+	mod         *flame.Module
 	server      *game.Server
 	activeGame  *game.Game
 	lastCommand string
@@ -344,7 +343,7 @@ func loadModule(path string) error {
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
-	mod = module.New()
+	mod = flame.NewModule()
 	mod.Apply(modData)
 	burn.Module = mod
 	return nil

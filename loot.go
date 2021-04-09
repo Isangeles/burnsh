@@ -26,8 +26,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/isangeles/flame/module/item"
-	"github.com/isangeles/flame/module/objects"
+	"github.com/isangeles/flame/item"
+	"github.com/isangeles/flame/objects"
 )
 
 // lootDialog start CLI dialog current

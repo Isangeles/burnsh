@@ -35,7 +35,6 @@ import (
 
 	"github.com/isangeles/flame"
 	flamedata "github.com/isangeles/flame/data"
-	"github.com/isangeles/flame/module"
 	"github.com/isangeles/flame/data/res/lang"
 
 	"github.com/isangeles/burnsh/game"
@@ -80,9 +79,9 @@ func loadGameDialog() error {
 	if err != nil {
 		return fmt.Errorf("unable to import module file: %v", err)
 	}
-	m := module.New()
+	m := flame.NewModule()
 	m.Apply(modData)
-	activeGame = game.New(flame.NewGame(m))
+	activeGame = game.New(m)
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.ModuleFileExt)
 	cliSavePath := filepath.Join(mod.Conf().Path, ModuleSavesPath, savename+SaveExt)
@@ -91,7 +90,7 @@ func loadGameDialog() error {
 		return fmt.Errorf("unable to load CLI state: %v", err)
 	}
 	for _, pcSave := range cliSave.Players {
-		c := activeGame.Module().Chapter().Character(pcSave.ID, pcSave.Serial)
+		c := activeGame.Chapter().Character(pcSave.ID, pcSave.Serial)
 		if c == nil {
 			log.Err.Printf("load game: unable to find pc: %s%s", pcSave.ID, pcSave.Serial)
 		}

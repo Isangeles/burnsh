@@ -30,7 +30,7 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/item"
+	"github.com/isangeles/flame/item"
 )
 
 // equipDialog starts CLI dialog for equip action.

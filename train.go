@@ -1,7 +1,7 @@
 /*
  * train.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,9 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame/data/res/lang"
-	char "github.com/isangeles/flame/module/character"
-	"github.com/isangeles/flame/module/req"
-	"github.com/isangeles/flame/module/training"
+	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/req"
+	"github.com/isangeles/flame/training"
 )
 
 // tradeDialog starts CLI dialog for train
@@ -51,7 +51,7 @@ func trainDialog() error {
 		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
 	}
-	tarChar, ok := tar.(*char.Character)
+	tarChar, ok := tar.(*character.Character)
 	if !ok {
 		msg := lang.Text("tar_invalid")
 		return fmt.Errorf(msg)

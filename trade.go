@@ -31,8 +31,8 @@ import (
 	"strings"
 
 	"github.com/isangeles/flame/data/res/lang"
-	char "github.com/isangeles/flame/module/character"
-	"github.com/isangeles/flame/module/item"
+	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/item"
 )
 
 // tradeDialog starts CLI dialog for trade with
@@ -51,7 +51,7 @@ func tradeDialog() error {
 		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
 	}
-	tarChar, ok := tar.(*char.Character)
+	tarChar, ok := tar.(*character.Character)
 	if !ok {
 		msg := lang.Text("tar_invalid")
 		return fmt.Errorf(msg)

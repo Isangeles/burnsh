@@ -1,7 +1,7 @@
 /*
  * newcharacter.go
  *
- * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,15 +29,15 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/isangeles/flame"
 	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module"
-	"github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/character"
 )
 
 // newCharacterDialog starts CLI dialog to create new playable
 // game character.
-func newCharacterDialog(mod *module.Module) (flameres.CharacterData, error) {
+func newCharacterDialog(mod *flame.Module) (flameres.CharacterData, error) {
 	var data flameres.CharacterData
 	if mod == nil {
 		return data, fmt.Errorf("no module loaded")

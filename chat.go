@@ -29,7 +29,7 @@ import (
 	"time"
 
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/objects"
+	"github.com/isangeles/flame/objects"
 )
 
 // Struct for log message.
@@ -65,7 +65,7 @@ func updateChat() {
 			messages = append(messages, m)
 		}
 		// Near objects chat.
-		area := activeGame.Module().Chapter().CharacterArea(pc.Character)
+		area := activeGame.Chapter().CharacterArea(pc.Character)
 		if area == nil {
 			continue
 		}

@@ -1,7 +1,7 @@
 /*
  * creafting.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,9 @@ import (
 	"strconv"
 
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/module/character"
-	"github.com/isangeles/flame/module/craft"
-	"github.com/isangeles/flame/module/effect"
+	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/craft"
+	"github.com/isangeles/flame/effect"
 )
 
 // craftingDialog starts CLI dialog for

@@ -28,9 +28,9 @@ import (
 	"fmt"
 
 	"github.com/isangeles/flame"
-	"github.com/isangeles/flame/module/dialog"
-	"github.com/isangeles/flame/module/flag"
-	"github.com/isangeles/flame/module/item"
+	"github.com/isangeles/flame/dialog"
+	"github.com/isangeles/flame/flag"
+	"github.com/isangeles/flame/item"
 
 	"github.com/isangeles/fire/request"
 
@@ -45,7 +45,7 @@ const (
 
 // Struct for game wrapper.
 type Game struct {
-	*flame.Game
+	*flame.Module
 	server       *Server
 	players      []*Player
 	activePlayer *Player
@@ -53,16 +53,16 @@ type Game struct {
 	onLoginFunc  func(g *Game)
 }
 
-// New creates new game wrapper for specified game.
-func New(game *flame.Game) *Game {
-	g := Game{Game: game}
-	g.localAI = ai.New(ai.NewGame(game))
+// New creates new game wrapper for specified module.
+func New(module *flame.Module) *Game {
+	g := Game{Module: module}
+	g.localAI = ai.New(ai.NewGame(module))
 	return &g
 }
 
 // Update updates game.
 func (g *Game) Update(delta int64) {
-	g.Game.Update(delta)
+	g.Module.Update(delta)
 	if g.Server() != nil {
 		return
 	}
@@ -116,13 +116,12 @@ func (g *Game) SetOnLoginFunc(f func(g *Game)) {
 // game module configuration.
 func (g *Game) SpawnPlayer(player *Player) error {
 	// Set start position.
-	player.SetPosition(g.Module().Chapter().Conf().StartPosX,
-		g.Module().Chapter().Conf().StartPosY)
+	player.SetPosition(g.Chapter().Conf().StartPosX, g.Chapter().Conf().StartPosY)
 	// Set start area.
-	startArea := g.Module().Chapter().Area(g.Module().Chapter().Conf().StartArea)
+	startArea := g.Chapter().Area(g.Chapter().Conf().StartArea)
 	if startArea == nil {
 		return fmt.Errorf("game: start area not found: %s",
-			g.Module().Chapter().Conf().StartArea)
+			g.Chapter().Conf().StartArea)
 	}
 	startArea.AddCharacter(player.Character)
 	return nil
@@ -265,7 +264,7 @@ func (g *Game) AnswerDialog(dialog *dialog.Dialog, answer *dialog.Answer) {
 // updateAIChars updates list of characters controlled by the AI.
 func (g *Game) updateAIChars() {
 outer:
-	for _, c := range g.Module().Chapter().Characters() {
+	for _, c := range g.Chapter().Characters() {
 		for _, aic := range g.localAI.Game().Characters() {
 			if aic.ID() == c.ID() && aic.Serial() == c.Serial() {
 				continue outer

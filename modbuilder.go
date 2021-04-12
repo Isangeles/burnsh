@@ -27,7 +27,6 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/data/res"
 )
@@ -50,9 +49,7 @@ func NewModule(name string) error {
 	startArea := res.AreaData{ID: "area1"}
 	modData.Chapter.Areas = append(modData.Chapter.Areas, startArea)
 	// Export module.
-	mod := flame.NewModule()
-	mod.Apply(modData)
-	err := data.ExportModule(path, mod)
+	err := data.ExportModule(path, modData)
 	if err != nil {
 		return fmt.Errorf("unable to export module: %v", err)
 	}

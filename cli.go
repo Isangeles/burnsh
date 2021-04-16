@@ -157,6 +157,13 @@ func execute(input string) {
 		if err != nil {
 			log.Err.Printf("unable to save config: %v", err)
 		}
+		if server != nil {
+			req := request.Request{Close: time.Now().UnixNano()}
+			err := server.Send(req)
+			if err != nil {
+				log.Err.Printf("Unable to send close request: %v", err)
+			}
+		}
 		os.Exit(0)
 	case LoginCmd:
 		err := loginDialog()

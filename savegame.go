@@ -33,6 +33,8 @@ import (
 	flamedata "github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/data/res/lang"
 
+	"github.com/isangeles/fire/request"
+
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -84,9 +86,17 @@ func saveGameDialog() error {
 		return fmt.Errorf("unable to save cli: %v", err)
 	}
 	// Game.
-	savepath := filepath.Join(mod.Conf().SavesPath(),
-		save.Name+flamedata.ModuleFileExt)
-	err = flamedata.ExportModuleFile(savepath, activeGame.Module.Data())
+	if activeGame.Server() != nil {
+		req := request.Request{Save: []string{save.Name}}
+		err := activeGame.Server().Send(req)
+		if err != nil {
+			return fmt.Errorf("unable to send save request: %v",
+				err)
+		}
+		return nil
+	}
+	savepath := filepath.Join(mod.Conf().SavesPath(), save.Name)
+	err = flamedata.ExportModuleFile(savepath, activeGame.Data())
 	if err != nil {
 		return fmt.Errorf("unable to export module: %v", err)
 	}

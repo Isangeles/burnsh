@@ -2,16 +2,22 @@
 Burn Shell is command line interface for [Flame engine](https://github.com/isangeles/flame).
 
 CLI uses [Burn](https://github.com/Isangeles/burn) to handle user input and communicate with engine.
-## Build & Run
+## Build
 Get sources from git:
 ```
 go get -u github.com/isangeles/burnsh
 ```
-Build shell:
+Install CLI:
 ```
-go build github.com/isangeles/burnsh
+go install github.com/isangeles/burnsh@latest
 ```
-Now, specify the ID of a valid Flame module in the configuration file:
+Or with GOPATH mode simply:
+```
+go install github.com/isangeles/burnsh
+```
+After that, the CLI executable will be placed in your GOBIN directory(e.g. ~/go/bin).
+## Run
+Befor starting Burn Shell executable, specify the ID of a valid Flame module in the configuration file:
 
 Create file `.burnsh` in the Burn Shell executable directory(or run Burn Shell to create it
 automatically) and add the following line:

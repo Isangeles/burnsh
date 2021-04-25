@@ -28,9 +28,12 @@ import (
 	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/serial"
 
+	"github.com/isangeles/burn"
+
 	"github.com/isangeles/fire/response"
 
 	"github.com/isangeles/burnsh/data/res"
+	"github.com/isangeles/burnsh/game"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -38,6 +41,9 @@ import (
 func handleResponse(resp response.Response) {
 	if !resp.Logon {
 		log.Inf.Printf("Logged at: %s", server.Address())
+		if len(resp.Load.Save) > 0 {
+			handleLoadResponse(resp.Load)
+		}
 		handleUpdateResponse(resp.Update)
 	}
 	for _, r := range resp.Error {
@@ -52,8 +58,17 @@ func handleUpdateResponse(resp response.Update) {
 	if mod == nil {
 		serial.Reset()
 		mod = flame.NewModule()
-		mod.Apply(resp.Module)
-		return
 	}
 	mod.Apply(resp.Module)
+}
+
+// handleLoadResponse handles load response.
+func handleLoadResponse(resp response.Load) {
+	serial.Reset()
+	flameres.Clear()
+	mod = flame.NewModule()
+	mod.Apply(resp.Module)
+	burn.Module = mod
+	activeGame = game.New(mod)
+	activeGame.SetServer(server)
 }

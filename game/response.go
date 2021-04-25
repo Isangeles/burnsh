@@ -25,6 +25,7 @@ package game
 
 import (
 	flameres "github.com/isangeles/flame/data/res"
+	"github.com/isangeles/flame/serial"
 
 	"github.com/isangeles/fire/response"
 
@@ -36,6 +37,9 @@ import (
 func (g *Game) handleResponse(resp response.Response) {
 	if !resp.Logon && g.onLoginFunc != nil {
 		g.onLoginFunc(g)
+	}
+	if len(resp.Load.Save) > 0 {
+		g.handleLoadResponse(resp.Load)
 	}
 	g.handleUpdateResponse(resp.Update)
 	for _, r := range resp.Character {
@@ -67,5 +71,13 @@ func (g *Game) handleCharacterResponse(resp response.Character) {
 func (g *Game) handleUpdateResponse(resp response.Update) {
 	flameres.Clear()
 	flameres.Add(flameres.ResourcesData{TranslationBases: res.TranslationBases})
+	g.Apply(resp.Module)
+}
+
+// handleLoadResponse handles load response.
+func (g *Game) handleLoadResponse(resp response.Load) {
+	serial.Reset()
+	g.players = make([]*Player, 0)
+	g.SetActivePlayer(nil)
 	g.Apply(resp.Module)
 }

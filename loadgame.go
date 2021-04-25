@@ -37,6 +37,8 @@ import (
 	flamedata "github.com/isangeles/flame/data"
 	"github.com/isangeles/flame/data/res/lang"
 
+	"github.com/isangeles/fire/request"
+
 	"github.com/isangeles/burnsh/game"
 	"github.com/isangeles/burnsh/log"
 )
@@ -47,8 +49,9 @@ func loadGameDialog() error {
 	if mod == nil {
 		return fmt.Errorf("no module loaded")
 	}
-	savePattern := fmt.Sprintf(".*%s", flamedata.ModuleFileExt)
-	saves, err := flamedata.DirFilesNames(mod.Conf().SavesPath(), savePattern)
+	savePattern := fmt.Sprintf(".*%s", SaveExt)
+	path := filepath.Join(mod.Conf().Path, ModuleSavesPath)
+	saves, err := flamedata.DirFilesNames(path, savePattern)
 	if err != nil {
 		return fmt.Errorf("unable to retrieve save files: %v")
 	}
@@ -73,15 +76,16 @@ func loadGameDialog() error {
 		}
 		accept = true
 	}
-	// Game.
-	savepath := filepath.Join(mod.Conf().SavesPath(), savename)
-	modData, err := flamedata.ImportModuleFile(savepath)
-	if err != nil {
-		return fmt.Errorf("unable to import module file: %v", err)
+	// Handle game server.
+	if server != nil {
+		savename = strings.ReplaceAll(savename, SaveExt, "")
+		req := request.Request{Load: savename}
+		err := server.Send(req)
+		if err != nil {
+			return fmt.Errorf("unable to send load request: %v", err)
+		}
+		return nil
 	}
-	m := flame.NewModule()
-	m.Apply(modData)
-	activeGame = game.New(m)
 	// CLI.
 	savename = strings.TrimSuffix(savename, flamedata.ModuleFileExt)
 	cliSavePath := filepath.Join(mod.Conf().Path, ModuleSavesPath, savename+SaveExt)
@@ -99,6 +103,15 @@ func loadGameDialog() error {
 	if len(activeGame.Players()) > 0 {
 		activeGame.SetActivePlayer(activeGame.Players()[0])
 	}
+	// Game.
+	savepath := filepath.Join(mod.Conf().SavesPath(), savename)
+	modData, err := flamedata.ImportModuleFile(savepath)
+	if err != nil {
+		return fmt.Errorf("unable to import module file: %v", err)
+	}
+	m := flame.NewModule()
+	m.Apply(modData)
+	activeGame = game.New(m)
 	return nil
 }
 

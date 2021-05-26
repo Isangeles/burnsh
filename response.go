@@ -40,7 +40,6 @@ import (
 // handleResponse handles response from the Fire server.
 func handleResponse(resp response.Response) {
 	if !resp.Logon {
-		log.Inf.Printf("Logged at: %s", server.Address())
 		if len(resp.Load.Save) > 0 {
 			handleLoadResponse(resp.Load)
 		}

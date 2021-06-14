@@ -81,6 +81,10 @@ Set target:
 ```
 $target
 ```
+Area information:
+```
+$areainfo
+```
 Target information:
 ```
 $tarinfo

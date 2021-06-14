@@ -5,6 +5,9 @@ talk_answers:Answers
 talk_answers_select:Select answer
 target_near_targets:Near targets
 target_select_target:Select target
+area_name:Name
+area_time:Time
+area_weather:Weather
 ob_name:Name
 ob_health:Health
 ob_mana:Mana
@@ -59,6 +62,7 @@ invalid_input_err:Invalid input value
 nan_err:NaN
 no_game_err:No game loaded
 no_pc_err:No active player
+no_pc_area_err:Area for active player not found
 no_tar_err:No target
 loadgame_saves:Saves
 loadgame_select_save:Select save

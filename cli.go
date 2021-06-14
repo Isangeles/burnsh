@@ -70,6 +70,7 @@ const (
 	TalkTargetCmd  = "talk"
 	FindTargetCmd  = "target"
 	TargetInfoCmd  = "tarinfo"
+	AreaInfoCmd    = "areainfo"
 	QuestsCmd      = "quests"
 	UseSkillCmd    = "useskill"
 	CraftingCmd    = "crafting"
@@ -169,7 +170,6 @@ func execute(input string) {
 		err := loginDialog()
 		if err != nil {
 			log.Err.Printf("Login error: %v", err)
-			break
 		}
 	case NewCharCmd:
 		charData, err := newCharacterDialog(mod)
@@ -189,7 +189,6 @@ func execute(input string) {
 		err := newModDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", NewModCmd, err)
-			break
 		}
 	case SaveGameCmd:
 		err := saveGameDialog()
@@ -215,31 +214,31 @@ func execute(input string) {
 		err := moveDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", MoveCmd, err)
-			break
 		}
 	case LootTargetCmd:
 		err := lootDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", LootTargetCmd, err)
-			break
 		}
 	case TalkTargetCmd:
 		err := talkDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", TalkTargetCmd, err)
-			break
 		}
 	case FindTargetCmd:
 		err := targetDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", FindTargetCmd, err)
-			break
 		}
 	case TargetInfoCmd:
 		err := targetInfoDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", TargetInfoCmd, err)
-			break
+		}
+	case AreaInfoCmd:
+		err := areaInfoDialog()
+		if err != nil {
+			log.Err.Printf("%s: %v", AreaInfoCmd, err)
 		}
 	case QuestsCmd:
 		err := questsDialog()

@@ -109,8 +109,7 @@ func loadGameDialog() error {
 	if err != nil {
 		return fmt.Errorf("unable to import module file: %v", err)
 	}
-	m := flame.NewModule()
-	m.Apply(modData)
+	m := flame.NewModule(modData)
 	activeGame = game.New(m)
 	return nil
 }

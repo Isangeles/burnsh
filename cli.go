@@ -349,8 +349,7 @@ func loadModule(path string) error {
 	if err != nil {
 		return fmt.Errorf("unable to import module: %v", err)
 	}
-	mod = flame.NewModule()
-	mod.Apply(modData)
+	mod = flame.NewModule(modData)
 	burn.Module = mod
 	return nil
 }

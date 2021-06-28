@@ -56,7 +56,8 @@ func handleUpdateResponse(resp response.Update) {
 	flameres.Add(flameres.ResourcesData{TranslationBases: res.TranslationBases})
 	if mod == nil {
 		serial.Reset()
-		mod = flame.NewModule()
+		mod = flame.NewModule(resp.Module)
+		return
 	}
 	mod.Apply(resp.Module)
 }
@@ -65,8 +66,7 @@ func handleUpdateResponse(resp response.Update) {
 func handleLoadResponse(resp response.Load) {
 	serial.Reset()
 	flameres.Clear()
-	mod = flame.NewModule()
-	mod.Apply(resp.Module)
+	mod = flame.NewModule(resp.Module)
 	burn.Module = mod
 	activeGame = game.New(mod)
 	activeGame.SetServer(server)

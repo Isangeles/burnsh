@@ -24,6 +24,8 @@
 package game
 
 import (
+	"sync"
+
 	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/serial"
 
@@ -32,6 +34,8 @@ import (
 	"github.com/isangeles/burnsh/data/res"
 	"github.com/isangeles/burnsh/log"
 )
+
+var addPlayerMutex sync.Mutex
 
 // handleResponse handles specified response from Fire server.
 func (g *Game) handleResponse(resp response.Response) {
@@ -52,6 +56,8 @@ func (g *Game) handleResponse(resp response.Response) {
 
 // handleCharacterResponse handles new characters from server response.
 func (g *Game) handleCharacterResponse(resp response.Character) {
+	addPlayerMutex.Lock()
+	defer addPlayerMutex.Unlock()
 	for _, p := range g.Players() {
 		if p.ID() == resp.ID && p.Serial() == resp.Serial {
 			return

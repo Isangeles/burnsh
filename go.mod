@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/isangeles/burn v0.0.0-20210812173120-fb9ce1f8d0fa
-	github.com/isangeles/fire v0.0.0-20210812173222-6b6076302173
-	github.com/isangeles/flame v0.0.0-20210808105931-775af127aa02
-	github.com/isangeles/ignite v0.0.0-20210819180516-9874af32cefc
+	github.com/isangeles/fire v0.0.0-20210830184113-c05e157aed2c
+	github.com/isangeles/flame v0.0.0-20210830174252-5d168df67ced
+	github.com/isangeles/ignite v0.0.0-20210830184142-82aa3a5952b6
 )

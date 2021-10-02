@@ -105,7 +105,7 @@ func loadGameDialog() error {
 	}
 	// Game.
 	savepath := filepath.Join(mod.Conf().SavesPath(), savename)
-	modData, err := flamedata.ImportModuleFile(savepath)
+	modData, err := flamedata.ImportModule(savepath)
 	if err != nil {
 		return fmt.Errorf("unable to import module file: %v", err)
 	}

@@ -96,7 +96,7 @@ func saveGameDialog() error {
 		return nil
 	}
 	savepath := filepath.Join(mod.Conf().SavesPath(), save.Name)
-	err = flamedata.ExportModuleFile(savepath, activeGame.Data())
+	err = flamedata.ExportModule(savepath, activeGame.Data())
 	if err != nil {
 		return fmt.Errorf("unable to export module: %v", err)
 	}

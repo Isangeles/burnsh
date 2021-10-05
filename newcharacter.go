@@ -35,6 +35,8 @@ import (
 	"github.com/isangeles/flame/character"
 )
 
+const playerIDPrefix = "player_"
+
 // newCharacterDialog starts CLI dialog to create new playable
 // game character.
 func newCharacterDialog(mod *flame.Module) (flameres.CharacterData, error) {
@@ -75,7 +77,7 @@ func newCharacterDialog(mod *flame.Module) (flameres.CharacterData, error) {
 			}
 		}
 		// Summary.
-		charID := fmt.Sprintf("player_%s", name)
+		charID := fmt.Sprintf("%s%s", playerIDPrefix, name)
 		charData := flameres.CharacterData{
 			ID:        charID,
 			Level:     1,

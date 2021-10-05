@@ -203,12 +203,9 @@ func execute(input string) {
 		}
 		lastUpdate = time.Now()
 	case ImportCharsCmd:
-		if mod == nil {
-			log.Err.Printf("%s: no module loaded", ImportCharsCmd)
-		}
-		log.Inf.Printf("Imported characters: %d\n", len(mod.Resources().Characters))
-		for _, cd := range mod.Resources().Characters {
-			playableChars = append(playableChars, cd)
+		err := importPlayableChars()
+		if err != nil {
+			log.Err.Printf("%s: %v", ImportCharsCmd, err)
 		}
 	case MoveCmd:
 		err := moveDialog()
@@ -351,5 +348,20 @@ func loadModule(path string) error {
 	}
 	mod = flame.NewModule(modData)
 	burn.Module = mod
+	return nil
+}
+
+// importPlayableChars imports playable characters from
+// the current game module.
+func importPlayableChars() error {
+	if mod == nil {
+		return fmt.Errorf("no module loaded")
+	}
+	log.Inf.Printf("Imported characters: %d\n", len(mod.Resources().Characters))
+	for _, cd := range mod.Resources().Characters {
+		if strings.HasPrefix(cd.ID, playerIDPrefix) {
+			playableChars = append(playableChars, cd)
+		}
+	}
 	return nil
 }

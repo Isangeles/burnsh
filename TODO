@@ -1,5 +1,5 @@
 MAJOR:
 * Export name translations for characters created by the user to module lang directory
-* Support for server mode: trade, crafting, savegame
+* Remove item command
 MINOR:
 * Update modbuilder

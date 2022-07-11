@@ -1,7 +1,7 @@
 /*
  * target.go
  *
- * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,8 +52,8 @@ func targetDialog() error {
 	var tar effect.Target
 	for tar == nil {
 		fmt.Printf("%s:\n", lang.Text("target_near_targets"))
-		targets := area.NearTargets(activeGame.ActivePlayer(),
-			activeGame.ActivePlayer().SightRange())
+		pcX, pcY := activeGame.ActivePlayer().Position()
+		targets := area.NearObjects(pcX, pcY, activeGame.ActivePlayer().SightRange())
 		if len(targets) < 1 {
 			return nil
 		}

@@ -1,7 +1,7 @@
 /*
  * modbuilder.go
  *
- * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ func NewModule(name string) error {
 	modData.Chapter.Config["path"] = []string{chapterPath}
 	// Start area data.
 	startArea := res.AreaData{ID: "area1"}
-	modData.Chapter.Areas = append(modData.Chapter.Areas, startArea)
+	modData.Chapter.Resources.Areas = append(modData.Chapter.Resources.Areas, startArea)
 	// Export module.
 	err := data.ExportModule(path, modData)
 	if err != nil {

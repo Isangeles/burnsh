@@ -1,10 +1,10 @@
 module github.com/isangeles/burnsh
 
-go 1.16
+go 1.18
 
 require (
-	github.com/isangeles/burn v0.0.0-20220430135723-02a978a9c4b6
-	github.com/isangeles/fire v0.0.0-20220430135812-a72c53c83e43
-	github.com/isangeles/flame v0.0.0-20220428171440-db5cd0826d0d
-	github.com/isangeles/ignite v0.0.0-20220430145533-c076acc30cae
+	github.com/isangeles/burn v0.0.0-20220709215202-5e758a003945
+	github.com/isangeles/fire v0.0.0-20220623195738-bd214771fe32
+	github.com/isangeles/flame v0.0.0-20220707193151-c415466d2767
+	github.com/isangeles/ignite v0.0.0-20220710205912-a42beae3fe45
 )

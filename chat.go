@@ -1,7 +1,7 @@
 /*
  * chat.go
  *
- * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,8 @@ func updateChat() {
 		if area == nil {
 			continue
 		}
-		for _, tar := range area.NearTargets(pc.Character, pc.SightRange()) {
+		charX, charY := pc.Position()
+		for _, tar := range area.NearObjects(charX, charY, pc.SightRange()) {
 			tar, ok := tar.(objects.Logger)
 			if !ok {
 				continue

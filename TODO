@@ -3,6 +3,5 @@ MAJOR:
 * Remove item command
 * Documentation for commands: areainfo, crafting, equip, inventory, loadgame, login, loot,
   move, newcharacter, newgame, quests, response, savegame, talk, target, tarinfo, trade,
-  train, useskill, newmod
+  train, useskill
 MINOR:
-* Update modbuilder

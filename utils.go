@@ -1,7 +1,7 @@
 /*
  * utils.go
  *
- * Copyright 2018-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/isangeles/flame"
 	flameres "github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/data/res/lang"
-	"github.com/isangeles/flame/area"
 	"github.com/isangeles/flame/req"
 )
 
@@ -60,24 +58,4 @@ func reqsInfo(reqs ...req.Requirement) string {
 		}
 	}
 	return out
-}
-
-// charArea returns area with character with specified ID and serial from
-// specified module chapter.
-func charArea(chap *flame.Chapter, charID, charSerial string) *area.Area {
-	for _, a := range chap.Areas() {
-		for _, c := range a.Characters() {
-			if c.ID() == charID && c.Serial() == charSerial {
-				return a
-			}
-		}
-		for _, sa := range a.Subareas() {
-			for _, c := range sa.Characters() {
-				if c.ID() == charID && c.Serial() == charSerial {
-					return sa
-				}
-			}
-		}
-	}
-	return nil
 }

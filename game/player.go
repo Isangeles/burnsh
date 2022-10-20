@@ -1,7 +1,7 @@
 /*
  * player.go
  *
- * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ func (p *Player) SetDestPoint(x, y float64) {
 
 // AddChatMessage adds new message to player chat log.
 func (p *Player) AddChatMessage(message string) {
-	p.ChatLog().Add(objects.Message{Translated: true, Text: message})
+	p.ChatLog().Add(objects.NewMessage(message, true))
 	if p.game.Server() == nil {
 		return
 	}

@@ -1,7 +1,7 @@
 /*
  * game.go
  *
- * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ func (g *Game) SpawnPlayer(player *Player) error {
 		return fmt.Errorf("game: start area not found: %s",
 			g.Chapter().Conf().StartArea)
 	}
-	startArea.AddCharacter(player.Character)
+	startArea.AddObject(player)
 	return nil
 }
 

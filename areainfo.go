@@ -1,7 +1,7 @@
 /*
  * areainfo.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ func areaInfoDialog() error {
 	if activeGame.ActivePlayer() == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
 	}
-	area := activeGame.Chapter().CharacterArea(activeGame.ActivePlayer().Character)
+	area := activeGame.Chapter().ObjectArea(activeGame.ActivePlayer().Character)
 	if area == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_pc_area_err"))
 	}

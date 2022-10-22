@@ -56,7 +56,7 @@ func updateChat() {
 		for _, lm := range pc.Log().Messages() {
 			m := Message{
 				author: pc.ID(),
-				time:   lm.Time(),
+				time:   lm.Time,
 				text:   fmt.Sprintf("%s\n", lm.String()),
 			}
 			if !lm.Translated {
@@ -65,7 +65,7 @@ func updateChat() {
 			messages = append(messages, m)
 		}
 		// Near objects chat.
-		area := activeGame.Chapter().CharacterArea(pc.Character)
+		area := activeGame.Chapter().ObjectArea(pc.Character)
 		if area == nil {
 			continue
 		}
@@ -78,7 +78,7 @@ func updateChat() {
 			for _, lm := range tar.ChatLog().Messages() {
 				m := Message{
 					author: tar.ID(),
-					time:   lm.Time(),
+					time:   lm.Time,
 					text:   fmt.Sprintf("%s\n", lm.String()),
 				}
 				if !lm.Translated {

@@ -42,9 +42,7 @@ func targetDialog() error {
 	if activeGame.ActivePlayer() == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
 	}
-	mod := activeGame.Module
-	area := charArea(mod.Chapter(), activeGame.ActivePlayer().ID(),
-		activeGame.ActivePlayer().Serial())
+	area := activeGame.Chapter().ObjectArea(activeGame.ActivePlayer())
 	if area == nil {
 		return fmt.Errorf("no area for active player")
 	}

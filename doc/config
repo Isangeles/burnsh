@@ -1,8 +1,6 @@
-.TH .burnsh
-.SH NAME
-\[char46]burnsh - file for the interface configuration.
+.TH config
 .SH DESCRIPTION
-This file contains the interface configuration values.
+Configuration is stored in .burnsh file that contains the interface configuration values.
 .br
 The configuration file is loaded by the interface on startup.
 .SH VALUES

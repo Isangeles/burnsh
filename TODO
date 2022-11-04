@@ -5,3 +5,5 @@ MAJOR:
   move, newcharacter, newgame, quests, response, savegame, talk, target, tarinfo, trade,
   train, useskill
 MINOR:
+* Handle use response from the server
+* Handle chat response from the server

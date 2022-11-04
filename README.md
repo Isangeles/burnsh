@@ -139,9 +139,9 @@ Documentation for config files in form of Troff pages is available under `doc` d
 
 You can easily view documentation pages with `man` command.
 
-For example to display documentation page for .burnsh config file:
+For example to display documentation page for interface configuration:
 ```
-$ man doc/file/.burnsh
+man doc/config
 ```
 Note that documentation is still incomplete.
 ## Contact

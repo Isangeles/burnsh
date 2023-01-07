@@ -1,7 +1,7 @@
 /*
  * config.go
  *
- * Copyright 2018-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ const (
 
 var (
 	Module      = ""
+	ModulesPath = "data/modules"
 	Lang        = "english"
 	ServerHost  = ""
 	ServerPort  = ""
@@ -108,7 +109,7 @@ func Save() error {
 
 // ModulePath returns path to the directory of current module.
 func ModulePath() string {
-	return filepath.Join("data/modules", Module)
+	return filepath.Join(ModulesPath, Module)
 }
 
 // LangPath returns path to the CLI lang directory.

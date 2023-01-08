@@ -1,7 +1,7 @@
 /*
  * loadgame.go
  *
- * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ import (
 
 	"github.com/isangeles/fire/request"
 
+	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/game"
 	"github.com/isangeles/burnsh/log"
 )
@@ -104,7 +105,7 @@ func loadGameDialog() error {
 		activeGame.SetActivePlayer(activeGame.Players()[0])
 	}
 	// Game.
-	savepath := filepath.Join(mod.Conf().SavesPath(), savename)
+	savepath := filepath.Join(config.ModulesPath, savename)
 	modData, err := flamedata.ImportModule(savepath)
 	if err != nil {
 		return fmt.Errorf("unable to import module file: %v", err)

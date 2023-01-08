@@ -1,7 +1,7 @@
 /*
  * savegame.go
  *
- * Copyright 2020-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2020-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ import (
 
 	"github.com/isangeles/fire/request"
 
+	"github.com/isangeles/burnsh/config"
 	"github.com/isangeles/burnsh/log"
 )
 
@@ -95,7 +96,7 @@ func saveGameDialog() error {
 		}
 		return nil
 	}
-	savepath := filepath.Join(mod.Conf().SavesPath(), save.Name)
+	savepath := filepath.Join(config.ModulesPath, save.Name)
 	err = flamedata.ExportModule(savepath, activeGame.Data())
 	if err != nil {
 		return fmt.Errorf("unable to export module: %v", err)

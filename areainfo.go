@@ -1,7 +1,7 @@
 /*
  * areainfo.go
  *
- * Copyright 2021-2022 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,10 +48,10 @@ func areaInfoDialog() error {
 		lang.Text(area.ID()))
 	// Time.
 	info += fmt.Sprintf("\n%s: %s", lang.Text("area_time"),
-		area.Time().Format(time.Kitchen))
+		area.Time.Format(time.Kitchen))
 	// Weather.
 	info += fmt.Sprintf("\n%s: %s", lang.Text("area_weather"),
-		lang.Text(string(area.Weather().Conditions())))
+		lang.Text(string(area.Weather().Conditions)))
 	// Print.
 	fmt.Printf("%s\n", info)
 	return nil

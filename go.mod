@@ -3,8 +3,8 @@ module github.com/isangeles/burnsh
 go 1.19
 
 require (
-	github.com/isangeles/burn v0.0.0-20230106123012-2af33c50c937
-	github.com/isangeles/fire v0.0.0-20221108211658-d128681f7d2f
-	github.com/isangeles/flame v0.0.0-20230104185255-1581327daf1d
-	github.com/isangeles/ignite v0.0.0-20221130165713-b6914caa8f08
+	github.com/isangeles/burn v0.0.0-20230222193005-181d4b8bcd34
+	github.com/isangeles/fire v0.0.0-20230127182407-24a6c20b8955
+	github.com/isangeles/flame v0.0.0-20230208222648-12f4e12aec91
+	github.com/isangeles/ignite v0.0.0-20230120160036-7c68e72d377d
 )

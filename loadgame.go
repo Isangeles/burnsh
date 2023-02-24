@@ -54,7 +54,7 @@ func loadGameDialog() error {
 	path := filepath.Join(mod.Conf().Path, ModuleSavesPath)
 	saves, err := flamedata.DirFilesNames(path, savePattern)
 	if err != nil {
-		return fmt.Errorf("unable to retrieve save files: %v")
+		return fmt.Errorf("unable to retrieve save files: %v", err)
 	}
 	savename := ""
 	scan := bufio.NewScanner(os.Stdin)

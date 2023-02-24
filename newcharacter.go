@@ -1,7 +1,7 @@
 /*
  * newcharacter.go
  *
- * Copyright 2018-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2018-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ func newCharacterDialog(mod *flame.Module) (flameres.CharacterData, error) {
 		attrsPts := mod.Chapter().Conf().StartAttrs
 		for accept := false; !accept; {
 			attrs = newAttributesDialog(attrsPts)
-			fmt.Printf("%s: %s\n", lang.Text("cli_newchar_attrs_summary"), attrs)
+			fmt.Printf("%s: %v\n", lang.Text("cli_newchar_attrs_summary"), attrs)
 			fmt.Printf("%s:", lang.Text("cli_accept_dialog"))
 			scan.Scan()
 			input := scan.Text()

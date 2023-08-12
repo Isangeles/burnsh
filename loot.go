@@ -1,7 +1,7 @@
 /*
- * cli.go
+ * loot.go
  *
- * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,20 @@ func lootDialog() error {
 	if !ok {
 		return fmt.Errorf("target have no inventory")
 	}
-	err := activeGame.TransferItems(activeGame.ActivePlayer(), con, con.Inventory().LootItems()...)
+	err := activeGame.TransferItems(activeGame.ActivePlayer(), con, lootItems(con.Inventory().Items())...)
 	if err != nil {
 		return fmt.Errorf("unable to transfer items: %v", err)
 	}
 	return nil
+}
+
+// lootItems returns all lootable items from specified
+// inventory items list.
+func lootItems(invItems []*item.InventoryItem) (items []item.Item) {
+	for _, it := range invItems {
+		if it.Loot {
+			items = append(items, it.Item)
+		}
+	}
+	return
 }

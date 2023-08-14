@@ -1,7 +1,7 @@
 /*
  * equip.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ func equipDialog() error {
 	fmt.Printf("%s:\n", lang.Text("equip_items"))
 	items := make([]item.Equiper, 0)
 	for _, it := range activeGame.ActivePlayer().Inventory().Items() {
-		if eit, ok := it.(item.Equiper); ok {
+		if eit, ok := it.Item.(item.Equiper); ok {
 			items = append(items, eit)
 		}
 	}

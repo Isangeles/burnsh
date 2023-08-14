@@ -1,7 +1,7 @@
 /*
  * trade.go
  *
- * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ func tradeDialog() error {
 	fmt.Printf("%s:\n", lang.Text("trade_buy_items"))
 	buyItems := make([]item.Item, 0)
 	buyValue := 0
-	for _, i := range selectBuyItems(tarChar.Inventory().TradeItems()) {
+	for _, i := range selectBuyItems(tarChar.Inventory().Items()) {
 		buyItems = append(buyItems, i.Item)
 		buyValue += i.Price
 	}
@@ -97,7 +97,7 @@ func tradeDialog() error {
 
 // selectSellItems starts dialog for selecting items to
 // sell from specified items.
-func selectSellItems(items []item.Item) []item.Item {
+func selectSellItems(items []*item.InventoryItem) []item.Item {
 	if len(items) < 1 {
 		fmt.Printf("%s\n", lang.Text("trade_no_items"))
 		return nil
@@ -109,7 +109,7 @@ func selectSellItems(items []item.Item) []item.Item {
 			if selectItems[it.ID()+it.Serial()] != nil {
 				continue
 			}
-			invItems = append(invItems, it)
+			invItems = append(invItems, it.Item)
 		}
 		// List items to select.
 		fmt.Printf("%s:\n", lang.Text("trade_select_items"))
@@ -145,16 +145,16 @@ func selectSellItems(items []item.Item) []item.Item {
 
 // selectBuyItems starts dialog for selecting items to buy from
 // specified trade items list.
-func selectBuyItems(items []*item.TradeItem) []*item.TradeItem {
-	selectItems := make(map[string]*item.TradeItem)
+func selectBuyItems(items []*item.InventoryItem) []*item.InventoryItem {
+	selectItems := make(map[string]*item.InventoryItem)
 	if len(items) < 1 {
 		fmt.Printf("%s\n", lang.Text("trade_no_items"))
 		return nil
 	}
 	for {
-		invItems := make([]*item.TradeItem, 0)
+		invItems := make([]*item.InventoryItem, 0)
 		for _, it := range items {
-			if selectItems[it.ID()+it.Serial()] != nil {
+			if !it.Trade || selectItems[it.ID()+it.Serial()] != nil {
 				continue
 			}
 			invItems = append(invItems, it)
@@ -186,7 +186,7 @@ func selectBuyItems(items []*item.TradeItem) []*item.TradeItem {
 		it := invItems[id]
 		selectItems[it.ID()+it.Serial()] = it
 	}
-	selection := make([]*item.TradeItem, 0)
+	selection := make([]*item.InventoryItem, 0)
 	for _, it := range selectItems {
 		selection = append(selection, it)
 	}

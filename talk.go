@@ -1,7 +1,7 @@
 /*
  * talk.go
  *
- * Copyright 2019-2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +26,16 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 
-	"github.com/isangeles/flame/data/res/lang"
 	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/data/res/lang"
 	"github.com/isangeles/flame/dialog"
 )
+
+var TalkRange float64 = 50
 
 // talkDialog starts CLI dialog for dialog with
 // current target of active PC.
@@ -49,7 +52,14 @@ func talkDialog() error {
 		msg := lang.Text("no_tar_err")
 		return fmt.Errorf(msg)
 	}
+	// Range check.
 	tar := activeGame.ActivePlayer().Targets()[0]
+	tarX, tarY := tar.Position()
+	pcX, pcY := activeGame.ActivePlayer().Position()
+	if math.Hypot(tarX-pcX, tarY-pcY) > TalkRange {
+		msg := lang.Text("out_of_range_err")
+		return fmt.Errorf(msg)
+	}
 	tarChar, ok := tar.(*character.Character)
 	if !ok {
 		return fmt.Errorf("invalid_target")

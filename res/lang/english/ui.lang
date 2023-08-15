@@ -64,6 +64,7 @@ no_game_err:No game loaded
 no_pc_err:No active player
 no_pc_area_err:Area for active player not found
 no_tar_err:No target
+out_of_range_err:Target it out of range
 loadgame_saves:Saves
 loadgame_select_save:Select save
 savegame_save_name:Enter save name

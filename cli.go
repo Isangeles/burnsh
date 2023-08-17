@@ -1,7 +1,7 @@
 /*
  * cli.go
  *
- * Copyright 2018-2022 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2018-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,6 +78,7 @@ const (
 	TrainTargetCmd = "train"
 	EquipCmd       = "equip"
 	InventoryCmd   = "inventory"
+	ChatCmd        = "chat"
 	RepeatInputCmd = "!"
 	InputIndicator = ">"
 )
@@ -267,6 +268,11 @@ func execute(input string) {
 		if err != nil {
 			log.Err.Printf("%s: %v", InventoryCmd, err)
 		}
+	case ChatCmd:
+		err := chatDialog()
+		if err != nil {
+			log.Err.Printf("%s: %v", ChatCmd, err)
+		}
 	case RepeatInputCmd:
 		execute(lastCommand)
 	default: // pass command to CI
@@ -327,7 +333,6 @@ func gameLoop(g *game.Game) {
 		dtNano := time.Since(lastUpdate).Nanoseconds()
 		delta := dtNano / int64(time.Millisecond) // delta to milliseconds
 		g.Update(delta)
-		updateChat()
 		lastUpdate = time.Now()
 		// Wait for 16 millis.
 		time.Sleep(time.Duration(16) * time.Millisecond)

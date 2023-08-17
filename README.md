@@ -116,6 +116,10 @@ List items in inventory:
 ```
 $inventory
 ```
+Show chat:
+```
+$chat
+```
 Exit program:
 ```
 $close

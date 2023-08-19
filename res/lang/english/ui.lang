@@ -49,6 +49,7 @@ reqs_not_meet:Requirements not meet
 talk_no_answer_id_err:Enter valid answer ID
 move_enter_x_position:Enter position X
 move_enter_y_position:Enter position Y
+movetar_info:Moving to position
 char_info:Type $close to exit the chat
 dialog_back:Back
 dialog_cancel:Cancel

@@ -120,6 +120,10 @@ Show chat:
 ```
 $chat
 ```
+Move to current target:
+```
+$movetar
+```
 Exit program:
 ```
 $close

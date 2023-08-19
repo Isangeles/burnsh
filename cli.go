@@ -66,6 +66,7 @@ const (
 	LoadGameCmd    = "loadgame"
 	ImportCharsCmd = "importchars"
 	MoveCmd        = "move"
+	MoveTarCmd     = "movetar"
 	LootTargetCmd  = "loot"
 	TalkTargetCmd  = "talk"
 	FindTargetCmd  = "target"
@@ -207,6 +208,11 @@ func execute(input string) {
 		err := moveDialog()
 		if err != nil {
 			log.Err.Printf("%s: %v", MoveCmd, err)
+		}
+	case MoveTarCmd:
+		err := moveTarDialog()
+		if err != nil {
+			log.Err.Printf("%s: %v", MoveTarCmd, err)
 		}
 	case LootTargetCmd:
 		err := lootDialog()

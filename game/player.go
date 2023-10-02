@@ -61,8 +61,15 @@ func (p *Player) Log() *objects.Log {
 	return p.log
 }
 
-// SetDestPoint sets a specified XY position as current
-// as a character destination point.
+// SetPosition sets a specified XY position as a
+// player position and destination point.
+func (p *Player) SetPosition(x, y float64) {
+	p.Character.SetPosition(x, y)
+	p.SetDestPoint(x, y)
+}
+
+// SetDestPoint sets a specified XY position as a
+// character destination point.
 func (p *Player) SetDestPoint(x, y float64) {
 	p.Character.SetDestPoint(x, y)
 	if p.game.Server() == nil {

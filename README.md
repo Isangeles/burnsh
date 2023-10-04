@@ -17,7 +17,7 @@ module:[module ID]
 ```
 Burn Shell will search the default modules directory(`data/modules`) for a module with the specified ID.
 
-Flame modules are available for download [here](http://flame.isangeles.pl/mods).
+Flame modules are available for download [here](https://flame.isangeles.dev/mods).
 
 Run shell:
 ```

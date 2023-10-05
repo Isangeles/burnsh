@@ -1,8 +1,10 @@
-github.com/isangeles/burn v0.0.0-20230809163323-d0f196b23b4d h1:AzDDsVdVyfoWaYB5wWeZwqjNGNlGatZGDb5+I8PkY/o=
-github.com/isangeles/burn v0.0.0-20230809163323-d0f196b23b4d/go.mod h1:gJtuSG7KOfMpYmC51/K4v705iMll5kx4NCMatdfMzHU=
-github.com/isangeles/fire v0.0.0-20230828191417-38c9c83ce02e h1:DPd8LrH9LqALgDY61q/apvDkNkVdHbC6VeelWj2xF9E=
-github.com/isangeles/fire v0.0.0-20230828191417-38c9c83ce02e/go.mod h1:BCy8WVIlNCaX9RzX5rBIcWp5GOtUEQd9W+O3fWDKwcE=
-github.com/isangeles/flame v0.0.0-20230830152908-c989e8f8d2e8 h1:CSB0VVoCsfYS9yrmJwENeMfY6Vl0SKfav6n3wgalErE=
-github.com/isangeles/flame v0.0.0-20230830152908-c989e8f8d2e8/go.mod h1:SnqHiRyVIg6hdDObByPdi8C8Fy2TdF5F0bbYQ9/PWLs=
+github.com/isangeles/burn v0.0.0-20230918152806-719d56b37da7 h1:2L3SMzfeK5wOY+5H32qliVaRYTOamqPRqfqt4L6hYmc=
+github.com/isangeles/burn v0.0.0-20230918152806-719d56b37da7/go.mod h1:gJtuSG7KOfMpYmC51/K4v705iMll5kx4NCMatdfMzHU=
+github.com/isangeles/fire v0.0.0-20231003141948-a1f90f824270 h1:uvUhVBMcecuckaM0B45tUbenJ1MR65wRS2rdEqx6g4E=
+github.com/isangeles/fire v0.0.0-20231003141948-a1f90f824270/go.mod h1:mqukL637ewcHomh59kknbxRL41IR7SbeQgAlEIWwUqc=
+github.com/isangeles/flame v0.0.0-20230927160351-b88c2c79d53a h1:szbxxDWvyHfPeAUeN4DkHUxI+ff7JjJOsaIvDX2wCKY=
+github.com/isangeles/flame v0.0.0-20230927160351-b88c2c79d53a/go.mod h1:LvI0xJLcFHGZkUeqKIqn1mpFxF28CZ4Vfn+UFjsAa2M=
 github.com/isangeles/ignite v0.0.0-20230621175758-7591e10d8d2c h1:3AMeGTzIFvs57w8+CqXssRc4rKLMWLXPhNLKXNbgNnE=
 github.com/isangeles/ignite v0.0.0-20230621175758-7591e10d8d2c/go.mod h1:5cboUynqQ+RaOgpnxR0//idnFYUwWbVUwVRUjGnLLRM=
+github.com/isangeles/tmx v0.0.0-20230925150339-5410bc1b891b h1:TfKHKtfJnlSIe2OZ8QaPLBskYJ5LE7Sf/dVDhDEFZxs=
+github.com/isangeles/tmx v0.0.0-20230925150339-5410bc1b891b/go.mod h1:HQTF1Ct50epzMRfRAG8Pg6Fzy84J/w8ZFvR4id62X2g=

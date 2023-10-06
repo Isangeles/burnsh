@@ -24,6 +24,7 @@ crafting_result:Result
 crafting_amount:Amount
 crafting_reqs:Requirements
 crafting_make:Make
+chat_info:Use close command to close the chat
 trade_buy_items:Items to buy
 trade_sell_items:Items to sell
 trade_select_items:Select items

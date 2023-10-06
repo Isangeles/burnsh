@@ -1,7 +1,7 @@
 /*
  * tarinfo.go
  *
- * Copyright 2019-2020 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2019-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,10 +47,10 @@ func targetInfoDialog() error {
 	if activeGame.ActivePlayer() == nil {
 		return fmt.Errorf("%s\n", lang.Text("no_pc_err"))
 	}
-	pcTar := activeGame.ActivePlayer().Targets()[0]
-	if pcTar == nil {
+	if len(activeGame.ActivePlayer().Targets()) < 1 {
 		return fmt.Errorf("%s\n", lang.Text("no_tar_err"))
 	}
+	pcTar := activeGame.ActivePlayer().Targets()[0]
 	tar, ok := pcTar.(InfoTarget)
 	if !ok {
 		return fmt.Errorf("%s\n", lang.Text("invalid_tar"))

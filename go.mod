@@ -3,9 +3,9 @@ module github.com/isangeles/burnsh
 go 1.20
 
 require (
-	github.com/isangeles/burn v0.0.0-20241015182937-514db43352fc
-	github.com/isangeles/fire v0.0.0-20241016135851-26c4a556cc55
-	github.com/isangeles/flame v0.0.0-20241030151104-123583948ae5
+	github.com/isangeles/burn v0.0.0-20241112211812-0738a5e23d7a
+	github.com/isangeles/fire v0.0.0-20241113185343-5eb265d59ce5
+	github.com/isangeles/flame v0.0.0-20241105161732-61f92d22097e
 	github.com/isangeles/ignite v0.0.0-20241017100437-3556950e5103
 )
 

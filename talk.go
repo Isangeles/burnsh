@@ -1,7 +1,7 @@
 /*
  * talk.go
  *
- * Copyright 2019-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2019-2025 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,9 +67,9 @@ func talkDialog() error {
 	if len(tarChar.Dialogs()) < 1 {
 		return fmt.Errorf("no_target_dialogs")
 	}
-	d := tarChar.Dialogs()[0]
-	scan := bufio.NewScanner(os.Stdin)
+	d := tarChar.Dialog(activeGame.ActivePlayer())
 	activeGame.StartDialog(d, activeGame.ActivePlayer())
+	scan := bufio.NewScanner(os.Stdin)
 	// Dialog.
 	for {
 		fmt.Printf("%s:\n", lang.Text("talk_dialog"))

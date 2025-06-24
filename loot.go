@@ -1,7 +1,7 @@
 /*
  * loot.go
  *
- * Copyright 2019-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2019-2025 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@ package main
 import (
 	"fmt"
 
+	"github.com/isangeles/flame/character"
 	"github.com/isangeles/flame/item"
-	"github.com/isangeles/flame/objects"
 )
 
 // lootDialog start CLI dialog current
@@ -39,18 +39,15 @@ func lootDialog() error {
 	if activeGame.ActivePlayer() == nil {
 		return fmt.Errorf("no active player")
 	}
-	tar := activeGame.ActivePlayer().Targets()[0]
-	if tar == nil {
+	if len(activeGame.ActivePlayer().Targets()) < 1 {
 		return fmt.Errorf("no target")
 	}
-	if tar, ok := tar.(objects.Killable); ok && tar.Live() {
-		return fmt.Errorf("tar not lootable")
+	tar := activeGame.ActivePlayer().Targets()[0]
+	ob, ok := tar.(*character.Character)
+	if ok && ob.Live() && !ob.OpenLoot() {
+		return fmt.Errorf("target is not lootable")
 	}
-	con, ok := tar.(item.Container)
-	if !ok {
-		return fmt.Errorf("target have no inventory")
-	}
-	err := activeGame.TransferItems(activeGame.ActivePlayer(), con, lootItems(con.Inventory().Items())...)
+	err := activeGame.TransferItems(activeGame.ActivePlayer(), ob, lootItems(ob.Inventory().Items())...)
 	if err != nil {
 		return fmt.Errorf("unable to transfer items: %v", err)
 	}

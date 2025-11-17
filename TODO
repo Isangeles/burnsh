@@ -3,8 +3,7 @@ MAJOR:
 * Documentation for commands: areainfo, crafting, equip, inventory, loadgame, login, loot,
   move, newcharacter, newgame, quests, response, savegame, talk, target, tarinfo, trade,
   train, useskill
-* Move chat to separate dialog
-* Range check for actions(talk, train, trade, etc.)
+* Range check for train & trade actions
 MINOR:
 * Handle use response from the server
 * Handle chat response from the server

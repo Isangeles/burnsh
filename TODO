@@ -4,6 +4,7 @@ MAJOR:
   move, newcharacter, newgame, quests, response, savegame, talk, target, tarinfo, trade,
   train, useskill
 * Range check for train & trade actions
+* Throw item action for inventory
 MINOR:
 * Handle use response from the server
 * Handle chat response from the server

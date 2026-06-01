@@ -1,7 +1,7 @@
 /*
  * config.go
  *
- * Copyright 2018-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2018-2026 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ var (
 	ServerPort  = ""
 	ServerLogin = ""
 	ServerPass  = ""
+	ServerTLS   = false
 	Debug       = false
 )
 
@@ -75,6 +76,9 @@ func Load() error {
 		ServerLogin = conf["server-user"][0]
 		ServerPass = conf["server-user"][1]
 	}
+	if len(conf["server-tls"]) > 0 {
+		ServerTLS = conf["server-tls"][0] == "true"
+	}
 	if len(conf["debug"]) > 0 {
 		Debug = conf["debug"][0] == "true"
 	}
@@ -96,6 +100,7 @@ func Save() error {
 	conf["lang"] = []string{Lang}
 	conf["server"] = []string{ServerHost, ServerPort}
 	conf["server-user"] = []string{ServerLogin, ServerPass}
+	conf["server-tls"] = []string{fmt.Sprintf("%v", ServerTLS)}
 	conf["debug"] = []string{fmt.Sprintf("%v", Debug)}
 	confText := text.MarshalConfig(conf)
 	// Write to file.

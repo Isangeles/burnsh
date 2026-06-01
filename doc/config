@@ -34,6 +34,14 @@ First value is used as server host, second as server port.
 Specifies user login and password for multiplayer mode.
 .br
 First value is for login, second for password.
+.P
+* server-tls
+.br
+Enables TLS(wss://) for the remote game server connection.
+.br
+Required when connecting to servers with HTTPS endpoints.
+.br
+Value 'true' enables TLS, everything else uses plain WebSocket(ws://).
 .SH EXAMPLE
 .nf
 lang:english

@@ -2,10 +2,10 @@ github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aN
 github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/isangeles/burn v0.0.0-20261013214832-6a5b3bb18f94 h1:C1KEP9Esl9owXTF3RQRi0nEplX4ln2e0cXVGI0OUoO4=
 github.com/isangeles/burn v0.0.0-20261013214832-6a5b3bb18f94/go.mod h1:ieyeKpL/c3YHT0K8YikTYwmS2j2v0wc5asbIwha2Kbk=
-github.com/isangeles/fire v0.0.0-20260921144355-7801b08d9aab h1:jNK0Bw9DCX+F3/imssSzlfrON3/lUCOrBIanrpJTmKo=
-github.com/isangeles/fire v0.0.0-20260921144355-7801b08d9aab/go.mod h1:/2qvTu2yEYDFU+3i3mkQkouVY1mGVPPy2t+cN1RZLvY=
-github.com/isangeles/flame v0.0.0-20260928213310-7d7e8a8b158c h1:uwJB200fUbLkhiM6eS4NGjsk7eayAcIsEBpY+A4LPwM=
-github.com/isangeles/flame v0.0.0-20260928213310-7d7e8a8b158c/go.mod h1:aG44nWq28176xGgmYMIjRPrbQIdLoE06CtGb0DaQmL4=
+github.com/isangeles/fire v0.0.0-20261022171739-d4aeb5319ace h1:diX/SX2yhvq0NiuzWZtY5NA+/wGXwqig+5SgU9VDCUc=
+github.com/isangeles/fire v0.0.0-20261022171739-d4aeb5319ace/go.mod h1:dAwOzt2I5mL1LcLOKHqjYdhh5d4akHQCnTX1Oz7pCMY=
+github.com/isangeles/flame v0.0.0-20261020175924-c3ea727a8b07 h1:6sKq/dKoISHR+rYGyB9K5TDj/g5+fJ5GDFqFDvYwEWQ=
+github.com/isangeles/flame v0.0.0-20261020175924-c3ea727a8b07/go.mod h1:aG44nWq28176xGgmYMIjRPrbQIdLoE06CtGb0DaQmL4=
 github.com/isangeles/ignite v0.0.0-20261012192105-278b7a5fa786 h1:9/hcJXb/SWpQIIaWMf0q+47ZOT67CSllrjvEWIiNFOE=
 github.com/isangeles/ignite v0.0.0-20261012192105-278b7a5fa786/go.mod h1:CDgczE1y8OPo+coiQRhAKVvNp823qXgAygdWP6OdJcw=
 github.com/isangeles/tmx v0.0.0-20230925150339-5410bc1b891b h1:TfKHKtfJnlSIe2OZ8QaPLBskYJ5LE7Sf/dVDhDEFZxs=

@@ -1,7 +1,7 @@
 /*
  * newcharacter.go
  *
- * Copyright 2018-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2018-2026 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ func newCharacterDialog(mod *flame.Module) (flameres.CharacterData, error) {
 		sex := genderDialog()
 		// Attributes.
 		attrs := character.Attributes{}
-		attrsPts := mod.Chapter().Conf().StartAttrs
+		attrsPts := mod.Chapter().Conf().StartAttrsMax
 		for accept := false; !accept; {
 			attrs = newAttributesDialog(attrsPts)
 			fmt.Printf("%s: %v\n", lang.Text("cli_newchar_attrs_summary"), attrs)
